@@ -22,6 +22,7 @@ set nocompatible
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
+Plugin 'airblade/vim-gitgutter'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'tpope/vim-fugitive'
