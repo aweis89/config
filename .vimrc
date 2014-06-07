@@ -33,45 +33,64 @@ set fileencoding=utf-8
 
 imap kj <esc>
 imap jj <esc>
-map <C-d> :execute 'NERDTreeToggle ' . getcwd()<CR>
-cmap dir :execute 'NERDTreeToggle ' . getcwd()<CR>
-cmap <leader>d <C-p>
-map <leader>sp :split<CR>
-map <leader>sv :vsplit<CR>
-map <leader>q :q<CR>
+map <c-d> :execute 'nerdtreetoggle ' . getcwd()<cr>
+cmap dir :execute 'nerdtreetoggle ' . getcwd()<cr>
+cmap <leader>d <c-p>
+map <leader>sp :split<cr>
+map <leader>sv :vsplit<cr>
+map <leader>q :q<cr>
 map <leader>w :w<cr>
 nnoremap <leader><space> :noh<cr>
-map <leader>t :tabnew<CR>
-nnoremap <leader>s <C-w>v<C-w>l
-nnoremap <leader>sh :split<CR><C-w>j
+map <leader>t :tabnew<cr>
+nnoremap <leader>s <c-w>v<c-w>l
+nnoremap <leader>sh :split<cr><c-w>j
 
-nnoremap <Tab>h <C-w>h
-nnoremap <Tab>j <C-w>j
-nnoremap <Tab>k <C-w>k
-nnoremap <Tab>l <C-w>l
+nnoremap <tab>h <c-w>h
+nnoremap <tab>j <c-w>j
+nnoremap <tab>k <c-w>k
+nnoremap <tab>l <c-w>l
 cmap mt :tabm
-nnoremap <S-h> :tabprevious<CR>
-nnoremap <S-l> :tabnext<CR>
-nnoremap <silent> <A-S-h> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
-nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . tabpagenr()<CR>
-cmap ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
+nnoremap <s-h> :tabprevious<cr>
+nnoremap <s-l> :tabnext<cr>
+nnoremap <silent> <a-s-h> :execute 'silent! tabmove ' . (tabpagenr()-2)<cr>
+nnoremap <silent> <a-right> :execute 'silent! tabmove ' . tabpagenr()<cr>
+cmap ev <c-w><c-v><c-l>:e $myvimrc<cr>
 nnoremap j gj
 nnoremap k gk
 nnoremap ; :
 
 set nocompatible
 set rnu
-autocmd BufNewFile,BufRead *.html.erb set filetype=html.eruby
+autocmd bufnewfile,bufread *.html.erb set filetype=html.eruby
 let g:ctrlp_map = '<leader>d'
 
-" Snippets
-" Track the engine.
- " Snippets are separated from the engine. Add this if you want them:
- " Trigger configuration. Do not use <tab> if you use
-" https://github.com/Valloric/YouCompleteMe.
- let g:UltiSnipsExpandTrigger="<tab>"
- let g:UltiSnipsJumpForwardTrigger="<c-b>"
- let g:UltiSnipsJumpBackwardTrigger="<c-z>"
- let g:UltiSnipsListSnippets="<c-l>"
- " If you want :UltiSnipsEdit to split your window.
- let g:UltiSnipsEditSplit="vertical"
+" snippets
+" track the engine.
+ " snippets are separated from the engine. add this if you want them:
+ " trigger configuration. do not use <tab> if you use
+" https://github.com/valloric/youcompleteme.
+ let g:ultisnipsexpandtrigger="<tab>"
+ let g:ultisnipsjumpforwardtrigger="<c-b>"
+ let g:ultisnipsjumpbackwardtrigger="<c-z>"
+ let g:ultisnipslistsnippets="<c-l>"
+ " if you want :ultisnipsedit to split your window.
+let g:ultisnipseditsplit="vertical"
+
+function! g:UltiSnips_Complete()
+call UltiSnips#ExpandSnippet()
+if g:ulti_expand_res == 0
+if pumvisible()
+return "\<C-n>"
+else
+call UltiSnips_JumpForwards()
+if g:ulti_jump_forwards_res == 0
+return "\<TAB>"
+endif
+endif
+endif
+return ""
+endfunction
+
+au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
