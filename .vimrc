@@ -17,6 +17,10 @@ Plugin 'honza/vim-snippets'
 Plugin 'bling/vim-airline'
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdtree'
+let g:airline_theme='sol'
+let g:airline_powerline_fonts = 1
+
 call vundle#end()
 filetype plugin indent on
 syntax on
@@ -36,7 +40,7 @@ set noshowmatch
 set encoding=utf-8
 set noswapfile
 set cursorline
-set fileencoding=utf-8
+"set fileencoding=utf-8
 set t_Co=256
 set backspace=indent,eol,start
 set laststatus=2
@@ -45,13 +49,11 @@ set noshowmode
 imap kj <esc>
 imap jj <esc>
 map <c-d> :Vex<cr>
-cmap dir :execute 'nerdtreetoggle ' . getcwd()<cr>
+cmap dir NERDTreeToggle<CR> 
 cmap <leader>d <c-p>
 map <leader>sp :split<cr>
-map <leader>sv :vsplit<cr>
-map <leader>q :q<cr>
-map <leader>w :w<cr>
-nnoremap <leader><space> :noh<cr>
+map <jeader>sv :vsplit<cr>
+nnoremap <leader>n :noh<cr>
 map <leader>t :tabnew<cr>
 nnoremap <leader>s <c-w>v<c-w>l
 nnoremap <leader>sh :split<cr><c-w>j
