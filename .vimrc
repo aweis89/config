@@ -4,12 +4,19 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-rails'
+Plugin 'justinmk/vim-sneak'
 Plugin 'kchmck/vim-coffee-script'
+Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-fugitive'
 Plugin 'slim-template/vim-slim.git'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+"Plugin 'itchyny/lightline.vim'
+Plugin 'bling/vim-airline'
+Plugin 'rking/ag.vim'
+Plugin 'scrooloose/nerdcommenter'
 call vundle#end()
 filetype plugin indent on
 syntax on
@@ -30,10 +37,14 @@ set encoding=utf-8
 set noswapfile
 set cursorline
 set fileencoding=utf-8
+set t_Co=256
+set backspace=indent,eol,start
+set laststatus=2
+set noshowmode
 
 imap kj <esc>
 imap jj <esc>
-map <c-d> :execute 'nerdtreetoggle ' . getcwd()<cr>
+map <c-d> :Vex<cr>
 cmap dir :execute 'nerdtreetoggle ' . getcwd()<cr>
 cmap <leader>d <c-p>
 map <leader>sp :split<cr>
@@ -76,13 +87,14 @@ let g:ctrlp_map = '<leader>d'
  " if you want :ultisnipsedit to split your window.
 let g:ultisnipseditsplit="vertical"
 
+"Get YouCompleteMe to play nice with UltiSnipps!
 function! g:UltiSnips_Complete()
 call UltiSnips#ExpandSnippet()
 if g:ulti_expand_res == 0
 if pumvisible()
 return "\<C-n>"
 else
-call UltiSnips_JumpForwards()
+call UltiSnips#JumpForwards()
 if g:ulti_jump_forwards_res == 0
 return "\<TAB>"
 endif
@@ -94,3 +106,4 @@ endfunction
 au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
+
