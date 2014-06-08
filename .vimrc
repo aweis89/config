@@ -2,7 +2,7 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 set rtp+=~/.vim/bundle/vundle/
 call vundle#begin()
-Plugin 'gmarik/Vundle.vim'
+Plugin 'gmfrik/Vundle.Fmavim'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-rails'
 Plugin 'kchmck/vim-coffee-script'
@@ -15,9 +15,10 @@ Plugin 'honza/vim-snippets'
 Plugin 'itchyny/lightline.vim'
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloosr/nerdtree'
 Plugin 'tpope/vim-surround'
 Plugin 'Lokaltog/vim-easymotion'
+Plugin 'justinmk/vim-sneak'
 set rtp+={repository_root}/powerline/bindings/vim
 let g:lightline = {
       \'active': {
@@ -41,6 +42,24 @@ execute pathogen#infect()
 let loaded_matchparen = 1
 let mapleader = " "
 map <Leader> <Plug>(easymotion-prefix)
+" change the default EasyMotion shading to something more readable with
+" Solarized
+hi link EasyMotionTarget ErrorMsg
+hi link EasyMotionShade  Comment
+"replace 'f' with inclusive 1-char Sneak
+nmap f <Plug>Sneak_f
+nmap F <Plug>Sneak_F
+xmap f <Plug>Sneak_f
+xmap F <Plug>Sneak_F
+omap f <Plug>Sneak_f
+omap F <Plug>Sneak_F
+"replace 't' with exclusive 1-char Sneak
+nmap t <Plug>Sneak_t
+nmap T <Plug>Sneak_T
+xmap t <Plug>Sneak_t
+xmap T <Plug>Sneak_T
+omap t <Plug>Sneak_t
+omap T <Plug>Sneak_T
 set number
 set tabstop=2
 set shiftwidth=2
@@ -60,32 +79,35 @@ set backspace=indent,eol,start
 set laststatus=2
 set noshowmode
 
-imap kj <esc>
 imap jj <esc>
 map <c-d> :Vex<cr>
 cmap dir NERDTreeToggle<CR> 
 cmap <leader>d <c-p>
 map <leader>sp :split<cr>
 map <jeader>sv :vsplit<cr>
-nnoremap <leader>n :noh<cr>
+map <leader>n :noh<cr>
 map <leader>t :tabnew<cr>
 map <leader>s <c-w>v<c-w>l
 map <leader>sh :split<cr><c-w>j
 
-nnoremap <leader>h <c-w>h
-nnoremap <leader>j <c-w>j
-nnoremap <leader>k <c-w>k
-nnoremap <leader>l <c-w>l
+map <leader>h <c-w>h
+map <leader>j <c-w>j
+map <leader>k <c-w>k
+map <leader>l <c-w>l
 cmap mt :tabm
-nnoremap <s-h> :tabprevious<cr>
-nnoremap <s-l> :tabnext<cr>
-nnoremap <silent> <a-s-h> :execute 'silent! tabmove ' . (tabpagenr()-2)<cr>
-nnoremap <silent> <a-right> :execute 'silent! tabmove ' . tabpagenr()<cr>
+map <s-h> :tabprevious<cr>
+map <s-l> :tabnext<cr>
+map <silent> <a-s-h> :execute 'silent! tabmove ' . (tabpagenr()-2)<cr>
+map <silent> <a-right> :execute 'silent! tabmove ' . tabpagenr()<cr>
 cmap ev <c-w><c-v><c-l>:e $myvimrc<cr>
-nnoremap j gj
-nnoremap k gk
-nnoremap ; :
+map j gj
+map k gk
+map ; :
 
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+map  n <Plug>(easymotion-next)
+map  N <Plug>(easymotion-prev)
 set nocompatible
 set rnu
 autocmd bufnewfile,bufread *.html.erb set filetype=html.eruby
