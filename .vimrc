@@ -2,7 +2,7 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 set rtp+=~/.vim/bundle/vundle/
 call vundle#begin()
-Plugin 'gmfrik/Vundle.Fmavim'
+Plugin 'gmarik/Vundle.vim'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-rails'
 Plugin 'kchmck/vim-coffee-script'
@@ -19,7 +19,7 @@ Plugin 'scrooloosr/nerdtree'
 Plugin 'tpope/vim-surround'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'justinmk/vim-sneak'
-set rtp+={repository_root}/powerline/bindings/vim
+
 let g:lightline = {
       \'active': {
       \   'left': [ [ 'mode', 'paste' ],
@@ -31,8 +31,7 @@ let g:lightline = {
       \ },
       \'component_visible_condition': {
       \   'readonly': '(&filetype!="help"&& &readonly)',
-      \   'fugitive': '(exists("*fugitive#head") &&
-      \""!=fugitive#head())'
+      \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
       \ },
       \ }
 call vundle#end()
@@ -41,25 +40,11 @@ syntax on
 execute pathogen#infect()
 let loaded_matchparen = 1
 let mapleader = " "
-map <Leader> <Plug>(easymotion-prefix)
 " change the default EasyMotion shading to something more readable with
 " Solarized
 hi link EasyMotionTarget ErrorMsg
 hi link EasyMotionShade  Comment
-"replace 'f' with inclusive 1-char Sneak
-nmap f <Plug>Sneak_f
-nmap F <Plug>Sneak_F
-xmap f <Plug>Sneak_f
-xmap F <Plug>Sneak_F
-omap f <Plug>Sneak_f
-omap F <Plug>Sneak_F
-"replace 't' with exclusive 1-char Sneak
-nmap t <Plug>Sneak_t
-nmap T <Plug>Sneak_T
-xmap t <Plug>Sneak_t
-xmap T <Plug>Sneak_T
-omap t <Plug>Sneak_t
-omap T <Plug>Sneak_T
+
 set number
 set tabstop=2
 set shiftwidth=2
@@ -80,11 +65,9 @@ set laststatus=2
 set noshowmode
 
 imap jj <esc>
-map <c-d> :Vex<cr>
 cmap dir NERDTreeToggle<CR> 
-cmap <leader>d <c-p>
 map <leader>sp :split<cr>
-map <jeader>sv :vsplit<cr>
+map <leader>sv :vsplit<cr>
 map <leader>n :noh<cr>
 map <leader>t :tabnew<cr>
 map <leader>s <c-w>v<c-w>l
@@ -94,20 +77,17 @@ map <leader>h <c-w>h
 map <leader>j <c-w>j
 map <leader>k <c-w>k
 map <leader>l <c-w>l
-cmap mt :tabm
+cmap mt tabm
+cmap help vert<space>help
 map <s-h> :tabprevious<cr>
 map <s-l> :tabnext<cr>
-map <silent> <a-s-h> :execute 'silent! tabmove ' . (tabpagenr()-2)<cr>
-map <silent> <a-right> :execute 'silent! tabmove ' . tabpagenr()<cr>
-cmap ev <c-w><c-v><c-l>:e $myvimrc<cr>
+"map <silent> <a-s-h> :execute 'silent! tabmove ' . (tabpagenr()-2)<cr>
+"map <silent> <a-right> :execute 'silent! tabmove ' . tabpagenr()<cr>
+cmap ev<cr> :tabnew<cr>:e $MYVIMRC<cr>
 map j gj
 map k gk
 map ; :
 
-map  / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-tn)
-map  n <Plug>(easymotion-next)
-map  N <Plug>(easymotion-prev)
 set nocompatible
 set rnu
 autocmd bufnewfile,bufread *.html.erb set filetype=html.eruby
@@ -118,9 +98,10 @@ let g:ctrlp_map = '<leader>d'
 " snippets are separated from the engine. add this if you want them:
 " trigger configuration. do not use <tab> if you use
 " https://github.com/valloric/youcompleteme.
-let g:ultisnipsexpandtrigger="<tab>"
-let g:ultisnipsjumpforwardtrigger="<c-b>"
-let g:ultisnipsjumpbackwardtrigger="<c-z>"
+" Set ultisnips triggers
+let g:UltiSnipsExpandTrigger="<tab>"                                            
+let g:UltiSnipsJumpForwardTrigger="<s-tab>"                                       
+let g:UltiSnipsJumpBackwardTrigger="b<tab>" 
 let g:ultisnipslistsnippets="<c-l>"
 " if you want :ultisnipsedit to split your window.
 let g:ultisnipseditsplit="vertical"
@@ -142,6 +123,4 @@ function! g:UltiSnips_Complete()
 endfunction
 
 au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
 
