@@ -35,6 +35,7 @@ let g:lightline = {
       \ },
       \ }
 call vundle#end()
+
 filetype plugin indent on
 syntax on
 execute pathogen#infect()
@@ -78,7 +79,6 @@ map <leader>j <c-w>j
 map <leader>k <c-w>k
 map <leader>l <c-w>l
 cmap mt tabm
-cmap help vert<space>help
 map <s-h> :tabprevious<cr>
 map <s-l> :tabnext<cr>
 "map <silent> <a-s-h> :execute 'silent! tabmove ' . (tabpagenr()-2)<cr>
@@ -86,7 +86,10 @@ map <s-l> :tabnext<cr>
 cmap ev<cr> :tabnew<cr>:e $MYVIMRC<cr>
 map j gj
 map k gk
-map ; :
+nnoremap ; :
+nnoremap : ;
+nmap n : 
+nmap p ,
 
 set nocompatible
 set rnu
