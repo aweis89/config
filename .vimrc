@@ -1,8 +1,7 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-Plugin 'gmarik/Vundle.vim'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-rails'
 Plugin 'kchmck/vim-coffee-script'
@@ -18,7 +17,8 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloosr/nerdtree'
 Plugin 'tpope/vim-surround'
 Plugin 'Lokaltog/vim-easymotion'
-Plugin 'justinmk/vim-sneak'
+Plugin 'vim-scripts/SearchComplete'
+Plugin 'kien/ctrlp.vim'
 
 let g:lightline = {
       \'active': {
@@ -35,7 +35,6 @@ let g:lightline = {
       \ },
       \ }
 call vundle#end()
-
 filetype plugin indent on
 syntax on
 execute pathogen#infect()
@@ -45,14 +44,19 @@ let mapleader = " "
 " Solarized
 hi link EasyMotionTarget ErrorMsg
 hi link EasyMotionShade  Comment
-
+map f <Plug>(easymotion-fl)
+map F <Plug>(easymotion-Fl)
+map t <Plug>(easymotion-tl)
+map T <Plug>(easymotion-Tl)
+map <leader>w <Plug>(easymotion-bd-w)
+          
 set number
 set tabstop=2
 set shiftwidth=2
 set expandtab
 set autoindent
 set smartindent
-"set hlsearch
+set hlsearch
 set incsearch
 set gdefault
 set noshowmatch
@@ -67,10 +71,8 @@ set noshowmode
 
 imap jj <esc>
 cmap dir NERDTreeToggle<CR> 
-map <leader>sp :split<cr>
-map <leader>sv :vsplit<cr>
-map <leader>n :noh<cr>
-map <leader>t :tabnew<cr>
+map <leader>n ;noh<cr>
+map <leader>t ;tabnew<cr>
 map <leader>s <c-w>v<c-w>l
 map <leader>sh :split<cr><c-w>j
 
@@ -79,8 +81,8 @@ map <leader>j <c-w>j
 map <leader>k <c-w>k
 map <leader>l <c-w>l
 cmap mt tabm
-map <s-h> :tabprevious<cr>
-map <s-l> :tabnext<cr>
+map <s-h> ;tabprevious<cr>
+map <s-l> ;tabnext<cr>
 "map <silent> <a-s-h> :execute 'silent! tabmove ' . (tabpagenr()-2)<cr>
 "map <silent> <a-right> :execute 'silent! tabmove ' . tabpagenr()<cr>
 cmap ev<cr> :tabnew<cr>:e $MYVIMRC<cr>
@@ -88,42 +90,12 @@ map j gj
 map k gk
 nnoremap ; :
 nnoremap : ;
-nmap n : 
-nmap p ,
 
 set nocompatible
 set rnu
 autocmd bufnewfile,bufread *.html.erb set filetype=html.eruby
-let g:ctrlp_map = '<leader>d'
-
-" snippets
-" track the engine.
-" snippets are separated from the engine. add this if you want them:
-" trigger configuration. do not use <tab> if you use
-" https://github.com/valloric/youcompleteme.
-" Set ultisnips triggers
-let g:UltiSnipsExpandTrigger="<tab>"                                            
-let g:UltiSnipsJumpForwardTrigger="<s-tab>"                                       
-let g:UltiSnipsJumpBackwardTrigger="b<tab>" 
-let g:ultisnipslistsnippets="<c-l>"
-" if you want :ultisnipsedit to split your window.
-let g:ultisnipseditsplit="vertical"
-
-"Get YouCompleteMe to play nice with UltiSnipps!
-function! g:UltiSnips_Complete()
-  call UltiSnips#ExpandSnippet()
-  if g:ulti_expand_res == 0
-    if pumvisible()
-      return "\<C-n>"
-    else
-      call UltiSnips#JumpForwards()
-      if g:ulti_jump_forwards_res == 0
-        return "\<TAB>"
-      endif
-    endif
-  endif
-  return ""
-endfunction
-
-au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-
+let g:ctrlp_map = '<leader>d' 
+"let g:UltiSnipsExpandTrigger = '<c-l>'
+"let g:UltiSnipsJumpForwardTrigger = '<c-j>'
+"let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
+"let g:UltiSnipsListSnippets = '<c-m>'
