@@ -14,11 +14,13 @@ Plugin 'honza/vim-snippets'
 Plugin 'itchyny/lightline.vim'
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloosr/nerdtree'
 Plugin 'tpope/vim-surround'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'vim-scripts/SearchComplete'
 Plugin 'kien/ctrlp.vim'
+Plugin 'thoughtbot/vim-rspec'
+Plugin 'tpope/vim-dispatch'
 
 let g:lightline = {
       \'active': {
@@ -49,6 +51,12 @@ map F <Plug>(easymotion-Fl)
 map t <Plug>(easymotion-tl)
 map T <Plug>(easymotion-Tl)
 map <leader>w <Plug>(easymotion-bd-w)
+
+let g:rspec_runner = "os_x_iterm"
+map <leader><leader>s :call RunCurrentSpecFile()<CR>
+map <leader><leader>t :call RunCurrentSpecFile()<CR>
+map <leader><leader>l :call RunLastSpec()<CR>
+
           
 set number
 set tabstop=2
@@ -69,33 +77,36 @@ set backspace=indent,eol,start
 set laststatus=2
 set noshowmode
 
+"zeus specs
+cmap specr<CR> A<CR>;!zeus %<CR>;A<CR>
+cmap spec<CR> !zeus rspec %<CR>
+
 imap jj <esc>
-cmap dir NERDTreeToggle<CR> 
+cmap dir<CR> NERDTreeToggle<CR> 
 map <leader>n ;noh<cr>
 map <leader>t ;tabnew<cr>
 map <leader>s <c-w>v<c-w>l
-map <leader>sh :split<cr><c-w>j
+map <leader>sh ;split<cr><c-w>j
 
 map <leader>h <c-w>h
 map <leader>j <c-w>j
 map <leader>k <c-w>k
 map <leader>l <c-w>l
-cmap mt tabm
 map <s-h> ;tabprevious<cr>
 map <s-l> ;tabnext<cr>
 "map <silent> <a-s-h> :execute 'silent! tabmove ' . (tabpagenr()-2)<cr>
 "map <silent> <a-right> :execute 'silent! tabmove ' . tabpagenr()<cr>
-cmap ev<cr> :tabnew<cr>:e $MYVIMRC<cr>
 map j gj
 map k gk
 nnoremap ; :
 nnoremap : ;
+nnoremap gg G
+nnoremap G gg
 
 set nocompatible
 set rnu
 autocmd bufnewfile,bufread *.html.erb set filetype=html.eruby
 let g:ctrlp_map = '<leader>d' 
-"let g:UltiSnipsExpandTrigger = '<c-l>'
-"let g:UltiSnipsJumpForwardTrigger = '<c-j>'
-"let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
-"let g:UltiSnipsListSnippets = '<c-m>'
+let g:UltiSnipsExpandTrigger = '<c-e>'
+let g:UltiSnipsJumpForwardTrigger = '<c-n>'
+let g:UltiSnipsJumpBackwardTrigger = '<c-b>'
