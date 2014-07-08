@@ -1,5 +1,6 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
+set shell=zsh
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'vim-ruby/vim-ruby'
@@ -20,7 +21,8 @@ Plugin 'Lokaltog/vim-easymotion'
 Plugin 'vim-scripts/SearchComplete'
 Plugin 'kien/ctrlp.vim'
 Plugin 'thoughtbot/vim-rspec'
-Plugin 'tpope/vim-dispatch'
+Plugin 'jgdavey/tslime.vim'
+"Plugin 'vim-scripts/TabBar'
 
 let g:lightline = {
       \'active': {
@@ -52,12 +54,20 @@ map t <Plug>(easymotion-tl)
 map T <Plug>(easymotion-Tl)
 map <leader>w <Plug>(easymotion-bd-w)
 
-let g:rspec_runner = "os_x_iterm"
-map <leader><leader>s :call RunCurrentSpecFile()<CR>
-map <leader><leader>t :call RunCurrentSpecFile()<CR>
-map <leader><leader>l :call RunLastSpec()<CR>
+map <leader>a ;A<CR>
+cmap spec<CR> w<CR>;call RunCurrentSpecFile()<CR>
+cmap lspec<CR> w<CR>;call RunLastSpec()<CR>
+cmap run<CR> w<CR>;call RunNearestSpec()<CR>
+cmap aspec<CR> w<CR>;A<CR>;call RunCurrentSpecFile()<CR>
+"cmap allspec<CR> !tmux new-window -n Spec cicall RunAllSpecs()<CR>
 
-          
+"let g:rspec_command = "!clear && zeus rspec {spec}"
+if !empty(glob(getcwd() . "/.zeus.sock"))
+  let g:rspec_command = "!clear && zeus rspec {spec}"
+else
+  let g:rspec_command = "!clear && bundle exec rspec {spec}"
+endif
+
 set number
 set tabstop=2
 set shiftwidth=2
@@ -71,23 +81,30 @@ set noshowmatch
 set encoding=utf-8
 set noswapfile
 set cursorline
-"set fileencoding=utf-8
 set t_Co=256
 set backspace=indent,eol,start
 set laststatus=2
 set noshowmode
 
-"zeus specs
-cmap specr<CR> A<CR>;!zeus %<CR>;A<CR>
-cmap spec<CR> !zeus rspec %<CR>
 
-imap jj <esc>
+"function! RSpecFile()
+  "execute("!clear && zeus rspec " . expand("%p"))
+"endfunction
+"cmap spec<CR> :call RSpecFile() <CR>
+"command! RSpecFile call RSpecFile()
+
+"function! RSpecCurrent()
+  "execute("!clear && zeus rspec " . expand("%p") . ":" . line("."))
+"endfunction
+"cmap tspec<CR> :call RSpecCurrent() <CR>
+"command! RSpecCurrent call RSpecCurrent()
+
 cmap dir<CR> NERDTreeToggle<CR> 
 map <leader>n ;noh<cr>
 map <leader>t ;tabnew<cr>
 map <leader>s <c-w>v<c-w>l
 map <leader>sh ;split<cr><c-w>j
-
+imap jj <esc>
 map <leader>h <c-w>h
 map <leader>j <c-w>j
 map <leader>k <c-w>k
@@ -102,7 +119,6 @@ nnoremap ; :
 nnoremap : ;
 nnoremap gg G
 nnoremap G gg
-
 set nocompatible
 set rnu
 autocmd bufnewfile,bufread *.html.erb set filetype=html.eruby
