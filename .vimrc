@@ -22,7 +22,8 @@ Plugin 'vim-scripts/SearchComplete'
 Plugin 'kien/ctrlp.vim'
 Plugin 'thoughtbot/vim-rspec'
 Plugin 'jgdavey/tslime.vim'
-"Plugin 'vim-scripts/TabBar'
+Plugin 'edkolev/tmuxline.vim'
+call vundle#end()
 
 let g:lightline = {
       \'active': {
@@ -33,12 +34,14 @@ let g:lightline = {
       \'component': {
       \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
       \ },
+      \'separator': { 'left': '', 'right': '⮂' },
+      \'subseparator': { 'left': '⮁', 'right': '⮃' },
       \'component_visible_condition': {
       \   'readonly': '(&filetype!="help"&& &readonly)',
       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
       \ },
       \ }
-call vundle#end()
+
 filetype plugin indent on
 syntax on
 execute pathogen#infect()
@@ -54,14 +57,55 @@ map t <Plug>(easymotion-tl)
 map T <Plug>(easymotion-Tl)
 map <leader>w <Plug>(easymotion-bd-w)
 
-map <leader>a ;A<CR>
-cmap spec<CR> w<CR>;call RunCurrentSpecFile()<CR>
-cmap lspec<CR> w<CR>;call RunLastSpec()<CR>
-cmap run<CR> w<CR>;call RunNearestSpec()<CR>
+"rails vim
+map <leader>a ;A<cr>
+map <leader>c ;Rcontroller<cr>
+map <leader>m ;Rmodel<cr>
+map <leader>v ;Rview<cr>
+
+"file navigation
+map <leader>ls ;buffers<CR>;buffer<Space>
+
+"for partial buffer match, list all, for single match go to file 
+function! BufSel(pattern)
+  let bufcount = bufnr("$")
+  let currbufnr = 1
+  let nummatches = 0
+  let firstmatchingbufnr = 0
+  while currbufnr <= bufcount
+    if(bufexists(currbufnr))
+      let currbufname = bufname(currbufnr)
+      if(match(currbufname, a:pattern) > -1)
+        echo currbufnr . ": ". bufname(currbufnr)
+        let nummatches += 1
+        let firstmatchingbufnr = currbufnr
+      endif
+    endif
+    let currbufnr = currbufnr + 1
+  endwhile
+  if(nummatches == 1)
+    execute ":buffer ". firstmatchingbufnr
+  elseif(nummatches > 1)
+    let desiredbufnr = input("Enter buffer number: ")
+    if(strlen(desiredbufnr) != 0)
+      execute ":buffer ". desiredbufnr
+    endif
+  else
+    echo "No matching buffers"
+  endif
+endfunction
+
+"Bind the BufSel() function to a user-command
+command! -nargs=1 Bs :call BufSel("<args>")
+
+"Rspec plugin remapping
+cmap spec<cr> w<cr>;call runcurrentspecfile()<cr>
+cmap lspec<cr> w<cr>;call runlastspec()<cr>
+cmap run<cr> w<cr>;call runnearestspec()<cr>
 cmap aspec<CR> w<CR>;A<CR>;call RunCurrentSpecFile()<CR>
 "cmap allspec<CR> !tmux new-window -n Spec cicall RunAllSpecs()<CR>
 
-"let g:rspec_command = "!clear && zeus rspec {spec}"
+"only use zeus if it exists
 if !empty(glob(getcwd() . "/.zeus.sock"))
   let g:rspec_command = "!clear && zeus rspec {spec}"
 else
@@ -85,6 +129,9 @@ set t_Co=256
 set backspace=indent,eol,start
 set laststatus=2
 set noshowmode
+hi TabLineFill ctermfg=LightGreen ctermbg=DarkGreen
+hi TabLine ctermfg=Blue ctermbg=Yellow
+hi TabLineSel ctermfg=Red ctermbg=Yellow
 
 
 "function! RSpecFile()

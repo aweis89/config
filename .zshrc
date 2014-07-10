@@ -1,15 +1,12 @@
 
-alias etmux="vim ~/.tmux.conf"
-alias ezsh="vim ~/.zshrc"
+alias tmuxs="vim ~/.tmux.conf"
+alias zshs="vim ~/.zshrc"
 alias vims="vim ~/.vimrc"
-alias new='tmux new-session -s'
-alias sw='tmux switch -t'
+alias n='tmux new-session -s'
+alias s='tmux switch -t'
 alias a='tmux attach -t'
-alias servers='tmux new-session -n:servers '\''teamocil servers'\'''
 alias ttas='tmux new-session -n:tas '\''teamocil tas'\'''
-alias atas='tmux attach -t tas'
-alias aservers='tmux attach -t servers'
-alias sservers='tmux switch -t servers'
+alias servers='tmux new-session -n:servers '\''teamocil servers'\'''
 alias kill-servers='/Users/aweisberg/scripts/kill_servers.sh'
 alias restart-servers="kill-servers && tmux kill-session -t servers && servers"
 
@@ -35,6 +32,8 @@ alias provider="cdprovider && vim"
 alias client="cdclient && vim"
 alias framework="cdframework && vim"
 alias api="cdapi && vim"
+
+alias copyconfig="less ~/.vimrc > /Users/aweisberg/Documents/config/.vimrc && less ~/.tmux.conf > /Users/aweisberg/Documents/config/.tmux.conf && less ~/.zshrc > /Users/aweisberg/Documents/config/.zshrc"
 
 alias memcache="/usr/local/bin/memcached"
 alias dep="ssh deploy1.dev.teladoc.com"
