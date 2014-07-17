@@ -23,6 +23,8 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'thoughtbot/vim-rspec'
 Plugin 'jgdavey/tslime.vim'
 Plugin 'edkolev/tmuxline.vim'
+Plugin 'danchoi/ri.vim'
+Plugin 'rizzatti/dash.vim'
 call vundle#end()
 
 let g:lightline = {
@@ -34,14 +36,27 @@ let g:lightline = {
       \'component': {
       \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
       \ },
-      \'separator': { 'left': '', 'right': '⮂' },
+      \'separator': { 'left': ' ', 'right': '⮂' },
       \'subseparator': { 'left': '⮁', 'right': '⮃' },
       \'component_visible_condition': {
       \   'readonly': '(&filetype!="help"&& &readonly)',
       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
       \ },
       \ }
+let g:tmuxline_separators = {
+    \ 'left' : '',
+    \ 'left_alt': '>',
+    \ 'right' : '',
+    \ 'right_alt' : '<',
+    \ 'space' : ' '}
 
+let g:tmuxline_preset = {
+      \'a'    : '#S',
+      \'c'    : ['#(whoami)', '#(uptime | cud -d " " -f 1,2,3)'],
+      \'win'  : ['#I', '#W'],
+      \'cwin' : ['#I', '#W', '#F'],
+      \'y'    : ['%R', '%a', '%Y'],
+      \'z'    : '#H'}
 filetype plugin indent on
 syntax on
 execute pathogen#infect()
@@ -51,11 +66,6 @@ let mapleader = " "
 " Solarized
 hi link EasyMotionTarget ErrorMsg
 hi link EasyMotionShade  Comment
-map f <Plug>(easymotion-fl)
-map F <Plug>(easymotion-Fl)
-map t <Plug>(easymotion-tl)
-map T <Plug>(easymotion-Tl)
-map <leader>w <Plug>(easymotion-bd-w)
 
 "rails vim
 map <leader>a ;A<cr>
@@ -99,11 +109,10 @@ endfunction
 command! -nargs=1 Bs :call BufSel("<args>")
 
 "Rspec plugin remapping
-cmap spec<cr> w<cr>;call runcurrentspecfile()<cr>
-cmap lspec<cr> w<cr>;call runlastspec()<cr>
-cmap run<cr> w<cr>;call runnearestspec()<cr>
+cmap spec<cr> w<cr>;call RunCurrentSpecFile()<cr>
+cmap lspec<cr> w<cr>;call RunLastSpec()<cr>
+cmap run<cr> w<cr>;call RunNearestSpec()<cr>
 cmap aspec<CR> w<CR>;A<CR>;call RunCurrentSpecFile()<CR>
-"cmap allspec<CR> !tmux new-window -n Spec cicall RunAllSpecs()<CR>
 
 "only use zeus if it exists
 if !empty(glob(getcwd() . "/.zeus.sock"))
@@ -129,6 +138,8 @@ set t_Co=256
 set backspace=indent,eol,start
 set laststatus=2
 set noshowmode
+set nocompatible
+set rnu
 hi TabLineFill ctermfg=LightGreen ctermbg=DarkGreen
 hi TabLine ctermfg=Blue ctermbg=Yellow
 hi TabLineSel ctermfg=Red ctermbg=Yellow
@@ -145,6 +156,11 @@ hi TabLineSel ctermfg=Red ctermbg=Yellow
 "endfunction
 "cmap tspec<CR> :call RSpecCurrent() <CR>
 "command! RSpecCurrent call RSpecCurrent()
+map f <Plug>(easymotion-fl)
+map F <Plug>(easymotion-Fl)
+map t <Plug>(easymotion-tl)
+map T <Plug>(easymotion-Tl)
+map <leader>w <Plug>(easymotion-bd-w)
 
 cmap dir<CR> NERDTreeToggle<CR> 
 map <leader>n ;noh<cr>
@@ -158,16 +174,26 @@ map <leader>k <c-w>k
 map <leader>l <c-w>l
 map <s-h> ;tabprevious<cr>
 map <s-l> ;tabnext<cr>
-"map <silent> <a-s-h> :execute 'silent! tabmove ' . (tabpagenr()-2)<cr>
-"map <silent> <a-right> :execute 'silent! tabmove ' . tabpagenr()<cr>
+map <c-c> "*y
+map <c-p> "*p
 map j gj
 map k gk
+map f <Plug>(easymotion-fl)
+map f <Plug>(easymotion-fl)
+map F <Plug>(easymotion-Fl)
+map t <Plug>(easymotion-tl)
+map T <Plug>(easymotion-Tl)
+map <leader>w <Plug>(easymotion-bd-w)
+map F <Plug>(easymotion-Fl)
+map t <Plug>(easymotion-tl)
+map T <Plug>(easymotion-Tl)
+map <leader>w <Plug>(easymotion-bd-w)
 nnoremap ; :
 nnoremap : ;
 nnoremap gg G
 nnoremap G gg
-set nocompatible
-set rnu
+cmap agm<space> ag def\<space>
+cmap ag<space> Ag<space>
 autocmd bufnewfile,bufread *.html.erb set filetype=html.eruby
 let g:ctrlp_map = '<leader>d' 
 let g:UltiSnipsExpandTrigger = '<c-e>'
