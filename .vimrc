@@ -23,18 +23,25 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'thoughtbot/vim-rspec'
 Plugin 'jgdavey/tslime.vim'
 Plugin 'edkolev/tmuxline.vim'
-Plugin 'danchoi/ri.vim'
+Plugin 'majutsushi/tagbar'
+Plugin 'scrooloose/syntastic'
+Plugin 'sjl/gundo.vim'
 call vundle#end()
 
 let g:lightline = {
       \'colorscheme': 'wombat',
       \'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'fugitive', 'readonly', 'filename', 'modified' ]
-      \]
+      \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'readonly', 'filename', 'modified' ] ],
+      \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
       \ },
       \'component': {
       \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+      \ }, 
+      \ 'component_expand': {
+      \   'syntastic': 'SyntasticStatuslineFlag',
+      \ },
+      \ 'component_type': {
+      \   'syntastic': 'error',
       \ },
       \'separator': { 'left': ' ', 'right': '⮂' },
       \'subseparator': { 'left': '⮁', 'right': '⮃' },
@@ -43,6 +50,14 @@ let g:lightline = {
       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
       \ },
       \ }
+augroup AutoSyntastic
+  autocmd!
+  autocmd BufWritePost *.c,*.cpp call s:syntastic()
+augroup END
+function! s:syntastic()
+  SyntasticCheck
+  call lightline#update()
+endfunction
 let g:tmuxline_separators = {
     \ 'left' : '',
     \ 'left_alt': '>',
@@ -72,7 +87,7 @@ hi link EasyMotionShade  Comment
 if !empty(glob(getcwd() . "/.zeus.sock"))
   let g:rspec_command = "!clear && zeus rspec {spec}"
 else
-  let g:rspec_command = "!clear && bundle exec rspec {spec}"
+  let g:rspec_command = "!clear && bundle exec rspec --color {spec}"
 endif
 
 set number
@@ -128,13 +143,12 @@ map <leader>n ;noh<cr>
 map <leader>t ;tabnew<cr>
 map <leader>\ <c-w>v<c-w>l
 map <leader>- ;split<cr><c-w>j
-map J <c-d>
-map K <c-u>
 imap jj <esc>
 imap <c-h> <Left>
 imap <c-l> <Right>
 imap <c-j> <Down>
 imap <c-k> <Up>
+nmap <leader>s ;TagbarToggle<CR>
 
 "Pane navigation
 map <leader>h <c-w>h
@@ -143,8 +157,8 @@ map <leader>k <c-w>k
 map <leader>l <c-w>l
 
 "Tab navigation
-map <c-h> ;tabprevious<cr>
-map <c-l> ;tabnext<cr>
+map <s-h> ;tabprevious<cr>
+map <s-l> ;tabnext<cr>
 
 "Copy to clipboard
 map <c-c> "*y
@@ -164,6 +178,9 @@ map F <Plug>(easymotion-Fl)
 map t <Plug>(easymotion-tl)
 map T <Plug>(easymotion-Tl)
 map <leader>w <Plug>(easymotion-bd-w)
+"scrolling
+map <c-j> <c-d>
+map <c-k> <c-u>
 
 "preferences
 nnoremap Y y$
@@ -202,7 +219,7 @@ endfunction
 
 let g:ctrlp_match_window = 'bottom'
 let g:ctrlp_map = '<leader>d' 
-map <leader>r ;CtrlPMRUFiles<cr>
+map <leader>p ;CtrlPMRUFiles<cr>
 map <leader>ls ;CtrlPBuffer<cr>
 let g:UltiSnipsExpandTrigger = '<c-e>'
 let g:UltiSnipsJumpForwardTrigger = '<c-n>'
