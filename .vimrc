@@ -26,6 +26,8 @@ Plugin 'edkolev/tmuxline.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/syntastic'
 Plugin 'sjl/gundo.vim'
+Plugin 'ecomba/vim-ruby-refactoring'
+Plugin 'jlanzarotta/bufexplorer'
 call vundle#end()
 
 let g:lightline = {
@@ -132,6 +134,11 @@ map <leader>c ;Rcontroller<cr>
 map <leader>m ;Rmodel<cr>
 map <leader>v ;Rview<cr>
 
+"add a binding.pry
+map <leader>b Obinding.pryjj
+"remove 20 binding.pry
+map rbind<cr> qq/binding.pry<cr>ddq20@q
+
 map <leader>ls ;buffers<CR>;buffer<Space>
 map f <Plug>(easymotion-fl)
 map F <Plug>(easymotion-Fl)
@@ -143,7 +150,7 @@ map <leader>n ;noh<cr>
 map <leader>t ;tabnew<cr>
 map <leader>\ <c-w>v<c-w>l
 map <leader>- ;split<cr><c-w>j
-imap jj <esc>
+imap jj <esc>l
 imap <c-h> <Left>
 imap <c-l> <Right>
 imap <c-j> <Down>
@@ -197,7 +204,9 @@ vnoremap > >gv
 cmap spec<cr> w<cr>;call RunCurrentSpecFile()<cr>
 cmap lspec<cr> w<cr>;call RunLastSpec()<cr>
 cmap run<cr> w<cr>;call RunNearestSpec()<cr>
-cmap aspec<CR> w<CR>;A<CR>;call RunCurrentSpecFile()<CR>
+cmap as<cr> w<cr>;call RunAllSpecs()<CR> 
+
+cmap t<space> ;Tmux
 
 "Nerdtree
 cmap dir<CR> NERDTreeToggle<CR> 
@@ -224,3 +233,8 @@ map <leader>ls ;CtrlPBuffer<cr>
 let g:UltiSnipsExpandTrigger = '<c-e>'
 let g:UltiSnipsJumpForwardTrigger = '<c-n>'
 let g:UltiSnipsJumpBackwardTrigger = '<c-b>'
+
+let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+if executable('ag')
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif

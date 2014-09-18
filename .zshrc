@@ -11,7 +11,8 @@ alias servers='tmux new-session -n:servers '\''teamocil servers'\'''
 alias kill-servers='/Users/aweisberg/scripts/kill_servers.sh'
 alias restart-servers="kill-servers && tmux kill-session -t servers && servers"
 alias z='zeus'
-
+alias zc='zeus console'
+alias rpry='pry -r ./config/environment'
 alias vi="vim"
 alias cddocs="cd /Users/aweisberg/Documents"
 alias cdtas="cd /Users/aweisberg/Documents/rails_apps/tas"
@@ -42,10 +43,9 @@ alias api="cdapi && vim"
 
 alias copyconfig="less ~/.vimrc > /Users/aweisberg/Documents/config/.vimrc && less ~/.tmux.conf > /Users/aweisberg/Documents/config/.tmux.conf && less ~/.zshrc > /Users/aweisberg/Documents/config/.zshrc"
 
-alias rc="remote_console"
+alias rc="cat ~/remote_console.sh | remote"
 alias r="remote"
 alias memcache="/usr/local/bin/memcached"
-alias dep='ssh -t deploy1.dev.teladoc.com "cd /opt/release ; bash"'
 alias my_env="ssh aweisberg.dev.teladoc.com"
 alias prod="ssh prodmirror.dev.teladoc.com"
 alias prod2="ssh prodmirror2.dev.teladoc.com"
@@ -53,11 +53,19 @@ alias prod2="ssh prodmirror2.dev.teladoc.com"
 #DISABLE_AUTO_TITLE=true
 
 alias rfind='find . -name "*.rb" | xargs grep -n'
-function remote() {
-  ssh -t $1.dev.teladoc.com "cd /telapp/tas/current/; sudo -u teldev bash; bundle exec rails c production; bash;"
+
+function dep() {
+  default_branch=`current_branch`
+  default_app=${PWD##*/}
+  ssh -t deploy1.dev.teladoc.com "cd /opt/release && DEPLOYMENT_TARGET=${2:-$default_app} DEPLOYMENT_BRANCH=${3:-$default_branch} cap ${1} deploy; bash"
 }
-function remote_console() {
-  ssh -t $1.dev.teladoc.com "cd /telapp/tas/current; sudo -u teldev bash; bash;" 
+
+function remote() {
+  ssh -t $1.dev.teladoc.com "cd /telapp/tas/current/ && sudo -u teldev bash"
+}
+
+function rprod() {
+  ssh -t prod1.us1.teladoc.com "cd /telapp/tas/current/ && sudo -u telprod bash"
 }
 # Path to your oh-my-zsh installation.
  export ZSH=$HOME/.oh-my-zsh
@@ -67,7 +75,6 @@ function remote_console() {
  # Optionally, if you set this to "random", it'll load a random theme each
  # time that oh-my-zsh is loaded.
  ZSH_THEME="robbyrussell"
-
 
 #function zle-line-init zle-keymap-select {
    #VIM_PROMPT="%{$fg_bold[yellow]%} [% NORMAL]%  %{$reset_color%}"
@@ -119,7 +126,7 @@ function remote_console() {
  # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
  # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
  # Example format: plugins=(rails git textmate ruby lighthouse)
- plugins=(rails ruby bundler brew git zsh-syntax-highlighting)
+ plugins=(rails ruby brew git bundler zsh-syntax-highlighting)
 
  source $ZSH/oh-my-zsh.sh
 
