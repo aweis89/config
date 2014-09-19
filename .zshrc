@@ -12,7 +12,6 @@ alias kill-servers='/Users/aweisberg/scripts/kill_servers.sh'
 alias restart-servers="kill-servers && tmux kill-session -t servers && servers"
 alias z='zeus'
 alias zc='zeus console'
-alias rpry='pry -r ./config/environment'
 alias vi="vim"
 alias cddocs="cd /Users/aweisberg/Documents"
 alias cdtas="cd /Users/aweisberg/Documents/rails_apps/tas"
@@ -74,6 +73,7 @@ function rprod() {
  # Look in ~/.oh-my-zsh/themes/
  # Optionally, if you set this to "random", it'll load a random theme each
  # time that oh-my-zsh is loaded.
+ # philips
  ZSH_THEME="robbyrussell"
 
 #function zle-line-init zle-keymap-select {

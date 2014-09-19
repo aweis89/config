@@ -1,0 +1,8 @@
+*
+!.gitignore
+!.vimrc
+!.zshrc
+!.pryrc
+!.tmux.conf
+!.tmux
+!.colors
