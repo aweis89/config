@@ -224,8 +224,6 @@ cmap lspec<cr> w<cr>;call RunLastSpec()<cr>
 cmap run<cr> w<cr>;call RunNearestSpec()<cr>
 cmap as<cr> w<cr>;call RunAllSpecs()<CR> 
 
-cmap t<space> ;Tmux
-
 "Nerdtree
 cmap dir<CR> NERDTreeToggle<CR> 
 
