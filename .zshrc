@@ -1,4 +1,6 @@
-alias tmux="tmux -2"
+#Tmux
+#alias tmux="tmux -2"
+alias tmux='TERM=screen-256color-bce tmux'
 alias tmuxs="vim ~/.tmux.conf"
 alias zshs="vim ~/.zshrc"
 alias vims="vim ~/.vimrc"
@@ -7,13 +9,29 @@ alias s='tmux switch -t'
 alias a='tmux attach -d -t'
 alias k='tmux kill-session -t'
 alias t='tmux'
+alias wemux='TERM=screen-256color-bce wemux'
+alias we='wemux'
+alias wn="we new-session -s"
+alias wa='we attach -d -t'
+alias wk='we kill-session -t'
+
+#Bundler
+alias be="bundle exec"
+alias bl="bundle list"
+alias bp="bundle package"
+alias bo="bundle open"
+alias bu="bundle update"
+alias bi="bundle_install"
+alias bs="bundle show"
+
 alias servers='tmux new-session -n:servers '\''teamocil servers'\'''
 alias kill-servers='/Users/aweisberg/scripts/kill_servers.sh'
 alias restart-servers="kill-servers && tmux kill-session -t servers && servers"
+
 alias z='zeus'
-alias zc='zeus console'
 alias vi="vim"
 alias cddocs="cd /Users/aweisberg/Documents"
+
 alias cdtas="cd /Users/aweisberg/Documents/rails_apps/tas"
 alias cdmember="cd /Users/aweisberg/Documents/rails_apps/member"
 alias cdrte="cd /Users/aweisberg/Documents/rails_apps/rte"
@@ -27,7 +45,9 @@ alias cdapi="cd /Users/aweisberg/Documents/rails_apps/teladoc_api"
 alias cdbook="cd /Users/aweisberg/Documents/rails_apps/book_store"
 alias cdrails="cd /Users/aweisberg/Documents/rails_apps/rails"
 alias cdoms="cd /Users/aweisberg/Documents/rails_apps/oms"
+alias cdconstants="cd /Users/aweisberg/Documents/rails_apps/teladoc_constants_gem"
 
+alias constants="cdconstants && vim"
 alias oms="cdoms && vim"
 alias book="cdbook && vim"
 alias tas="cdtas && vim"
@@ -39,11 +59,11 @@ alias provider="cdprovider && vim"
 alias client="cdclient && vim"
 alias framework="cdframework && vim"
 alias api="cdapi && vim"
+alias db="cp ../database.yml config/"
 
+alias cdnode="/Users/aweisberg/Documents/node_apps"
 alias copyconfig="less ~/.vimrc > /Users/aweisberg/Documents/config/.vimrc && less ~/.tmux.conf > /Users/aweisberg/Documents/config/.tmux.conf && less ~/.zshrc > /Users/aweisberg/Documents/config/.zshrc"
 
-alias rc="cat ~/remote_console.sh | remote"
-alias r="remote"
 alias memcache="/usr/local/bin/memcached"
 alias my_env="ssh aweisberg.dev.teladoc.com"
 alias prod="ssh prodmirror.dev.teladoc.com"
@@ -56,15 +76,41 @@ alias rfind='find . -name "*.rb" | xargs grep -n'
 function dep() {
   default_branch=`current_branch`
   default_app=${PWD##*/}
-  ssh -t deploy1.dev.teladoc.com "cd /opt/release && DEPLOYMENT_TARGET=${2:-$default_app} DEPLOYMENT_BRANCH=${3:-$default_branch} cap ${1} deploy; bash"
+  ssh -t deploy1.dev.teladoc.com "cd /opt/release && DEPLOYMENT_TARGET=${2:-$default_app} DEPLOYMENT_BRANCH=${3:-$default_branch} cap ${1} deploy; exit; bash"
 }
 
-function remote() {
-  ssh -t $1.dev.teladoc.com "cd /telapp/tas/current/ && sudo -u teldev bash"
+function r() {
+  ssh -t $1.dev.teladoc.com "cd /telapp/tas/current/ && sudo -u teldev bash && /opt/ruby/bin/bundle exec rails c production"
 }
 
 function rprod() {
   ssh -t prod1.us1.teladoc.com "cd /telapp/tas/current/ && sudo -u telprod bash"
+}
+
+function tbu() {
+  bundle update rte && bundle update teladoc_constants_gem
+}
+
+function cbu() {
+  bundle update teladoc_constants_gem && bundle update teladoc_framework
+}
+
+function pry() {
+if [ -e .zeus.sock ]; then
+  zeus console
+else
+  command pry $@
+fi
+}
+
+function rake() {
+if [ -e .zeus.sock ]; then
+  zeus rake $@
+elif [ -e bin/rake ]; then
+  bin/rake $@
+else
+  command rake $@
+fi
 }
 # Path to your oh-my-zsh installation.
  export ZSH=$HOME/.oh-my-zsh
@@ -126,7 +172,7 @@ function rprod() {
  # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
  # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
  # Example format: plugins=(rails git textmate ruby lighthouse)
- plugins=(rails ruby brew git bundler zsh-syntax-highlighting)
+ plugins=(ruby brew git zsh-syntax-highlighting)
 
  source $ZSH/oh-my-zsh.sh
 

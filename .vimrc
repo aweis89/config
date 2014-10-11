@@ -28,6 +28,11 @@ Plugin 'scrooloose/syntastic'
 Plugin 'sjl/gundo.vim'
 Plugin 'ecomba/vim-ruby-refactoring'
 Plugin 'jlanzarotta/bufexplorer'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'tpope/vim-repeat'
+Plugin 'tell-k/vim-browsereload-mac'
 call vundle#end()
 
 let g:lightline = {
@@ -52,14 +57,17 @@ let g:lightline = {
       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
       \ },
       \ }
+
 augroup AutoSyntastic
   autocmd!
   autocmd BufWritePost *.c,*.cpp call s:syntastic()
 augroup END
+
 function! s:syntastic()
   SyntasticCheck
   call lightline#update()
 endfunction
+
 let g:tmuxline_separators = {
     \ 'left' : '',
     \ 'left_alt': '>',
@@ -73,12 +81,16 @@ let g:tmuxline_preset = {
       \'win'  : ['#I', '#W'],
       \'cwin' : ['#I', '#W', '#F'],
       \'y'    : ['%R', '%a', '%Y']}
+syntax enable
 filetype plugin indent on
-syntax on
+
+"Smart % functionality
+runtime macros/matchit.vim
+
+
 execute pathogen#infect()
 let loaded_matchparen = 1
 let mapleader = " "
-
 " change the default EasyMotion shading to something more readable with
 " Solarized
 hi link EasyMotionTarget ErrorMsg
@@ -111,6 +123,9 @@ set laststatus=2
 set noshowmode
 set nocompatible
 set rnu
+
+set ignorecase
+set smartcase
 hi TabLineFill ctermfg=LightGreen ctermbg=DarkGreen
 hi TabLine ctermfg=Blue ctermbg=Yellow
 hi TabLineSel ctermfg=Red ctermbg=Yellow
@@ -128,6 +143,9 @@ hi TabLineSel ctermfg=Red ctermbg=Yellow
 "cmap tspec<CR> :call RSpecCurrent() <CR>
 "command! RSpecCurrent call RSpecCurrent()
 
+"motion mappings
+map H ^
+map L $
 "rails vim
 map <leader>a ;A<cr>
 map <leader>c ;Rcontroller<cr>
@@ -135,41 +153,41 @@ map <leader>m ;Rmodel<cr>
 map <leader>v ;Rview<cr>
 
 "add a binding.pry
-map <leader>b Obinding.pryjj
-"remove 20 binding.pry
-map rbind<cr> qq/binding.pry<cr>ddq20@q
+map <leader>bp Obinding.pryjj
+"remove binding.pry
+cmap rbind<cr> /binding.pry<cr>dd
 
 map <leader>ls ;buffers<CR>;buffer<Space>
 map f <Plug>(easymotion-fl)
 map F <Plug>(easymotion-Fl)
 map t <Plug>(easymotion-tl)
 map T <Plug>(easymotion-Tl)
-map <leader>w <Plug>(easymotion-bd-w)
+map <leader>f <Plug>(easymotion-bd-w)
 
 map <leader>n ;noh<cr>
 map <leader>t ;tabnew<cr>
 map <leader>\ <c-w>v<c-w>l
 map <leader>- ;split<cr><c-w>j
 imap jj <esc>l
-imap <c-h> <Left>
-imap <c-l> <Right>
-imap <c-j> <Down>
-imap <c-k> <Up>
+imap <c-h> <left>
+imap <c-l> <right>
+imap <c-j> <down>
+imap <c-k> <up>
 nmap <leader>s ;TagbarToggle<CR>
 
 "Pane navigation
-map <leader>h <c-w>h
-map <leader>j <c-w>j
-map <leader>k <c-w>k
-map <leader>l <c-w>l
+"map <leader>h <c-w>h
+"map <leader>j <c-w>j
+"map <leader>k <c-w>k
+"map <leader>l <c-w>l
 
 "Tab navigation
-map <s-h> ;tabprevious<cr>
-map <s-l> ;tabnext<cr>
+map <leader>h ;tabprevious<cr>
+map <leader>l ;tabnext<cr>
 
 "Copy to clipboard
-map <c-c> "*y
-map <c-p> "*p
+"map <c-c> "*y
+"map <c-p> "*p
 
 "Intuitive navigation for overlapping lines
 map j gj
@@ -186,8 +204,8 @@ map t <Plug>(easymotion-tl)
 map T <Plug>(easymotion-Tl)
 map <leader>w <Plug>(easymotion-bd-w)
 "scrolling
-map <c-j> <c-d>
-map <c-k> <c-u>
+"map <c-j> <c-d>
+"map <c-k> <c-u>
 
 "preferences
 nnoremap Y y$
@@ -215,21 +233,26 @@ cmap dir<CR> NERDTreeToggle<CR>
 cmap agm<space> ag def\<space>
 cmap * <c-r><c-w>
 cmap ag<space> Ag<space>
+
+map <leader>sm <esc><leader>s<c-w>l/
+
 map gm ;Ag def\<space><c-r><c-w>
 
-function! Searcher(string)
-  if match(readfile(expand("%p")), a:string)
-    execute "/" . echo(a:string) 
-  else
-    execute ";Ag" . a:string
-  endif
-endfunction
+"function! Searcher(string)
+  "if match(readfile(expand("%p")), a:string)
+    "execute "/" . echo(a:string) 
+  "else
+    "execute ";Ag" . a:string
+  "endif
+"endfunction
 
 
 let g:ctrlp_match_window = 'bottom'
 let g:ctrlp_map = '<leader>d' 
+
 map <leader>p ;CtrlPMRUFiles<cr>
-map <leader>ls ;CtrlPBuffer<cr>
+map <leader>b ;CtrlPBuffer<cr>
+
 let g:UltiSnipsExpandTrigger = '<c-e>'
 let g:UltiSnipsJumpForwardTrigger = '<c-n>'
 let g:UltiSnipsJumpBackwardTrigger = '<c-b>'
