@@ -6,7 +6,6 @@ call vundle#begin()
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-rails'
 Plugin 'kchmck/vim-coffee-script'
-Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-fugitive'
 Plugin 'slim-template/vim-slim.git'
 Plugin 'Valloric/YouCompleteMe'
@@ -151,6 +150,9 @@ map <leader>a ;A<cr>
 map <leader>c ;Rcontroller<cr>
 map <leader>m ;Rmodel<cr>
 map <leader>v ;Rview<cr>
+
+"remove mappings
+let g:gitgutter_map_keys = 0
 
 "add a binding.pry
 map <leader>bp Obinding.pryjj
