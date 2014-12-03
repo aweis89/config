@@ -14,6 +14,7 @@ alias we='wemux'
 alias wn="we new-session -s"
 alias wa='we attach -d -t'
 alias wk='we kill-session -t'
+alias g='git'
 
 #Bundler
 alias be="bundle exec"
@@ -32,20 +33,21 @@ alias z='zeus'
 alias vi="vim"
 alias cddocs="cd /Users/aweisberg/Documents"
 
-alias cdtas="cd /Users/aweisberg/Documents/rails_apps/tas"
-alias cdmember="cd /Users/aweisberg/Documents/rails_apps/member"
-alias cdrte="cd /Users/aweisberg/Documents/rails_apps/rte"
-alias cdadmin="cd /Users/aweisberg/Documents/rails_apps/admin"
-alias cdcallcenter="cd /Users/aweisberg/Documents/rails_apps/callcenter"
-alias cdprovider="cd /Users/aweisberg/Documents/rails_apps/provider"
-alias cdclient="cd /Users/aweisberg/Documents/rails_apps/client"
-alias cdframework="cd /Users/aweisberg/Documents/rails_apps/teladoc_framework"
-alias cdapps="cd /Users/aweisberg/Documents/rails_apps"
-alias cdapi="cd /Users/aweisberg/Documents/rails_apps/teladoc_api"
-alias cdbook="cd /Users/aweisberg/Documents/rails_apps/book_store"
-alias cdrails="cd /Users/aweisberg/Documents/rails_apps/rails"
-alias cdoms="cd /Users/aweisberg/Documents/rails_apps/oms"
-alias cdconstants="cd /Users/aweisberg/Documents/rails_apps/teladoc_constants_gem"
+alias cdp="cd /Users/aweisberg/Documents/programs/"
+alias cdtas="cd /Users/aweisberg/Documents/programs/tas"
+alias cdmember="cd /Users/aweisberg/Documents/programs/member"
+alias cdrte="cd /Users/aweisberg/Documents/programs/rte"
+alias cdadmin="cd /Users/aweisberg/Documents/programs/admin"
+alias cdcallcenter="cd /Users/aweisberg/Documents/programs/callcenter"
+alias cdprovider="cd /Users/aweisberg/Documents/programs/provider"
+alias cdclient="cd /Users/aweisberg/Documents/programs/client"
+alias cdframework="cd /Users/aweisberg/Documents/programs/teladoc_framework"
+alias cdapps="cd /Users/aweisberg/Documents/programs"
+alias cdapi="cd /Users/aweisberg/Documents/programs/teladoc_api"
+alias cdbook="cd /Users/aweisberg/Documents/programs/book_store"
+alias cdrails="cd /Users/aweisberg/Documents/programs/rails"
+alias cdoms="cd /Users/aweisberg/Documents/programs/oms"
+alias cdconstants="cd /Users/aweisberg/Documents/programs/teladoc_constants_gem"
 
 alias constants="cdconstants && vim"
 alias oms="cdoms && vim"
@@ -95,6 +97,13 @@ function cbu() {
   bundle update teladoc_constants_gem && bundle update teladoc_framework
 }
 
+function bde(){
+  cdtas && bundle install && tbu
+  cdadmin && bundle install && cbu
+  cdprovider && bundle install && cbu
+  cdmember && bundle install && cbu
+  cdcallcenter && bundle install && cbu
+}
 function pry() {
 if [ -e .zeus.sock ]; then
   zeus console

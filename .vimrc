@@ -32,6 +32,8 @@ Plugin 'tpope/vim-unimpaired'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-repeat'
 Plugin 'tell-k/vim-browsereload-mac'
+Plugin 'mustache/vim-mustache-handlebars'
+Plugin 'dsawardekar/ember.vim'
 call vundle#end()
 
 let g:lightline = {
@@ -213,8 +215,8 @@ map <leader>w <Plug>(easymotion-bd-w)
 nnoremap Y y$
 nnoremap ; :
 nnoremap : ;
-nnoremap gg G
-nnoremap G gg
+"nnoremap gg G
+"nnoremap G gg
 
 "Don't leave visual when modifying indentation
 vnoremap < <gv
