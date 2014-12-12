@@ -17,7 +17,7 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloosr/nerdtree'
 Plugin 'tpope/vim-surround'
 Plugin 'Lokaltog/vim-easymotion'
-Plugin 'vim-scripts/SearchComplete'
+"Plugin 'vim-scripts/SearchComplete'
 Plugin 'kien/ctrlp.vim'
 Plugin 'thoughtbot/vim-rspec'
 Plugin 'jgdavey/tslime.vim'
@@ -26,7 +26,7 @@ Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/syntastic'
 Plugin 'sjl/gundo.vim'
 Plugin 'ecomba/vim-ruby-refactoring'
-Plugin 'jlanzarotta/bufexplorer'
+"Plugin 'jlanzarotta/bufexplorer'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'terryma/vim-multiple-cursors'
@@ -34,8 +34,33 @@ Plugin 'tpope/vim-repeat'
 Plugin 'tell-k/vim-browsereload-mac'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'dsawardekar/ember.vim'
+Plugin 'vim-scripts/YankRing.vim' 
+Plugin 'Shougo/unite.vim'
+Plugin 'Shougo/neomru.vim'
+Plugin 'junkblocker/unite-codesearch'
+Plugin 'junkblocker/codesearch'
+Plugin 'brandonbloom/csearch.vim'
+Plugin 'Shougo/vimproc'
+
 call vundle#end()
 
+
+" Required:
+filetype plugin indent on
+
+" If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+"neoBundleCheck
+"End NeoBundle Scripts-------------------------
+"NeoBundle 'Shougo/vimproc.vim', {
+"\ 'build' : {
+"\     'windows' : 'tools\\update-dll-mingw',
+"\     'cygwin' : 'make -f make_cygwin.mak',
+"\     'mac' : 'make -f make_mac.mak',
+"\     'linux' : 'make',
+"\     'unix' : 'gmake',
+"\    },
+"\ }
 let g:lightline = {
       \'colorscheme': 'wombat',
       \'active': {
@@ -58,6 +83,9 @@ let g:lightline = {
       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
       \ },
       \ }
+
+"let g:unite_source_rec_async_command = 'ag --follow --nocolor --nogroup --hidden -g ""'
+
 
 augroup AutoSyntastic
   autocmd!
@@ -159,9 +187,9 @@ let g:gitgutter_map_keys = 0
 "add a binding.pry
 map <leader>bp Obinding.pryjj
 "remove binding.pry
-cmap rbind<cr> /binding.pry<cr>dd
+map <leader>br /binding.pry<cr>dd
 
-map <leader>ls ;buffers<CR>;buffer<Space>
+"map <leader>ls ;buffers<CR>;buffer<Space>
 map f <Plug>(easymotion-fl)
 map F <Plug>(easymotion-Fl)
 map t <Plug>(easymotion-tl)
@@ -172,7 +200,7 @@ map <leader>n ;noh<cr>
 map <leader>t ;tabnew<cr>
 map <leader>\ <c-w>v<c-w>l
 map <leader>- ;split<cr><c-w>j
-imap jj <esc>l
+imap jj <esc>
 imap <c-h> <left>
 imap <c-l> <right>
 imap <c-j> <down>
@@ -185,10 +213,11 @@ nmap <leader>s ;TagbarToggle<CR>
 "map <leader>k <c-w>k
 "map <leader>l <c-w>l
 
-"Tab navigation
-map <leader>h ;tabprevious<cr>
-map <leader>l ;tabnext<cr>
+map <leader>h ^
+map <leader>l $
 
+map <S-h> ;tabprevious<cr>
+map <S-l> ;tabnext<cr>
 "Copy to clipboard
 "map <c-c> "*y
 "map <c-p> "*p
@@ -214,10 +243,16 @@ map <leader>w <Plug>(easymotion-bd-w)
 "preferences
 nnoremap Y y$
 nnoremap ; :
-nnoremap : ;
-"nnoremap gg G
-"nnoremap G gg
-
+"nnoremap : ;
+let g:unite_source_grep_command = 'ag'
+let g:unite_source_grep_default_opts = '--nocolor --nogroup --column'
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+nnoremap <leader>d :Unite -start-insert file file_rec/async buffer<CR>
+nnoremap <leader>r :Unite -start-insert file_mru<CR>
+nnoremap <leader>b :Unite -start-insert buffer<CR>
+nnoremap <leader>us :Unite -start-insert -no-split grep<CR>.<CR>
+nnoremap / :Unite -start-insert line<CR>
+"nnoremap <leader>be :Unite buffer<CR>
 "Don't leave visual when modifying indentation
 vnoremap < <gv
 vnoremap > >gv 
@@ -240,20 +275,11 @@ map <leader>sm <esc><leader>s<c-w>l/
 
 map gm ;Ag def\<space><c-r><c-w>
 
-"function! Searcher(string)
-  "if match(readfile(expand("%p")), a:string)
-    "execute "/" . echo(a:string) 
-  "else
-    "execute ";Ag" . a:string
-  "endif
-"endfunction
-
-
 let g:ctrlp_match_window = 'bottom'
-let g:ctrlp_map = '<leader>d' 
+"let g:ctrlp_map = '<leader>d' 
 
-map <leader>p ;CtrlPMRUFiles<cr>
-map <leader>b ;CtrlPBuffer<cr>
+"map <leader>p ;CtrlPMRUFiles<cr>
+"map <leader>b ;CtrlPBuffer<cr>
 
 let g:UltiSnipsExpandTrigger = '<c-e>'
 let g:UltiSnipsJumpForwardTrigger = '<c-n>'
