@@ -41,7 +41,9 @@ Plugin 'junkblocker/unite-codesearch'
 Plugin 'junkblocker/codesearch'
 Plugin 'brandonbloom/csearch.vim'
 Plugin 'Shougo/vimproc'
-
+Plugin 'vim-scripts/tetragrammaton'
+Plugin 'digitaltoad/vim-jade'
+Plugin 'mklabs/vim-backbone'
 call vundle#end()
 
 
@@ -250,7 +252,8 @@ call unite#filters#matcher_default#use(['matcher_fuzzy'])
 nnoremap <leader>d :Unite -start-insert file file_rec/async buffer<CR>
 nnoremap <leader>r :Unite -start-insert file_mru<CR>
 nnoremap <leader>b :Unite -start-insert buffer<CR>
-nnoremap <leader>us :Unite -start-insert -no-split grep<CR>.<CR>
+nnoremap <leader>us :Unite -start-insert grep<CR>.<CR>
+nnoremap <leader>um :Unite -start-insert grep<CR>.<CR>def (self.)?
 nnoremap / :Unite -start-insert line<CR>
 "nnoremap <leader>be :Unite buffer<CR>
 "Don't leave visual when modifying indentation

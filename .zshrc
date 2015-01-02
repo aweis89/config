@@ -28,6 +28,7 @@ alias bs="bundle show"
 alias servers='tmux new-session -n:servers '\''teamocil servers'\'''
 alias kill-servers='/Users/aweisberg/scripts/kill_servers.sh'
 alias rs="kill-servers && tmux kill-session -t servers && servers"
+alias wservers='wemux new-session -n:servers '\''teamocil servers'\'''
 
 alias z='zeus'
 alias vi="vim"
