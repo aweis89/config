@@ -282,6 +282,7 @@ function! s:unite_settings()
   let b:SuperTabDisabled=1
   imap <buffer> <C-j>   <Plug>(unite_select_next_line)
   imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+  imap <buffer> <C-x> <esc>;q<cr>
   imap <silent><buffer><expr> <C--> unite#do_action('split')
   imap <silent><buffer><expr> <C-\> unite#do_action('vsplit')
   imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
