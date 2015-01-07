@@ -133,7 +133,7 @@ hi link EasyMotionShade  Comment
 if !empty(glob(getcwd() . "/.zeus.sock"))
   let g:rspec_command = "VimuxRunCommand('clear && zeus rspec {spec}')"
 else
-  let g:rspec_command = "!clear && bundle exec rspec --color {spec}"
+  let g:rspec_command = "VimuxRunCommand('clear && bundle exec rspec --color {spec}')"
 endif
 
 set number
