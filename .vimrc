@@ -44,6 +44,10 @@ Plugin 'Shougo/vimproc'
 Plugin 'vim-scripts/tetragrammaton'
 Plugin 'digitaltoad/vim-jade'
 Plugin 'mklabs/vim-backbone'
+Plugin 'tpope/vim-bundler'
+Plugin 'tpope/vim-endwise'
+Plugin 'benmills/vimux'
+"Plugin 'skalnik/vim-vroom'
 call vundle#end()
 
 

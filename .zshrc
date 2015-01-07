@@ -15,6 +15,7 @@ alias wn="we new-session -s"
 alias wa='we attach -d -t'
 alias wk='we kill-session -t'
 alias g='git'
+alias gce='git add --all && git commit -v'
 
 #Bundler
 alias be="bundle exec"
