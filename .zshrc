@@ -25,6 +25,7 @@ alias bo="bundle open"
 alias bu="bundle update"
 alias bi="bundle install"
 alias bs="bundle show"
+alias specs="bundle exec rspec spec"
 
 alias servers='tmux new-session -n:servers '\''teamocil servers'\'''
 alias kill-servers='/Users/aweisberg/scripts/kill_servers.sh'
@@ -35,43 +36,10 @@ alias z='zeus'
 alias vi="vim"
 alias cddocs="cd /Users/aweisberg/Documents"
 
-alias cdp="cd /Users/aweisberg/Documents/programs/"
-alias cdtas="cd /Users/aweisberg/Documents/programs/tas"
-alias cdmember="cd /Users/aweisberg/Documents/programs/member"
-alias cdrte="cd /Users/aweisberg/Documents/programs/rte"
-alias cdadmin="cd /Users/aweisberg/Documents/programs/admin"
-alias cdcallcenter="cd /Users/aweisberg/Documents/programs/callcenter"
-alias cdprovider="cd /Users/aweisberg/Documents/programs/provider"
-alias cdclient="cd /Users/aweisberg/Documents/programs/client"
-alias cdframework="cd /Users/aweisberg/Documents/programs/teladoc_framework"
-alias cdapps="cd /Users/aweisberg/Documents/programs"
-alias cdapi="cd /Users/aweisberg/Documents/programs/teladoc_api"
-alias cdbook="cd /Users/aweisberg/Documents/programs/book_store"
-alias cdrails="cd /Users/aweisberg/Documents/programs/rails"
-alias cdoms="cd /Users/aweisberg/Documents/programs/oms"
-alias cdconstants="cd /Users/aweisberg/Documents/programs/teladoc_constants_gem"
-
-alias constants="cdconstants && vim"
-alias oms="cdoms && vim"
-alias book="cdbook && vim"
-alias tas="cdtas && vim"
-alias member="cdmember && vim"
-alias rte="cdrte && vim"
-alias admin="cdadmin && vim"
-alias callcenter="cdcallcenter && vim"
-alias provider="cdprovider && vim"
-alias client="cdclient && vim"
-alias framework="cdframework && vim"
-alias api="cdapi && vim"
-alias db="cp ../database.yml config/"
-
 alias cdnode="/Users/aweisberg/Documents/node_apps"
 alias copyconfig="less ~/.vimrc > /Users/aweisberg/Documents/config/.vimrc && less ~/.tmux.conf > /Users/aweisberg/Documents/config/.tmux.conf && less ~/.zshrc > /Users/aweisberg/Documents/config/.zshrc"
 
 alias memcache="/usr/local/bin/memcached"
-alias my_env="ssh aweisberg.dev.teladoc.com"
-alias prod="ssh prodmirror.dev.teladoc.com"
-alias prod2="ssh prodmirror2.dev.teladoc.com"
 
 #DISABLE_AUTO_TITLE=true
 
@@ -123,6 +91,7 @@ else
   command rake $@
 fi
 }
+
 # Path to your oh-my-zsh installation.
  export ZSH=$HOME/.oh-my-zsh
 
