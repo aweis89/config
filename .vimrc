@@ -4,6 +4,8 @@ set shell=zsh
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'vim-ruby/vim-ruby'
+Plugin 'ecomba/vim-ruby-refactoring'
+Plugin 'danchoi/rb_nav'
 Plugin 'tpope/vim-rails'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'tpope/vim-fugitive'
@@ -12,20 +14,17 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'itchyny/lightline.vim'
-Plugin 'rking/ag.vim'
+"Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloosr/nerdtree'
 Plugin 'tpope/vim-surround'
 Plugin 'Lokaltog/vim-easymotion'
 "Plugin 'vim-scripts/SearchComplete'
-Plugin 'kien/ctrlp.vim'
 Plugin 'thoughtbot/vim-rspec'
-Plugin 'jgdavey/tslime.vim'
 Plugin 'edkolev/tmuxline.vim'
-Plugin 'majutsushi/tagbar'
+"Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/syntastic'
 Plugin 'sjl/gundo.vim'
-Plugin 'ecomba/vim-ruby-refactoring'
 "Plugin 'jlanzarotta/bufexplorer'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'tpope/vim-unimpaired'
@@ -37,9 +36,9 @@ Plugin 'dsawardekar/ember.vim'
 Plugin 'vim-scripts/YankRing.vim' 
 Plugin 'Shougo/unite.vim'
 Plugin 'Shougo/neomru.vim'
-Plugin 'junkblocker/unite-codesearch'
-Plugin 'junkblocker/codesearch'
-Plugin 'brandonbloom/csearch.vim'
+"Plugin 'junkblocker/unite-codesearch'
+"Plugin 'junkblocker/codesearch'
+"Plugin 'brandonbloom/csearch.vim'
 Plugin 'Shougo/vimproc'
 Plugin 'vim-scripts/tetragrammaton'
 Plugin 'digitaltoad/vim-jade'
@@ -89,8 +88,6 @@ let g:lightline = {
       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
       \ },
       \ }
-
-"let g:unite_source_rec_async_command = 'ag --follow --nocolor --nogroup --hidden -g ""'
 
 
 augroup AutoSyntastic
@@ -165,22 +162,6 @@ hi TabLineFill ctermfg=LightGreen ctermbg=DarkGreen
 hi TabLine ctermfg=Blue ctermbg=Yellow
 hi TabLineSel ctermfg=Red ctermbg=Yellow
 
-
-"function! RSpecFile()
-  "execute("!clear && zeus rspec " . expand("%p"))
-"endfunction
-"cmap spec<CR> :call RSpecFile() <CR>
-"command! RSpecFile call RSpecFile()
-
-"function! RSpecCurrent()
-  "execute("!clear && zeus rspec " . expand("%p") . ":" . line("."))
-"endfunction
-"cmap tspec<CR> :call RSpecCurrent() <CR>
-"command! RSpecCurrent call RSpecCurrent()
-
-"motion mappings
-map H ^
-map L $
 "rails vim
 map <leader>a ;A<cr>
 map <leader>c ;Rcontroller<cr>
@@ -211,13 +192,6 @@ imap <c-h> <left>
 imap <c-l> <right>
 imap <c-j> <down>
 imap <c-k> <up>
-nmap <leader>s ;TagbarToggle<CR>
-
-"Pane navigation
-"map <leader>h <c-w>h
-"map <leader>j <c-w>j
-"map <leader>k <c-w>k
-"map <leader>l <c-w>l
 
 map <leader>h ^
 map <leader>l $
@@ -249,17 +223,13 @@ map <leader>w <Plug>(easymotion-bd-w)
 "preferences
 nnoremap Y y$
 nnoremap ; :
-"nnoremap : ;
-"
+
 let g:unite_source_grep_command = 'ag'
 let g:unite_source_grep_default_opts = '--nocolor --nogroup --column'
 "call unite#filters#matcher_default#use(['matcher_fuzzy'])
 "nnoremap <leader>d :Unite -start-insert file file_rec/async buffer<CR>
 "nnoremap <leader>r :Unite -start-insert file_mru<CR>
 "nnoremap <leader>b :Unite -start-insert buffer<CR>
-nnoremap <leader>us :Unite -start-insert grep<CR>.<CR>
-nnoremap <leader>um :Unite -start-insert grep<CR>.<CR>def (self.)?
-nnoremap / :Unite -start-insert line<CR>
 
 "trying
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -278,7 +248,10 @@ call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_rank'])
 
-nnoremap <leader>d :<C-u>Unite  -buffer-name=files   -start-insert buffer file_rec/async:!<cr>
+nnoremap <leader>d :<C-u>Unite  -buffer-name=files  buffer file_rec/async:!<cr>
+nnoremap <leader>us :Unite -buffer-name=search grep<CR>.<CR>
+nnoremap <leader>um :Unite -buffer-name=method_search grep<CR>.<CR>def (self.)?
+nnoremap / :Unite -buffer-name=file_search line<CR>
 
 autocmd FileType unite call s:unite_settings()
 
