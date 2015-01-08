@@ -128,7 +128,7 @@ hi link EasyMotionShade  Comment
 
 "only use zeus if it exists
 if !empty(glob(getcwd() . "/.zeus.sock"))
-  let g:rspec_command = "VimuxRunCommand('clear && zeus rspec {spec}')"
+  let g:rspec_command = 'clear && zeus rspec {spec}'
 else
   let g:rspec_command = 'clear && bundle exec rspec --color {spec}'
 endif
