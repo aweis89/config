@@ -14,7 +14,6 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'itchyny/lightline.vim'
-"Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloosr/nerdtree'
 Plugin 'tpope/vim-surround'
@@ -22,10 +21,8 @@ Plugin 'Lokaltog/vim-easymotion'
 "Plugin 'vim-scripts/SearchComplete'
 Plugin 'thoughtbot/vim-rspec'
 Plugin 'edkolev/tmuxline.vim'
-"Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/syntastic'
 Plugin 'sjl/gundo.vim'
-"Plugin 'jlanzarotta/bufexplorer'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'terryma/vim-multiple-cursors'
@@ -133,7 +130,14 @@ hi link EasyMotionShade  Comment
 if !empty(glob(getcwd() . "/.zeus.sock"))
   let g:rspec_command = "VimuxRunCommand('clear && zeus rspec {spec}')"
 else
-  let g:rspec_command = "VimuxRunCommand('clear && bundle exec rspec --color {spec}')"
+  let g:rspec_command = 'clear && bundle exec rspec --color {spec}'
+endif
+
+"only use vimux if in tmux session
+if !empty($TMUX)
+  let g:rspec_command = "VimuxRunCommand('". g:rspec_command . "')"
+else
+  let g:rspec_command = "!". g:rspec_command
 endif
 
 set number
@@ -280,19 +284,12 @@ vnoremap > >gv
 cmap spec<cr> w<cr>;call RunCurrentSpecFile()<cr>
 cmap lspec<cr> w<cr>;call RunLastSpec()<cr>
 cmap run<cr> w<cr>;call RunNearestSpec()<cr>
-cmap as<cr> w<cr>;call RunAllSpecs()<CR> 
+cmap specs<cr> w<cr>;call RunAllSpecs()<CR> 
 
 "Nerdtree
 cmap dir<CR> NERDTreeToggle<CR> 
 
-"Ag mappings
-cmap agm<space> ag def\<space>
 cmap * <c-r><c-w>
-cmap ag<space> Ag<space>
-
-map <leader>sm <esc><leader>s<c-w>l/
-
-map gm ;Ag def\<space><c-r><c-w>
 
 let g:ctrlp_match_window = 'bottom'
 "let g:ctrlp_map = '<leader>d' 
