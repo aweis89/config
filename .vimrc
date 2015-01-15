@@ -15,7 +15,7 @@ Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'itchyny/lightline.vim'
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloosr/nerdtree'
+Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-surround'
 Plugin 'Lokaltog/vim-easymotion'
 "Plugin 'vim-scripts/SearchComplete'
@@ -78,8 +78,8 @@ let g:lightline = {
       \ 'component_type': {
       \   'syntastic': 'error',
       \ },
-      \'separator': { 'left': ' ', 'right': '⮂' },
-      \'subseparator': { 'left': '⮁', 'right': '⮃' },
+      \'separator': { 'left': ' <<', 'right': '<< ' },
+      \'subseparator': { 'left': ' <<', 'right': '>> ' },
       \'component_visible_condition': {
       \   'readonly': '(&filetype!="help"&& &readonly)',
       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
