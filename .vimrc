@@ -232,7 +232,7 @@ nnoremap ; :
 
 let g:unite_source_grep_command = 'ag'
 let g:unite_source_grep_default_opts = '--nocolor --nogroup --column'
-let g:unite_source_rec_async_command= 'ag --nocolor --nogroup --hidden -g'
+"let g:unite_source_rec_async_command= 'ag --nocolor --nogroup --hidden -g'
 let g:unite_enable_start_insert = 1
 "let g:unite_split_rule = "botright"
 let g:unite_force_overwrite_statusline = 0
@@ -257,13 +257,25 @@ autocmd FileType unite call s:unite_settings()
 function! s:unite_settings()
   let b:SuperTabDisabled=1
   imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+  nmap <buffer> <C-j>   <Plug>(unite_select_next_line)
+
   imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-  imap <buffer> <C-x> <Plug>(unite_exit)
-  map <buffer> <C-x> <Plug>(unite_exit)
+  nmap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+
   imap <silent><buffer><expr> <C--> unite#do_action('split')
+  nmap <silent><buffer><expr> <C--> unite#do_action('split')
+
   imap <silent><buffer><expr> <C-\> unite#do_action('vsplit')
+  nmap <silent><buffer><expr> <C-\> unite#do_action('vsplit')
+
   imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
-  nmap <buffer> <ESC> <Plug>(unite_exit)
+  nmap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+
+  nmap <C-z> <Plug>(unite_toggle_transpose_window)
+  imap <C-z> <Plug>(unite_toggle_transpose_window)
+
+  imap <buffer> <C-x> <Plug>(unite_exit)
+  nmap <buffer> <C-x> <Plug>(unite_exit)
 endfunction
 
 let g:VimuxOrientation = 'h'
