@@ -68,7 +68,9 @@ do
   if [[ ${dir##*/} =~ 'apps|gems' ]]; then
     for app in ~/Sites/${dir##*/}/*
     do
-      eval "cd${app##*/} () { cd $app }"
+      eval "cd${app##*/} () { cd $app }" 
+      eval "v${app##*/} () { cd $app && vim }" 
+      eval "${app##*/} () { cd $app && vim }" 
     done
   fi
 done
