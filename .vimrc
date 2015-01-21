@@ -43,9 +43,15 @@ Plugin 'mklabs/vim-backbone'
 Plugin 'tpope/vim-bundler'
 Plugin 'tpope/vim-endwise'
 Plugin 'benmills/vimux'
-"Plugin 'skalnik/vim-vroom'
+"Plugin 'xolox/vim-easytags'
+"Plugin 'xolox/vim-misc'
+Plugin 'Shougo/unite-outline'
 call vundle#end()
 
+"ctags
+"let g:easytags_async = 1
+"set tags=./tags;
+"let g:easytags_dynamic_files = 1
 
 " Required:
 filetype plugin indent on
@@ -203,9 +209,8 @@ map <leader>l $
 map <S-h> ;tabprevious<cr>
 map <S-l> ;tabnext<cr>
 "Copy to clipboard
-"map <c-c> "*y
-"map <c-p> "*p
-
+vmap <c-c> "*y
+vmap <c-p> "*p
 "Intuitive navigation for overlapping lines
 map j gj
 map k gk
@@ -220,25 +225,13 @@ map F <Plug>(easymotion-Fl)
 map t <Plug>(easymotion-tl)
 map T <Plug>(easymotion-Tl)
 map <leader>w <Plug>(easymotion-bd-w)
-"scrolling
-"map <c-j> <c-d>
-"map <c-k> <c-u>
 
 "preferences
-nnoremap Y y$
+map Y y$
 nnoremap ; :
 
 let g:unite_source_grep_command = 'ag'
 let g:unite_source_grep_default_opts = '--nocolor --nogroup --column'
-"call unite#filters#matcher_default#use(['matcher_fuzzy'])
-"nnoremap <leader>d :Unite -start-insert file file_rec/async buffer<CR>
-"nnoremap <leader>r :Unite -start-insert file_mru<CR>
-"nnoremap <leader>b :Unite -start-insert buffer<CR>
-
-"trying
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Unite
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:unite_enable_start_insert = 1
 "let g:unite_split_rule = "botright"
 let g:unite_force_overwrite_statusline = 0
@@ -254,6 +247,7 @@ call unite#filters#sorter_default#use(['sorter_rank'])
 
 nnoremap <leader>d :<C-u>Unite  -buffer-name=files  buffer file_rec/async:!<cr>
 nnoremap <leader>us :Unite -buffer-name=search grep<CR>.<CR>
+nnoremap <leader>ut :Unite -buffer-name=tags outline<CR>
 nnoremap <leader>um :Unite -buffer-name=method_search grep<CR>.<CR>def (self.)?
 nnoremap / :Unite -buffer-name=file_search line<CR>
 
@@ -287,21 +281,13 @@ cmap run<cr> w<cr>;call RunNearestSpec()<cr>
 cmap specs<cr> w<cr>;call RunAllSpecs()<CR> 
 
 "Nerdtree
-cmap dir<CR> NERDTreeToggle<CR> 
+cmap dir<CR> NERDTree<CR> 
 
 cmap * <c-r><c-w>
 
 let g:ctrlp_match_window = 'bottom'
-"let g:ctrlp_map = '<leader>d' 
-
-"map <leader>p ;CtrlPMRUFiles<cr>
-"map <leader>b ;CtrlPBuffer<cr>
 
 let g:UltiSnipsExpandTrigger = '<c-e>'
 let g:UltiSnipsJumpForwardTrigger = '<c-n>'
 let g:UltiSnipsJumpBackwardTrigger = '<c-b>'
 
-let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
-if executable('ag')
-    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-endif

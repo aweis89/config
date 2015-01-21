@@ -17,6 +17,10 @@ alias wk='we kill-session -t'
 alias g='git'
 alias gce='git add --all && git commit -v'
 
+alias apps='/Users/aweisberg/Sites/apps'
+alias gems='/Users/aweisberg/Sites/gems'
+alias cdapp='/Users/aweisberg/Sites/apps'
+alias cdgem='/Users/aweisberg/Sites/gems'
 #Bundler
 alias be="bundle exec"
 alias bl="bundle list"
@@ -44,6 +48,56 @@ alias memcache="/usr/local/bin/memcached"
 #DISABLE_AUTO_TITLE=true
 
 alias rfind='find . -name "*.rb" | xargs grep -n'
+
+function gen_ctags () {
+ ctags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths) 
+}
+
+function apps_run () {
+cd ~/Sites/apps/
+for app in ./*
+do
+  cd $app || echo "cannot cd into: ${app}"
+  echo "executing $@ in $app ..." && eval "$@" || echo "cannot execute: $1 in $app"
+  cd ~/Sites/apps/
+done
+}
+
+for dir in ~/Sites/*
+do
+  if [[ ${dir##*/} =~ 'apps|gems' ]]; then
+    for app in ~/Sites/${dir##*/}/*
+    do
+      eval "cd${app##*/} () { cd $app }"
+    done
+  fi
+done
+
+#function dir_exec () {
+#cd $1
+#for path in ./*
+#do
+  #cd $path || echo "cannot cd into: ${path}"
+  #echo "executing $2 in $path ..." && eval "$2" || echo "cannot execute: $2 in $path"
+  #cd .. || echo "cannot cd back from $path"
+#done
+#}
+
+function gems_run () {
+  cd ~/Sites/gems
+  for gem  in ~/Sites/gems/*
+  do 
+    cd $gem 
+    eval "$1" || "cannot execute: ${1} for ${gem}"
+    cd ~/Sites/gems
+  done
+}
+
+function all_run () {
+apps_run $1
+gems_run $1
+}
+
 
 function dep() {
   default_branch=`current_branch`
@@ -77,6 +131,8 @@ function bde(){
 function pry() {
 if [ -e .zeus.sock ]; then
   zeus console
+elif [ -e bin/pry ]; then
+  bin/pry $@
 else
   command pry $@
 fi
@@ -91,6 +147,23 @@ else
   command rake $@
 fi
 }
+
+for bun_command in rake rspec 
+do
+
+  read -d '' func << EOM
+  ${bun_command} () {
+  if [ -e bin/${bun_command} ]; then
+    bin/${bun_command} ${@} 
+  else
+    command ${bun_command} ${@}
+  fi
+  }
+EOM
+
+eval "$func"
+
+done
 
 # Path to your oh-my-zsh installation.
  export ZSH=$HOME/.oh-my-zsh
@@ -196,3 +269,10 @@ export PATH=/usr/local/bin:$PATH
  bindkey '^h' backward-delete-char
  bindkey '^w' backward-kill-word
  bindkey '^r' history-incremental-search-backward
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+bash -e ~/Sites/configs/env/.bash_fynanz
+source ~/.powconfig
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+export JAVA_HOME=$(/usr/libexec/java_home)
+export JDK_HOME=$(/usr/libexec/java_home)
