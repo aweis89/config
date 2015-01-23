@@ -50,13 +50,34 @@ Plugin 'junegunn/fzf'
 call vundle#end()
 
 
-"FZF
-"set rtp+=~/.fzf
-
 "ctags
 "let g:easytags_async = 1
 "set tags=./tags;
 "let g:easytags_dynamic_files = 1
+
+" Choose a color scheme with fzf
+map <Leader>z :call fzf#run({
+\   'source':
+\     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
+\         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
+\   'sink':       'colo',
+\   'options':    '+m',
+\   'tmux_width': 20,
+\   'launcher':   'xterm -geometry 20x30 -e bash -ic %s'
+\ })<CR>
+" List of buffers
+function! BufList()
+  redir => ls
+  silent ls
+  redir END
+  return split(ls, '\n')
+endfunction
+
+function! BufOpen(e)
+  execute 'buffer '. matchstr(a:e, '^[ 0-9]*')
+endfunction
+
+map <Leader><Enter> :call fzf#run({'source': reverse(BufList()),'sink': function('BufOpen'), 'options': '--black', 'tmux_width': 20})<CR>
 
 " Required:
 filetype plugin indent on
