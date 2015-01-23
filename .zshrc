@@ -48,6 +48,62 @@ alias memcache="/usr/local/bin/memcached"
 #DISABLE_AUTO_TITLE=true
 
 alias rfind='find . -name "*.rb" | xargs grep -n'
+#Default editor
+export EDITOR=vim
+export ZDOTDIR=$HOME
+
+#FZF
+fv() {
+  local file
+  file=$(fzf --query="$1" --select-1 --exit-0)
+  [ -n "$file" ] && ${EDITOR:-vim} "$file"
+}
+
+# Equivalent to above, but opens it with `open` command
+fo() {
+  local file
+  file=$(fzf --query="$1" --select-1 --exit-0)
+  [ -n "$file" ] && open "$file"
+}
+
+# fd - cd to selected directory
+fd() {
+  local dir
+  dir=$(find ${1:-*} -path '*/\.*' -prune \
+    -o -type d -print 2> /dev/null | fzf +m) &&
+    cd "$dir"
+}
+# fda - including hidden directories
+fda() {
+  local dir
+  dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
+}
+# cdf - cd into the directory of the selected file
+#cdf() {
+  #local file
+  #local dir
+  #file=$(fzf +m -q "$1") && dir=$(dirname "$file") && cd "$dir"
+#}
+# fbr - checkout git branch
+ fgc() {
+   local branches branch
+   branches=$(git branch) &&
+     branch=$(echo "$branches" | fzf +s +m) &&
+     git checkout $(echo "$branch" | sed "s/.* //")
+ }
+
+export FUZZY_SEARCH_PATHS="~/Projects:~/XCode:~/Sites/apps:~/Sites/gems"
+
+cdf() {
+local dir=$(cat << EOS | ruby | fzf -e -1 --query=$1
+  (ENV["FUZZY_SEARCH_PATHS"]||"").split(":").each{|p| puts Dir["#{File.expand_path(p)}/*"]}
+EOS)
+cd "$dir"
+}
+
+fgrep() {
+  grep --line-buffered --color=never -r "" * | fzf
+}
 
 function gen_ctags () {
  ctags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths) 
@@ -278,3 +334,4 @@ source ~/.powconfig
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 export JAVA_HOME=$(/usr/libexec/java_home)
 export JDK_HOME=$(/usr/libexec/java_home)
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

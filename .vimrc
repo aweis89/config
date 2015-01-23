@@ -46,7 +46,12 @@ Plugin 'benmills/vimux'
 "Plugin 'xolox/vim-easytags'
 "Plugin 'xolox/vim-misc'
 Plugin 'Shougo/unite-outline'
+Plugin 'junegunn/fzf'
 call vundle#end()
+
+
+"FZF
+"set rtp+=~/.fzf
 
 "ctags
 "let g:easytags_async = 1
@@ -226,9 +231,12 @@ map t <Plug>(easymotion-tl)
 map T <Plug>(easymotion-Tl)
 map <leader>w <Plug>(easymotion-bd-w)
 
-"preferences
+"make Y behave like D and C
 map Y y$
+
 nnoremap ; :
+
+cmap reload<cr> :source ~/.vimrc<cr>
 
 let g:unite_source_grep_command = 'ag'
 let g:unite_source_grep_default_opts = '--nocolor --nogroup --column'
@@ -304,3 +312,5 @@ let g:UltiSnipsExpandTrigger = '<c-e>'
 let g:UltiSnipsJumpForwardTrigger = '<c-n>'
 let g:UltiSnipsJumpBackwardTrigger = '<c-b>'
 
+"loads zshrc
+set shell=bash\ --login
