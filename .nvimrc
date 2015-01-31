@@ -29,6 +29,8 @@ NeoBundle 'danchoi/rb_nav'
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'Valloric/YouCompleteMe'
+let g:ycm_server_log_level = 'debug'
+
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'scrooloose/nerdtree'
 cnoremap tdir NERDTreeFind
@@ -44,6 +46,7 @@ NeoBundle 'tpope/vim-bundler'
 NeoBundle 'benmills/vimux'
 NeoBundle 'skalnik/vim-vroom'
 NeoBundle 'christoomey/vim-tmux-navigator'
+NeoBundle 'terryma/vim-multiple-cursors'
 cnoremap spec VroomRunTestFile
 cmap lspec VroomRunLastTest
 cmap run VroomRunNearestTest
@@ -200,14 +203,14 @@ inoremap JJ <esc>:w<cr>
 " Blue on command/other mode
 " Note the use of hex codes (ie 3971ED)
 if exists('$TMUX')
-    let &t_SI = "\<Esc>Ptmux;\<Esc>\033]Pl3971ED\033\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-    let &t_EI = "\<Esc>Ptmux;\<Esc>\033]PlFBA922\033\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-   autocmd VimLeave * silent !echo -ne "\033]Pl3971ED\033\\"
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\033]Pl71ED39\033\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\033]Pl828690\033\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+   autocmd VimLeave * silent !echo -ne "\033Ptmux;\033\033]Pl828690\033\\"
 else
-    let &t_EI = "\033]Pl3971ED\033\\"
-    let &t_SI = "\033]PlFBA922\033\\"
-    silent !echo -ne "\033]Pl3971ED\033\\"
-    autocmd VimLeave * silent !echo -ne "\033]Pl3971ED\033\\"
+    let &t_EI = "\033]Pl71ED39\033\\"
+    let &t_SI = "\033]Pl828690\033\\"
+    silent !echo -ne "\033]Pl71ED39\033\\"
+    autocmd VimLeave * silent !echo -ne "\033]Pl71ED39\033\\"
 endif 
 set guicursor=n-v-c:block-cursor
 set guicursor+=i:ver100-icursor
