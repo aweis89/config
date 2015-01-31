@@ -4,6 +4,7 @@ alias tmux='TERM=screen-256color-bce tmux'
 alias tmuxs="vim ~/.tmux.conf"
 alias zshs="vim ~/.zshrc"
 alias vims="vim ~/.vimrc"
+alias nvims="vim ~/.nvimrc"
 alias n='tmux new-session -s'
 alias s='tmux switch -t'
 alias a='tmux attach -d -t'
@@ -16,7 +17,7 @@ alias wa='we attach -d -t'
 alias wk='we kill-session -t'
 alias g='git'
 alias gce='git add --all && git commit -v'
-
+alias stmate='rm -f ~/tmp/tmate.sock && tmate -S ~/tmp/tmate.sock'
 alias apps='/Users/aweisberg/Sites/apps'
 alias gems='/Users/aweisberg/Sites/gems'
 alias cdapp='/Users/aweisberg/Sites/apps'
@@ -38,6 +39,7 @@ alias wservers='wemux new-session -n:servers '\''teamocil servers'\'''
 
 alias z='zeus'
 alias vi="vim"
+alias vim="nvim"
 alias cddocs="cd /Users/aweisberg/Documents"
 
 alias cdnode="/Users/aweisberg/Documents/node_apps"
@@ -198,6 +200,17 @@ function gems_run () {
 function all_run () {
 apps_run $1
 gems_run $1
+}
+
+
+function gem_vars () {
+  cd ~/Sites/gems
+  for gem in ~/Sites/gems/*
+  do 
+    cd $gem 
+    gem=$(basename $gem)
+    eval "export ${gem:u}_DIR=~/Sites/gems/${gem}"
+  done
 }
 
 
@@ -373,7 +386,7 @@ export PATH=/usr/local/bin:$PATH
  bindkey '^r' history-incremental-search-backward
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-bash -e ~/Sites/configs/env/.bash_fynanz
+#bash -e ~/Sites/configs/env/.bash_fynanz
 source ~/.powconfig
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 export JAVA_HOME=$(/usr/libexec/java_home)
