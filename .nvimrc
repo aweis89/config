@@ -199,18 +199,10 @@ inoremap JJ <esc>:w<cr>
 " Cursor to yellow on insert mode
 " Blue on command/other mode
 " Note the use of hex codes (ie 3971ED)
-"if exists('$TMUX')
-  "let &t_SI = \<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-  "let &t_EI = \<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-"else
-  "let &t_SI = \<Esc>]50;CursorShape=1\x7"
-  "let &t_EI = \<Esc>]50;CursorShape=0\x7"
-"endif
 if exists('$TMUX')
     let &t_SI = "\<Esc>Ptmux;\<Esc>\033]Pl3971ED\033\<Esc>]50;CursorShape=1\x7\<Esc>\\"
     let &t_EI = "\<Esc>Ptmux;\<Esc>\033]PlFBA922\033\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-    silent !echo -ne "\<Esc>Ptmux;\<Esc>\033]Pl3971ED\033\\"
-    autocmd VimLeave * silent !echo -ne "\<Esc>Ptmux;\<Esc>\033]Pl3971ED\033\\"
+   autocmd VimLeave * silent !echo -ne "\033]Pl3971ED\033\\"
 else
     let &t_EI = "\033]Pl3971ED\033\\"
     let &t_SI = "\033]PlFBA922\033\\"
