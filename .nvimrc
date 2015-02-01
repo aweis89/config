@@ -190,6 +190,7 @@ set backspace=indent,eol,start
 set laststatus=2
 set noshowmode
 set nocompatible
+set number
 set rnu
 
 set ignorecase
@@ -205,7 +206,7 @@ inoremap JJ <esc>:w<cr>
 if exists('$TMUX')
     let &t_SI = "\<Esc>Ptmux;\<Esc>\033]Pl71ED39\033\<Esc>]50;CursorShape=1\x7\<Esc>\\"
     let &t_EI = "\<Esc>Ptmux;\<Esc>\033]Pl828690\033\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-   autocmd VimLeave * silent !echo -ne "\033Ptmux;\033\033]Pl828690\033\\"
+    autocmd VimLeave * silent !echo -ne "\033Ptmux;\033\033]Pl71ED39\033\033]50;CursorShape=1\x7\033\\"
 else
     let &t_EI = "\033]Pl71ED39\033\\"
     let &t_SI = "\033]Pl828690\033\\"
