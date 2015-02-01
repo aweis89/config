@@ -28,6 +28,7 @@ NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'danchoi/rb_nav'
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'tpope/vim-endwise'
+NeoBundle 'tpope/vim-repeat'
 NeoBundle 'Valloric/YouCompleteMe'
 let g:ycm_server_log_level = 'debug'
 
