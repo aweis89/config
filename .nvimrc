@@ -38,8 +38,6 @@ cnoremap tdir NERDTreeFind
 cnoremap dir NERDTreeToggle
 
 NeoBundle 'tpope/vim-surround'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'tsukkee/unite-tag'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'tpope/vim-unimpaired'
@@ -69,8 +67,68 @@ function! BufOpen(e)
   execute 'bufferl'. matchstr(a:e, '^[ 0-9]*')
 endfunction
 
+command! -nargs=1 AgFZF call fzf#run({
+            \'source': Arghandler(<f-args>),
+            \'sink' : function('AgHandler'),
+            \'options' : '-m',
+            \ 'tmux_height': '60%'
+            \})
+
+function! AgHandler(l)
+    let keys = split(a:l,':')
+    execute 'tabe +' . keys[-2] . ' ' . escape(keys[-1], ' ')
+endfunction 
+
+function! Arghandler(l)
+    return "ag -i " . a:l . " | sed 's@\\(.[^:]*\\):\\(.[^:]*\\):\\(.*\\)@\\3:\\2:\\1@' "
+endfunction
+
+command! FZFLines call fzf#run({
+  \ 'source':  BuffersLines(),
+  \ 'sink':    function('LineHandler'),
+  \ 'options': '--extended --nth=3..,',
+  \ 'tmux_height': '60%'
+\})
+
+function! LineHandler(l)
+  let keys = split(a:l, ':\t')
+  exec 'buf ' . keys[0]
+  exec keys[1]
+  normal! ^zz
+endfunction
+
+function! BuffersLines()
+  let res = []
+  for b in filter(range(1, bufnr('$')), 'buflisted(v:val)')
+    call extend(res, map(getbufline(b,0,"$"), 'b . ":\t" . (v:key + 1) . ":\t" . v:val '))
+  endfor
+  return res
+endfunction
+
+function! TagCommand()
+  return substitute('awk _!/^!/ { print \$1 }_ ', '_', "'", 'g')
+              \ . join(tagfiles(), ' ')
+endfunction
+
+command! FZFTag call fzf#run({
+\   'source'     : TagCommand(),
+\   'sink'       : 'tag',
+\   'tmux_height': '60%'
+\   })
+
+command! FZFMru call fzf#run({
+            \'source': v:oldfiles,
+            \'sink' : 'e ',
+            \'options' : '-m',
+            \   'tmux_height': '60%'
+            \})
+
 nnoremap <Leader>l :call fzf#run({'source': reverse(BufList()),'sink': function('BufOpen'), 'options': '--black', 'tmux_height': 20})<CR>
-nnoremap <Leader><Enter> :FZF<cr>
+nnoremap <Leader>d :FZF<cr>
+nnoremap <Leader>a :AgFZF<space>
+nnoremap <Leader>s :FZFLines<cr>
+nnoremap <Leader>t :FZFTag<cr>
+
 NeoBundle 'itchyny/lightline.vim'
 let g:lightline = {
       \'colorscheme': 'wombat',
@@ -94,48 +152,6 @@ let g:lightline = {
       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
       \ },
       \ }
-
-let g:unite_source_grep_command = 'ag'
-let g:unite_source_grep_default_opts = '--nocolor --nogroup --column'
-let g:unite_enable_start_insert = 1
-let g:unite_force_overwrite_statusline = 0
-let g:unite_winheight = 40
-
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
-
-nnoremap <leader>d :<C-u>Unite  -buffer-name=files  buffer file_rec/async:!<cr>
-"nnoremap <leader>d :FZF<cr>
-nnoremap <leader>us :Unite -buffer-name=search grep<CR>.<CR>
-nnoremap <leader>ut :Unite -buffer-name=tags outline<CR>
-nnoremap <leader>um :Unite -buffer-name=method_search grep<CR>.<CR>def (self.)?
-nnoremap <leader>f :Unite -buffer-name=file_search line<CR>
-
-autocmd FileType unite call s:unite_settings()
-
-function! s:unite_settings()
-  let b:SuperTabDisabled=1
-  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-  nmap <buffer> <C-j>   <Plug>(unite_select_next_line)
-
-  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-  nmap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-
-  imap <silent><buffer><expr> <C--> unite#do_action('split')
-  nmap <silent><buffer><expr> <C--> unite#do_action('split')
-
-  imap <silent><buffer><expr> <C-\> unite#do_action('vsplit')
-  nmap <silent><buffer><expr> <C-\> unite#do_action('vsplit')
-
-  imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
-  nmap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
-
-  nmap <C-z> <Plug>(unite_toggle_transpose_window)
-  imap <C-z> <Plug>(unite_toggle_transpose_window)
-
-  imap <buffer> <C-x> <Plug>(unite_exit)
-  nmap <buffer> <C-x> <Plug>(unite_exit)
-endfunction
 
 NeoBundle 'vim-scripts/YankRing.vim'
 NeoBundle 'Shougo/vimproc.vim', {
@@ -219,14 +235,14 @@ set guicursor+=i:ver100-icursor
 set guicursor+=n-v-c:blinkon0
 set guicursor+=i:blinkwait10
 "normal mode key mappings
-nmap y y$
+nmap Y y$
 
 "command mode mappings
 cnoremap rl source ~/.nvimrc
 
 nnoremap j gj
 nnoremap k gk
-nnoremap <leader>t :tabnew<cr>
+nnoremap <leader>c :tabnew<cr>
 nnoremap <leader>\ <c-w>v<c-w>l
 nnoremap <leader>- :split<cr><c-w>j
 nnoremap <leader>p :tabprevious
