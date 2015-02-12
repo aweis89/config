@@ -1,5 +1,13 @@
+#go path
+#export GOPATH=$HOME/Golang
+#export PATH=$GOPATH/bin:$PATH
+#//use the following if you want to generate documentation for your package using godoc
+#export GOROOT=`go env GOROOT`
+#export PATH=$PATH:$GOROOT/bin
+#Tmux
+#z
 . ~/z/z.sh
-#alias tmux="tmux -2"
+alias tmux="tmux -2"
 alias tmux='TERM=screen-256color-bce tmux'
 alias tmuxs="vim ~/.tmux.conf"
 alias zshs="vim ~/.zshrc"
@@ -36,6 +44,8 @@ alias servers='tmux new-session -n:servers '\''teamocil servers'\'''
 alias kill-servers='/Users/aweisberg/scripts/kill_servers.sh'
 alias rs="kill-servers && tmux kill-session -t servers && servers"
 alias wservers='wemux new-session -n:servers '\''teamocil servers'\'''
+
+#alias z='zeus'
 alias vi="vim"
 alias vim="nvim"
 alias cddocs="cd /Users/aweisberg/Documents"
@@ -66,6 +76,19 @@ export ZDOTDIR=$HOME
   #fi
 #}
 
+unalias z
+z() {
+  if [[ -z "$*" ]]; then
+    cd "$(_z -l 2>&1 | sed -n 's/^[ 0-9.,]*//p' | fzf)"
+  else
+    _last_z_args="$@"
+    _z "$@"
+  fi
+}
+
+fh() {
+  eval $(([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s | sed 's/ *[0-9]* *//')
+}
 #open file in vim
 fv() {
   local file
@@ -92,19 +115,23 @@ fda() {
   local dir
   dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
 }
-# cdf - cd into the directory of the selected file
-#cdf() {
-  #local file
-  #local dir
-  #file=$(fzf +m -q "$1") && dir=$(dirname "$file") && cd "$dir"
-#}
 # fbr - checkout git branch
- fgc() {
-   local branches branch
-   branches=$(git branch) &&
-     branch=$(echo "$branches" | fzf +s +m) &&
-     git checkout $(echo "$branch" | sed "s/.* //")
- }
+fgc() {
+  local branches branch
+  branches=$(git branch) &&
+    branch=$(echo "$branches" | fzf +s +m) &&
+    git checkout $(echo "$branch" | sed "s/.* //")
+}
+# ftags - search ctags
+ftags() {
+  local line
+  [ -e tags ] &&
+  line=$(
+    awk 'BEGIN { FS="\t" } !/^!/ {print toupper($4)"\t"$1"\t"$2"\t"$3}' tags |
+    cut -c1-80 | fzf --nth=1,2
+  ) && $EDITOR $(cut -f3 <<< "$line") -c "set nocst" \
+                                      -c "silent tag $(cut -f2 <<< "$line")"
+}
 
 export FUZZY_SEARCH_PATHS="~/Projects:~/XCode:~/Sites/apps:~/Sites/gems"
 
@@ -130,10 +157,6 @@ fzf_tmux_helper() {
     "bash -c \"\$(tmux send-keys -t $TMUX_PANE \"\$(source ~/.fzf.bash; $cmd)\" $*)\"| vim"
 }
 
-testing(){
-   local var="$(fzf_tmux_dir) works"
-   echo $var
-}
 # This is the function we are going to run in the split pane.
 # - "find" to list the directories
 # - "sed" will escape spaces in the paths.
@@ -147,7 +170,7 @@ fzf_tmux_dir() {
 }
 
 # Bind CTRL-X-CTRL-D to fzf_tmux_dir
-#bind '"\C-x\C-d": "$(fzf_tmux_dir)\e\C-e"'
+#bindkey '<ctrl-d>' "$(fzf_tmux_dir)\e\C-e"
 
 function gen_ctags () {
  ctags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths) 
@@ -382,7 +405,15 @@ export PATH=/usr/local/bin:$PATH
  bindkey '^h' backward-delete-char
  bindkey '^w' backward-kill-word
  bindkey '^r' history-incremental-search-backward
-
+ bindkey -M viins 'jj' vi-cmd-mode
+ bindkey -M viins 'kk' clear-screen
+ # Move to where the arguments belong.
+ up-case-prev-word() {
+   zle vi-backward-word
+   zle up-case-word
+ }
+ zle -N up-case-prev-word
+ bindkey "^u" up-case-prev-word
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 #bash -e ~/Sites/configs/env/.bash_fynanz
 source ~/.powconfig
