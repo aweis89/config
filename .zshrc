@@ -193,7 +193,6 @@ do
     do
       eval "cd${app##*/} () { cd $app }" 
       eval "v${app##*/} () { cd $app && vim }" 
-      eval "${app##*/} () { cd $app && vim }" 
     done
   fi
 done
@@ -306,20 +305,10 @@ done
 
  # Set name of the theme to load.
  # Look in ~/.oh-my-zsh/themes/
- # Optionally, if you set this to "random", it'll load a random theme each
  # time that oh-my-zsh is loaded.
  # philips
  ZSH_THEME="robbyrussell"
 
-#function zle-line-init zle-keymap-select {
-   #VIM_PROMPT="%{$fg_bold[yellow]%} [% NORMAL]%  %{$reset_color%}"
-       #RPS1="${${KEYMAP/vicmd/$VIM_PROMPT}/(main|viins)/}$(git_custom_status) $EPS1"
-           #zle reset-prompt
-         #}
-
-         #zle -N zle-line-init
-         #zle -N zle-keymap-select
-         #export KEYTIMEOUT=1
  # Example aliases
  # alias zshconfig="mate ~/.zshrc"
  # alias ohmyzsh="mate ~/.oh-my-zsh"
@@ -416,7 +405,7 @@ export PATH=/usr/local/bin:$PATH
  bindkey "^u" up-case-prev-word
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 #bash -e ~/Sites/configs/env/.bash_fynanz
-source ~/.powconfig
+#source ~/.powconfig
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 export JAVA_HOME=$(/usr/libexec/java_home)
 export JDK_HOME=$(/usr/libexec/java_home)

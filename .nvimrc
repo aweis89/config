@@ -23,6 +23,8 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " Note You don't set neobundle setting in .gvimrc!
 
 call neobundle#end()
+NeoBundle 'fatih/vim-go'
+NeoBundle 'hlissner/vim-forrestgump'
 NeoBundle 'soramugi/auto-ctags.vim'
 NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'danchoi/rb_nav'
@@ -223,13 +225,14 @@ inoremap JJ <esc>:w<cr>
 if exists('$TMUX')
     let &t_SI = "\<Esc>Ptmux;\<Esc>\033]Pl71ED39\033\<Esc>]50;CursorShape=1\x7\<Esc>\\"
     let &t_EI = "\<Esc>Ptmux;\<Esc>\033]Pl828690\033\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-    autocmd VimLeave * silent !echo -ne "\033Ptmux;\033\033]Pl71ED39\033\033]50;CursorShape=1\x7\033\\"
+    autocmd VimLeave * silent !echo -ne "\033Ptmux;\033\033]Pl71ED39\033\033]50;CursorShape=0\x7\033\\"
 else
     let &t_EI = "\033]Pl71ED39\033\\"
     let &t_SI = "\033]Pl828690\033\\"
     silent !echo -ne "\033]Pl71ED39\033\\"
     autocmd VimLeave * silent !echo -ne "\033]Pl71ED39\033\\"
 endif 
+
 set guicursor=n-v-c:block-cursor
 set guicursor+=i:ver100-icursor
 set guicursor+=n-v-c:blinkon0
@@ -259,3 +262,4 @@ nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 nnoremap H ^
 nnoremap L $
 autocmd FileType ruby iabbrev <buffer> bp binding.pry
+nmap <leader>bp Obinding.pryJJ
