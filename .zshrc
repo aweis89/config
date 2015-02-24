@@ -7,7 +7,7 @@
 #Tmux
 #z
 . ~/z/z.sh
-alias tmux="tmux -2"
+#alias tmux="tmux -2"
 alias tmux='TERM=screen-256color-bce tmux'
 alias tmuxs="vim ~/.tmux.conf"
 alias zshs="vim ~/.zshrc"
@@ -46,7 +46,7 @@ alias rs="kill-servers && tmux kill-session -t servers && servers"
 alias wservers='wemux new-session -n:servers '\''teamocil servers'\'''
 
 #alias z='zeus'
-alias vi="vim"
+#alias vi="vim"
 alias vim="nvim"
 alias cddocs="cd /Users/aweisberg/Documents"
 

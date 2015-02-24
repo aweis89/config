@@ -7,11 +7,11 @@ if has('vim_starting')
     set nocompatible               " Be iMproved
   endif
 
-  " Required
+"Required
   set runtimepath+=~/.nvim/bundle/neobundle.vim/
 endif
 
-" Required
+"Required
 call neobundle#begin(expand('~/.nvim/bundle/'))
 
 " Let NeoBundle manage NeoBundle
@@ -32,6 +32,8 @@ NeoBundle 'tpope/vim-rails'
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'Valloric/YouCompleteMe'
+NeoBundle 'tmhedberg/matchit'
+NeoBundle 'vim-scripts/ruby-matchit'
 let g:ycm_server_log_level = 'debug'
 
 NeoBundle 'scrooloose/nerdcommenter'
@@ -53,8 +55,8 @@ cmap lspec VroomRunLastTest
 cmap run VroomRunNearestTest
 let g:vroom_map_keys = 0
 "cmap specs<cr> w<cr>;call RunAllSpecs()<CR> 
-"let g:vroom_write_all = 1
-"let g:vroom_use_vimux = 1
+let g:vroom_write_all = 1
+let g:vroom_use_vimux = 1
 
 NeoBundle 'junegunn/fzf'
 " List of buffers
@@ -211,6 +213,10 @@ set noshowmode
 set nocompatible
 set number
 set rnu
+
+"Infinite undos
+set undofile
+set undodir=~/tmp
 
 set ignorecase
 set smartcase
