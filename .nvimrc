@@ -94,6 +94,13 @@ command! FZFLines call fzf#run({
   \ 'tmux_height': '60%'
 \})
 
+nnoremap <silent> <Leader><Enter> :call fzf#run({
+\   'source':      reverse(BufList()),
+\   'sink':        function('BufOpen'),
+\   'options':     '+m',
+\   'tmux_height': '40%'
+\ })<CR>
+
 function! LineHandler(l)
   let keys = split(a:l, ':\t')
   exec 'buf ' . keys[0]
