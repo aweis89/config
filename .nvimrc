@@ -68,8 +68,15 @@ function! BufList()
 endfunction
 
 function! BufOpen(e)
-  execute 'bufferl'. matchstr(a:e, '^[ 0-9]*')
+  execute 'buffer'. matchstr(a:e, '^[ 0-9]*')
 endfunction
+
+nnoremap <silent> <Leader><Enter> :call fzf#run({
+\   'source':      reverse(BufList()),
+\   'sink':        function('BufOpen'),
+\   'options': '--extended --nth=3..,',
+\   'tmux_height': '40%'
+\ })<CR>
 
 command! -nargs=1 AgFZF call fzf#run({
             \'source': Arghandler(<f-args>),
@@ -94,12 +101,6 @@ command! FZFLines call fzf#run({
   \ 'tmux_height': '60%'
 \})
 
-nnoremap <silent> <Leader><Enter> :call fzf#run({
-\   'source':      reverse(BufList()),
-\   'sink':        function('BufOpen'),
-\   'options':     '+m',
-\   'tmux_height': '40%'
-\ })<CR>
 
 function! LineHandler(l)
   let keys = split(a:l, ':\t')
