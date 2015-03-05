@@ -75,14 +75,14 @@ nnoremap <silent> <Leader><Enter> :call fzf#run({
 \   'source':      reverse(BufList()),
 \   'sink':        function('BufOpen'),
 \   'options': '--extended --nth=3..,',
-\   'tmux_height': '40%'
+\   'tmux_height': '30%'
 \ })<CR>
 
 command! -nargs=1 AgFZF call fzf#run({
             \'source': Arghandler(<f-args>),
             \'sink' : function('AgHandler'),
             \'options' : '-m',
-            \ 'tmux_height': '60%'
+            \ 'tmux_height': '70%'
             \})
 
 function! AgHandler(l)
@@ -98,7 +98,7 @@ command! FZFLines call fzf#run({
   \ 'source':  BuffersLines(),
   \ 'sink':    function('LineHandler'),
   \ 'options': '--extended --nth=3..,',
-  \ 'tmux_height': '60%'
+  \ 'tmux_height': '70%'
 \})
 
 
@@ -125,21 +125,23 @@ endfunction
 command! FZFTag call fzf#run({
 \   'source'     : TagCommand(),
 \   'sink'       : 'tag',
-\   'tmux_height': '60%'
+\   'tmux_height': '70%'
 \   })
 
 command! FZFMru call fzf#run({
             \'source': v:oldfiles,
             \'sink' : 'e ',
             \'options' : '-m',
-            \   'tmux_height': '60%'
+            \'tmux_height': '70%'
             \})
 
 nnoremap <Leader>l :call fzf#run({'source': reverse(BufList()),'sink': function('BufOpen'), 'options': '--black', 'tmux_height': 20})<CR>
-nnoremap <Leader>d :FZF<cr>
+"nnoremap <Leader>d :FZF<cr>
+nnoremap <Leader>d :call fzf#run({'sink': 'e', 'tmux_height': 70})<CR>
 nnoremap <Leader>a :AgFZF<space>
 nnoremap <Leader>s :FZFLines<cr>
 nnoremap <Leader>t :FZFTag<cr>
+cnoremap mr<cr> :FZFMru<cr>
 
 NeoBundle 'itchyny/lightline.vim'
 let g:lightline = {
@@ -259,11 +261,11 @@ cnoremap rl source ~/.nvimrc
 
 nnoremap j gj
 nnoremap k gk
-nnoremap <leader>c :tabnew<cr>
 nnoremap <leader>\ <c-w>v<c-w>l
 nnoremap <leader>- :split<cr><c-w>j
-nnoremap <leader>p :tabprevious
-nnoremap <leader>n :tabnext
+nnoremap <leader>c :tabnew<cr>
+nnoremap <leader>p :tabprevious<CR>
+nnoremap <leader>n :tabnext<CR>
 imap <c-h> <left>
 imap <c-l> <right>
 imap <c-j> <down>
