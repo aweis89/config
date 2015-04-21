@@ -38,8 +38,8 @@ let g:ycm_server_log_level = 'debug'
 
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'scrooloose/nerdtree'
-cnoremap tdir NERDTreeFind
-cnoremap dir NERDTreeToggle
+cnoremap fdir<cr> NERDTreeFind<cr>
+cnoremap dir<cr> NERDTreeToggle<cr>
 
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'tpope/vim-fugitive'
@@ -48,11 +48,12 @@ NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'tpope/vim-bundler'
 NeoBundle 'benmills/vimux'
 NeoBundle 'skalnik/vim-vroom'
+let g:vroom_spec_command = 'rspec -f d'
 NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'terryma/vim-multiple-cursors'
-cnoremap spec VroomRunTestFile
-cmap lspec VroomRunLastTest
-cmap run VroomRunNearestTest
+cmap spec<cr> VroomRunTestFile<cr>
+cmap lspec<cr> VroomRunLastTest<cr>
+cmap run<cr> VroomRunNearestTest<cr>
 let g:vroom_map_keys = 0
 "cmap specs<cr> w<cr>;call RunAllSpecs()<CR> 
 let g:vroom_write_all = 1
@@ -204,7 +205,7 @@ NeoBundleCheck
 "settings
 syntax on
 color desert
-set tabstop=2
+set tabstop=4
 set shiftwidth=2
 set expandtab
 set smartindent
@@ -253,12 +254,9 @@ set guicursor=n-v-c:block-cursor
 set guicursor+=i:ver100-icursor
 set guicursor+=n-v-c:blinkon0
 set guicursor+=i:blinkwait10
-"normal mode key mappings
-nmap Y y$
 
 "command mode mappings
-cnoremap rl source ~/.nvimrc
-
+cnoremap rl<cr> source ~/.nvimrc<cr>
 nnoremap j gj
 nnoremap k gk
 nnoremap <leader>\ <c-w>v<c-w>l
@@ -277,5 +275,11 @@ vnoremap > >gv
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 nnoremap H ^
 nnoremap L $
+nnoremap Y y$ 
+"for yankring compatibility
+function! YRRunAfterMaps()
+    nnoremap Y   :<C-U>YRYankCount 'y$'<CR>
+endfunction
+
 autocmd FileType ruby iabbrev <buffer> bp binding.pry
 nmap <leader>bp Obinding.pryJJ

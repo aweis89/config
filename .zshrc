@@ -1,6 +1,9 @@
+#lendkey stuff
+export DEPRECATION_WARNING_OUTPUT=log
+export SAKURA_DIR=/Users/aweisberg/Sites/gems/sakura
 #go path
-#export GOPATH=$HOME/Golang
-#export PATH=$GOPATH/bin:$PATH
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
 #//use the following if you want to generate documentation for your package using godoc
 #export GOROOT=`go env GOROOT`
 #export PATH=$PATH:$GOROOT/bin
@@ -25,7 +28,7 @@ alias wa='we attach -d -t'
 alias wk='we kill-session -t'
 alias g='git'
 alias gce='git add --all && git commit -v'
-alias stmate='rm -f ~/tmp/tmate.sock && tmate -S ~/tmp/tmate.sock'
+alias stmate='rm -f ~/tmp/tmate.sock && tmate -S ~/tmp/tmate.sock && tmate show-messages'
 alias apps='/Users/aweisberg/Sites/apps'
 alias gems='/Users/aweisberg/Sites/gems'
 alias cdapp='/Users/aweisberg/Sites/apps'
@@ -75,6 +78,12 @@ export ZDOTDIR=$HOME
     #command fzf "$@"
   #fi
 #}
+
+zr() {
+  rm ../../.zeus.sock
+  rm .zeus.sock
+  zeus start
+}
 
 unalias z
 z() {
