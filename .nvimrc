@@ -76,14 +76,14 @@ nnoremap <silent> <Leader><Enter> :call fzf#run({
 \   'source':      reverse(BufList()),
 \   'sink':        function('BufOpen'),
 \   'options': '--extended --nth=3..,',
-\   'tmux_height': '30%'
+\   'tmux_height': '50%'
 \ })<CR>
 
 command! -nargs=1 AgFZF call fzf#run({
             \'source': Arghandler(<f-args>),
             \'sink' : function('AgHandler'),
             \'options' : '-m',
-            \ 'tmux_height': '70%'
+            \ 'tmux_height': '50%'
             \})
 
 function! AgHandler(l)
@@ -138,7 +138,7 @@ command! FZFMru call fzf#run({
 
 nnoremap <Leader>l :call fzf#run({'source': reverse(BufList()),'sink': function('BufOpen'), 'options': '--black', 'tmux_height': 20})<CR>
 "nnoremap <Leader>d :FZF<cr>
-nnoremap <Leader>d :call fzf#run({'sink': 'e', 'tmux_height': 70})<CR>
+nnoremap <Leader>d :call fzf#run({'sink': 'e', 'tmux_height': 30})<CR>
 nnoremap <Leader>a :AgFZF<space>
 nnoremap <Leader>s :FZFLines<cr>
 nnoremap <Leader>t :FZFTag<cr>
