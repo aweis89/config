@@ -52,6 +52,7 @@ alias wservers='wemux new-session -n:servers '\''teamocil servers'\'''
 #alias vi="vim"
 alias vim="nvim"
 alias cddocs="cd /Users/aweisberg/Documents"
+alias cdmap="cd /Users/aweisberg/programs/mapper"
 
 alias cdnode="/Users/aweisberg/Documents/node_apps"
 alias copyconfig="less ~/.vimrc > /Users/aweisberg/Documents/config/.vimrc && less ~/.tmux.conf > /Users/aweisberg/Documents/config/.tmux.conf && less ~/.zshrc > /Users/aweisberg/Documents/config/.zshrc"
@@ -231,7 +232,6 @@ apps_run $1
 gems_run $1
 }
 
-
 function gem_vars () {
   cd ~/Sites/gems
   for gem in ~/Sites/gems/*
@@ -241,7 +241,6 @@ function gem_vars () {
     eval "export ${gem:u}_DIR=~/Sites/gems/${gem}"
   done
 }
-
 
 function dep() {
   default_branch=`current_branch`
@@ -388,9 +387,6 @@ export PATH=$PATH:~/scripts
 export PATH=/usr/local/bin:$PATH
 
 [[ -s "$HOME/.profile" ]] && source "$HOME/.profile" # Load the default .profile
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-
-
 
 # Teamocil autocomplete
 #compctl -g '~/.teamocil/*(:t:r)' teamocil
@@ -412,10 +408,11 @@ export PATH=/usr/local/bin:$PATH
  }
  zle -N up-case-prev-word
  bindkey "^u" up-case-prev-word
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 #bash -e ~/Sites/configs/env/.bash_fynanz
 #source ~/.powconfig
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 export JAVA_HOME=$(/usr/libexec/java_home)
 export JDK_HOME=$(/usr/libexec/java_home)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

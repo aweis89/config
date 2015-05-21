@@ -14,6 +14,9 @@ endif
 "Required
 call neobundle#begin(expand('~/.nvim/bundle/'))
 
+"adds jbuilder syntax highlighting
+au BufNewFile,BufRead *.json.jbuilder set ft=ruby
+
 " Let NeoBundle manage NeoBundle
 " Required
 NeoBundleFetch 'Shougo/neobundle.vim'
@@ -34,6 +37,8 @@ NeoBundle 'tpope/vim-repeat'
 NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'tmhedberg/matchit'
 NeoBundle 'vim-scripts/ruby-matchit'
+NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'KurtPreston/vim-autoformat-rails'
 let g:ycm_server_log_level = 'debug'
 
 NeoBundle 'scrooloose/nerdcommenter'
@@ -48,7 +53,9 @@ NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'tpope/vim-bundler'
 NeoBundle 'benmills/vimux'
 NeoBundle 'skalnik/vim-vroom'
+
 let g:vroom_spec_command = 'rspec -f d'
+
 NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'terryma/vim-multiple-cursors'
 cmap spec<cr> VroomRunTestFile<cr>
@@ -136,9 +143,11 @@ command! FZFMru call fzf#run({
             \'tmux_height': '70%'
             \})
 
-nnoremap <Leader>l :call fzf#run({'source': reverse(BufList()),'sink': function('BufOpen'), 'options': '--black', 'tmux_height': 20})<CR>
+"nnoremap <Leader>l :call fzf#run({'source': reverse(BufList()),'sink': function('BufOpen'), 'options': '--black', 'tmux_height': 20})<CR>
 "nnoremap <Leader>d :FZF<cr>
-nnoremap <Leader>d :call fzf#run({'sink': 'e', 'tmux_height': 30})<CR>
+nnoremap <leader>l :CtrlPBuffer<cr>
+nnoremap <leader>d :CtrlP<cr>
+"nnoremap <Leader>d :call fzf#run({'sink': 'e', 'tmux_height': 30})<CR>
 nnoremap <Leader>a :AgFZF<space>
 nnoremap <Leader>s :FZFLines<cr>
 nnoremap <Leader>t :FZFTag<cr>
@@ -168,7 +177,7 @@ let g:lightline = {
       \ },
       \ }
 
-NeoBundle 'vim-scripts/YankRing.vim'
+"NeoBundle 'vim-scripts/YankRing.vim'
 NeoBundle 'Shougo/vimproc.vim', {
       \ 'build' : {
       \     'windows' : 'tools\\update-dll-mingw',
@@ -209,7 +218,6 @@ set tabstop=4
 set shiftwidth=2
 set expandtab
 set smartindent
-set hlsearch
 set incsearch
 set gdefault
 set noshowmatch
