@@ -39,6 +39,8 @@ NeoBundle 'tmhedberg/matchit'
 NeoBundle 'vim-scripts/ruby-matchit'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'KurtPreston/vim-autoformat-rails'
+NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'mxw/vim-jsx'
 let g:ycm_server_log_level = 'debug'
 
 NeoBundle 'scrooloose/nerdcommenter'
@@ -51,16 +53,39 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'tpope/vim-bundler'
-NeoBundle 'benmills/vimux'
-NeoBundle 'skalnik/vim-vroom'
+"NeoBundle 'benmills/vimux'
+"NeoBundle 'skalnik/vim-vroom'
+NeoBundle 'thoughtbot/vim-rspec'
 
-let g:vroom_spec_command = 'rspec -f d'
+
+function! RspecCommand()
+  if !exists("g:target")
+    let g:target = 'right'
+  endif
+    return '''!tmux send-keys -t ' . g:target . ' C-c "clear; be rspec -f d {spec}" C-m'''
+endfunction
+
+function! SetTargetPane(target) 
+  let g:target = a:target
+endfunction
+
+com! -nargs=1 Target call SetTargetPane(<f-args>) | source ~/.nvimrc
+
+"cnoremap rl<cr> source ~/.nvimrc<cr>
+let g:rspec_command = 'silent execute ' . RspecCommand() . ' | redraw!'
+
+"let g:vroom_spec_command = 'rescue rspec -f d'
 
 NeoBundle 'christoomey/vim-tmux-navigator'
 NeoBundle 'terryma/vim-multiple-cursors'
-cmap spec<cr> VroomRunTestFile<cr>
-cmap lspec<cr> VroomRunLastTest<cr>
-cmap run<cr> VroomRunNearestTest<cr>
+"cmap spec<cr> VroomRunTestFile<cr>
+"cmap lspec<cr> VroomRunLastTest<cr>
+"cmap run<cr> VroomRunNearestTest<cr>
+" vim-rpec mapping
+cmap spec<cr> call RunCurrentSpecFile()<CR>
+cmap run<cr> call RunNearestSpec()<CR>
+cmap lspec<cr> call RunLastSpec()<CR>
+cmap specs<cr> call RunAllSpecs()<CR>
 let g:vroom_map_keys = 0
 "cmap specs<cr> w<cr>;call RunAllSpecs()<CR> 
 let g:vroom_write_all = 1
@@ -198,7 +223,7 @@ NeoBundle 'Valloric/YouCompleteMe', {
 NeoBundle 'scrooloose/syntastic' 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+"set statusline+=%*
 
 "let g:syntastic_always_populate_loc_list = 1
 "let g:syntastic_auto_loc_list = 1
