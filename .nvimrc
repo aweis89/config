@@ -62,14 +62,14 @@ function! RspecCommand()
   if !exists("g:target")
     let g:target = 'right'
   endif
-    return '''!tmux send-keys -t ' . g:target . ' C-c "clear; be rspec -f d {spec}" C-m'''
+    return '''!tmux send-keys -t ' . g:target . ' C-c " clear; cd ' . getcwd() . '; be rspec -f d {spec}" C-m'''
 endfunction
 
 function! SetTargetPane(target) 
   let g:target = a:target
 endfunction
 
-com! -nargs=1 Target call SetTargetPane(<f-args>) | source ~/.nvimrc
+com! -nargs=1 T call SetTargetPane(<f-args>) | source ~/.nvimrc
 
 "cnoremap rl<cr> source ~/.nvimrc<cr>
 let g:rspec_command = 'silent execute ' . RspecCommand() . ' | redraw!'
