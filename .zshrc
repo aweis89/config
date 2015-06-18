@@ -1,6 +1,8 @@
 #lendkey stuff
+export GH_CLIENT_DIR=/Users/aweisberg/Sites/gems/gh-client
 export DEPRECATION_WARNING_OUTPUT=log
 export SAKURA_DIR=/Users/aweisberg/Sites/gems/sakura
+export PULLSON_CLIENT_DIR=/Users/aweisberg/Sites/gems/pullson-client
 #go path
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
@@ -79,6 +81,10 @@ export ZDOTDIR=$HOME
     #command fzf "$@"
   #fi
 #}
+
+api () {
+  curl -i --user JBR:7dc77e80793d673ad32fe7876961387d -H "Accept: application/json" -H "Content-Type: application/json; charset=US-ASCII" --data $1 http://api.gh.dev/gh/v1/bulk_loans
+}
 
 zr() {
   rm ../../.zeus.sock

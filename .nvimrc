@@ -42,6 +42,7 @@ NeoBundle 'KurtPreston/vim-autoformat-rails'
 NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'mxw/vim-jsx'
 let g:ycm_server_log_level = 'debug'
+let g:syntastic_javascript_checkers = ['eslint']
 
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'scrooloose/nerdtree'
