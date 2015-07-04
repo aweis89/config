@@ -40,7 +40,9 @@ NeoBundle 'vim-scripts/ruby-matchit'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'KurtPreston/vim-autoformat-rails'
 NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'groenewege/vim-less'
 NeoBundle 'mxw/vim-jsx'
+NeoBundle 'sjl/vitality.vim'
 let g:ycm_server_log_level = 'debug'
 let g:syntastic_javascript_checkers = ['eslint']
 
@@ -58,6 +60,7 @@ NeoBundle 'tpope/vim-bundler'
 "NeoBundle 'skalnik/vim-vroom'
 NeoBundle 'thoughtbot/vim-rspec'
 
+set wildignore+=node_modules,bower_components
 
 function! RspecCommand()
   if !exists("g:target")
@@ -273,16 +276,29 @@ inoremap JJ <esc>:w<cr>
 " Cursor to yellow on insert mode
 " Blue on command/other mode
 " Note the use of hex codes (ie 3971ED)
-if exists('$TMUX')
-    let &t_SI = "\<Esc>Ptmux;\<Esc>\033]Pl71ED39\033\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-    let &t_EI = "\<Esc>Ptmux;\<Esc>\033]Pl828690\033\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-    autocmd VimLeave * silent !echo -ne "\033Ptmux;\033\033]Pl71ED39\033\033]50;CursorShape=0\x7\033\\"
-else
-    let &t_EI = "\033]Pl71ED39\033\\"
-    let &t_SI = "\033]Pl828690\033\\"
-    silent !echo -ne "\033]Pl71ED39\033\\"
-    autocmd VimLeave * silent !echo -ne "\033]Pl71ED39\033\\"
-endif 
+"if exists('$TMUX')
+    "let &t_SI = "\<Esc>Ptmux;\<Esc>\033]Pl71ED39\033\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+    "let &t_EI = "\<Esc>Ptmux;\<Esc>\033]Pl828690\033\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+    "autocmd VimLeave * silent !echo -ne "\033Ptmux;\033\033]Pl71ED39\033\033]50;CursorShape=0\x7\033\\"
+"else
+    "let &t_EI = "\033]Pl71ED39\033\\"
+    "let &t_SI = "\033]Pl828690\033\\"
+    "silent !echo -ne "\033]Pl71ED39\033\\"
+    "autocmd VimLeave * silent !echo -ne "\033]Pl71ED39\033\\"
+"endif 
+
+if &term =~ '^xterm'
+  " solid underscore
+  let &t_SI .= "\<Esc>[4 q"
+  " solid block
+  let &t_EI .= "\<Esc>[2 q"
+  " 1 or 0 -> blinking block
+  " 3 -> blinking underscore
+  " Recent versions of xterm (282 or above) also support
+  " 5 -> blinking vertical bar
+  " 6 -> solid vertical bar
+endif
+
 
 set guicursor=n-v-c:block-cursor
 set guicursor+=i:ver100-icursor
