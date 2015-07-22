@@ -1,4 +1,5 @@
 #lendkey stuff
+#ulimit -n 2560
 export GH_CLIENT_DIR=/Users/aweisberg/Sites/gems/gh-client
 export DEPRECATION_WARNING_OUTPUT=log
 export SAKURA_DIR=/Users/aweisberg/Sites/gems/sakura
@@ -152,12 +153,6 @@ ftags() {
 
 export FUZZY_SEARCH_PATHS="~/Projects:~/XCode:~/Sites/apps:~/Sites/gems"
 
-cdf() {
-local dir=$(cat << EOS | ruby | fzf -e -1 --query=$1
-  (ENV["FUZZY_SEARCH_PATHS"]||"").split(":").each{|p| puts Dir["#{File.expand_path(p)}/*"]}
-EOS)
-cd "$dir"
-}
 
 fgrep() {
   grep --line-buffered --color=never -r "" * | fzf
