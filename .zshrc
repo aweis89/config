@@ -4,6 +4,9 @@ export GH_CLIENT_DIR=/Users/aweisberg/Sites/gems/gh-client
 export DEPRECATION_WARNING_OUTPUT=log
 export SAKURA_DIR=/Users/aweisberg/Sites/gems/sakura
 export PULLSON_CLIENT_DIR=/Users/aweisberg/Sites/gems/pullson-client
+export FOM_CLIENT_DIR=/Users/aweisberg/Sites/gems/fom-client
+export COMMON_CLIENT_DIR=/Users/aweisberg/Sites/gems/common-client
+export PRICER_CLIENT_DIR=/Users/aweisberg/Sites/gems/pricer-client
 #go path
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin

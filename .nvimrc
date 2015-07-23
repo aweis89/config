@@ -175,7 +175,7 @@ command! FZFMru call fzf#run({
 "nnoremap <Leader>l :call fzf#run({'source': reverse(BufList()),'sink': function('BufOpen'), 'options': '--black', 'tmux_height': 20})<CR>
 "nnoremap <Leader>d :FZF<cr>
 nnoremap <leader>l :CtrlPBuffer<cr>
-nnoremap <leader>d :CtrlP<cr>
+nnoremap <leader>d :FZF<cr>
 "nnoremap <Leader>d :call fzf#run({'sink': 'e', 'tmux_height': 30})<CR>
 nnoremap <Leader>a :AgFZF<space>
 nnoremap <Leader>s :FZFLines<cr>
