@@ -45,6 +45,8 @@ NeoBundle 'mxw/vim-jsx'
 NeoBundle 'sjl/vitality.vim'
 let g:ycm_server_log_level = 'debug'
 let g:syntastic_javascript_checkers = ['eslint']
+au BufNewFile,BufRead *.es6 let b:jsx_ext_found = 1
+au BufNewFile,BufRead *.es6 set filetype=javascript.jsx
 
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'scrooloose/nerdtree'
