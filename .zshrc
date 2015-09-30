@@ -1,15 +1,21 @@
 #lendkey stuff
 #ulimit -n 2560
-export GH_CLIENT_DIR=/Users/aweisberg/Sites/gems/gh-client
-export DEPRECATION_WARNING_OUTPUT=log
-export SAKURA_DIR=/Users/aweisberg/Sites/gems/sakura
-export PULLSON_CLIENT_DIR=/Users/aweisberg/Sites/gems/pullson-client
-export FOM_CLIENT_DIR=/Users/aweisberg/Sites/gems/fom-client
-export COMMON_CLIENT_DIR=/Users/aweisberg/Sites/gems/common-client
-export PRICER_CLIENT_DIR=/Users/aweisberg/Sites/gems/pricer-client
+source $HOME/configs/lkenv.sh
+
+#export GH_CLIENT_DIR=/Users/aweisberg/Sites/gems/gh-client
+#export NADA_CLIENT_DIR=/Users/aweisberg/Sites/gems/nada-client
+#export NADA_DIR=/Users/aweisberg/Sites/apps/nada
+#export DEPRECATION_WARNING_OUTPUT=log
+#export SAKURA_DIR=/Users/aweisberg/Sites/gems/sakura
+#export PULLSON_CLIENT_DIR=/Users/aweisberg/Sites/gems/pullson-client
+#export FOM_CLIENT_DIR=/Users/aweisberg/Sites/gems/fom-client
+#export COMMON_CLIENT_DIR=/Users/aweisberg/Sites/gems/common-client
+#export PRICER_CLIENT_DIR=/Users/aweisberg/Sites/gems/pricer-client
 #go path
 export GOPATH=$HOME/go
+export GOBIN=$HOME/go/bin
 export PATH=$PATH:$GOPATH/bin
+export URL=https://lenderweb.staging.lendingtree.com/offers/AutoOfferPost.aspx
 #//use the following if you want to generate documentation for your package using godoc
 #export GOROOT=`go env GOROOT`
 #export PATH=$PATH:$GOROOT/bin
@@ -48,7 +54,7 @@ alias bo="bundle open"
 alias bu="bundle update"
 alias bi="bundle install"
 alias bs="bundle show"
-alias specs="bundle exec rspec spec"
+alias specs="bundle exec rspec -f d"
 
 alias servers='tmux new-session -n:servers '\''teamocil servers'\'''
 alias kill-servers='/Users/aweisberg/scripts/kill_servers.sh'
@@ -65,6 +71,7 @@ alias cdnode="/Users/aweisberg/Documents/node_apps"
 alias copyconfig="less ~/.vimrc > /Users/aweisberg/Documents/config/.vimrc && less ~/.tmux.conf > /Users/aweisberg/Documents/config/.tmux.conf && less ~/.zshrc > /Users/aweisberg/Documents/config/.zshrc"
 
 alias memcache="/usr/local/bin/memcached"
+alias xml-post="curl -i -H \"Content-Type: text/xml\" -d @- -X POST"
 
 #DISABLE_AUTO_TITLE=true
 
@@ -72,6 +79,10 @@ alias rfind='find . -name "*.rb" | xargs grep -n'
 #Default editor
 export EDITOR=vim
 export ZDOTDIR=$HOME
+
+post () {
+  curl -i -H "Content-Type: application/${2:=json}" -d @- -X POST $1
+}
 
 #FZF
 
@@ -86,6 +97,12 @@ export ZDOTDIR=$HOME
     #command fzf "$@"
   #fi
 #}
+
+tojsx () {
+  for f in *.es6; do
+    mv -- "$f" "${f%.es6}.jsx"
+  done
+}
 
 api () {
   curl -i --user JBR:7dc77e80793d673ad32fe7876961387d -H "Accept: application/json" -H "Content-Type: application/json; charset=US-ASCII" --data $1 http://api.gh.dev/gh/v1/bulk_loans
@@ -187,7 +204,7 @@ fzf_tmux_dir() {
 # Bind CTRL-X-CTRL-D to fzf_tmux_dir
 #bindkey '<ctrl-d>' "$(fzf_tmux_dir)\e\C-e"
 
-function gen_ctags () {
+function tag () {
  ctags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths) 
 }
 
@@ -212,15 +229,15 @@ do
   fi
 done
 
-#function dir_exec () {
-#cd $1
-#for path in ./*
-#do
-  #cd $path || echo "cannot cd into: ${path}"
-  #echo "executing $2 in $path ..." && eval "$2" || echo "cannot execute: $2 in $path"
-  #cd .. || echo "cannot cd back from $path"
-#done
-#}
+function dir_exec () {
+cd $1
+for path in ./*
+do
+  cd $path || echo "cannot cd into: ${path}"
+  echo "executing $2 in $path ..." && eval "$2" || echo "cannot execute: $2 in $path"
+  cd .. || echo "cannot cd back from $path"
+done
+}
 
 function gems_run () {
   cd ~/Sites/gems

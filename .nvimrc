@@ -25,8 +25,8 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " Refer to |:NeoBundle-examples|.
 " Note You don't set neobundle setting in .gvimrc!
 
-call neobundle#end()
 NeoBundle 'fatih/vim-go'
+NeoBundle 'git://github.com/jsx/jsx.vim.git'
 NeoBundle 'hlissner/vim-forrestgump'
 NeoBundle 'soramugi/auto-ctags.vim'
 NeoBundle 'vim-ruby/vim-ruby'
@@ -45,8 +45,8 @@ NeoBundle 'mxw/vim-jsx'
 NeoBundle 'sjl/vitality.vim'
 let g:ycm_server_log_level = 'debug'
 let g:syntastic_javascript_checkers = ['eslint']
-au BufNewFile,BufRead *.es6 let b:jsx_ext_found = 1
-au BufNewFile,BufRead *.es6 set filetype=javascript.jsx
+au BufNewFile,BufRead *.jsx let b:jsx_ext_found = 1
+au BufNewFile,BufRead *.jsx set filetype=javascript.jsx
 
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'scrooloose/nerdtree'
@@ -75,7 +75,7 @@ function! SetTargetPane(target)
   let g:target = a:target
 endfunction
 
-com! -nargs=1 T call SetTargetPane(<f-args>) | source ~/.nvimrc
+"com! -nargs=1 T call SetTargetPane(<f-args>) | source ~/.nvimrc
 
 "cnoremap rl<cr> source ~/.nvimrc<cr>
 let g:rspec_command = 'silent execute ' . RspecCommand() . ' | redraw!'
@@ -96,6 +96,11 @@ let g:vroom_map_keys = 0
 "cmap specs<cr> w<cr>;call RunAllSpecs()<CR> 
 let g:vroom_write_all = 1
 let g:vroom_use_vimux = 1
+
+nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+
+"Html tags
+imap <c-w> <esc>bywi<<esc>ea></<esc>pa><esc>bhhi
 
 NeoBundle 'junegunn/fzf'
 " List of buffers
@@ -232,14 +237,16 @@ set statusline+=%{SyntasticStatuslineFlag()}
 "set statusline+=%*
 
 "let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_auto_loc_list = 1
 "let g:syntastic_check_on_open = 1
+"let g:syntastic_auto_loc_list = 1
 "let g:syntastic_check_on_wq = 0
 
-" Required
-filetype plugin indent on
-" If there are uninstalled bundles found on startup,
+nmap <Down> ]e
+nmap <Up> [e
+
+" Required filetype plugin indent on " If there are uninstalled bundles found on startup,
 " this will conveniently prompt you to install them.
+filetype plugin indent on
 NeoBundleCheck
 
 "settings
@@ -335,3 +342,4 @@ endfunction
 
 autocmd FileType ruby iabbrev <buffer> bp binding.pry
 nmap <leader>bp Obinding.pryJJ
+call neobundle#end()

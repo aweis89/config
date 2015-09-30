@@ -1,70 +1,109 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
-set shell=zsh
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'ecomba/vim-ruby-refactoring'
-Plugin 'danchoi/rb_nav'
-Plugin 'tpope/vim-rails'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'tpope/vim-fugitive'
-Plugin 'slim-template/vim-slim.git'
-"Plugin 'Valloric/YouCompleteMe'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'itchyny/lightline.vim'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
-Plugin 'tpope/vim-surround'
-Plugin 'Lokaltog/vim-easymotion'
-"Plugin 'vim-scripts/SearchComplete'
-Plugin 'thoughtbot/vim-rspec'
-Plugin 'edkolev/tmuxline.vim'
-Plugin 'scrooloose/syntastic'
-Plugin 'sjl/gundo.vim'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'tpope/vim-repeat'
-Plugin 'tell-k/vim-browsereload-mac'
-Plugin 'mustache/vim-mustache-handlebars'
-Plugin 'dsawardekar/ember.vim'
-Plugin 'vim-scripts/YankRing.vim' 
-Plugin 'Shougo/unite.vim'
-Plugin 'Shougo/neomru.vim'
-"Plugin 'junkblocker/unite-codesearch'
-"Plugin 'junkblocker/codesearch'
-"Plugin 'brandonbloom/csearch.vim'
-Plugin 'Shougo/vimproc'
-Plugin 'vim-scripts/tetragrammaton'
-Plugin 'digitaltoad/vim-jade'
-Plugin 'mklabs/vim-backbone'
-Plugin 'tpope/vim-bundler'
-Plugin 'tpope/vim-endwise'
-Plugin 'benmills/vimux'
-"Plugin 'xolox/vim-easytags'
-"Plugin 'xolox/vim-misc'
-Plugin 'Shougo/unite-outline'
-Plugin 'junegunn/fzf'
-call vundle#end()
+"Note Skip initialization for vim-tiny or vim-small.
+let mapleader = " "
+if !1 | finish | endif
 
+if has('vim_starting')
+  if &compatible
+    set nocompatible               " Be iMproved
+  endif
 
-"ctags
-"let g:easytags_async = 1
-"set tags=./tags;
-"let g:easytags_dynamic_files = 1
+"Required
+  set runtimepath+=~/.nvim/bundle/neobundle.vim/
+endif
 
-" Choose a color scheme with fzf
-map <Leader>z :call fzf#run({
-\   'source':
-\     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
-\         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
-\   'sink':       'colo',
-\   'options':    '+m',
-\   'tmux_width': 20,
-\   'launcher':   'xterm -geometry 20x30 -e bash -ic %s'
-\ })<CR>
+"Required
+call neobundle#begin(expand('~/.nvim/bundle/'))
+
+"adds jbuilder syntax highlighting
+au BufNewFile,BufRead *.json.jbuilder set ft=ruby
+
+" Let NeoBundle manage NeoBundle
+" Required
+NeoBundleFetch 'Shougo/neobundle.vim'
+
+" My Bundles here:
+" Refer to |:NeoBundle-examples|.
+" Note You don't set neobundle setting in .gvimrc!
+
+call neobundle#end()
+NeoBundle 'fatih/vim-go'
+NeoBundle 'git://github.com/jsx/jsx.vim.git'
+NeoBundle 'hlissner/vim-forrestgump'
+NeoBundle 'soramugi/auto-ctags.vim'
+NeoBundle 'vim-ruby/vim-ruby'
+NeoBundle 'danchoi/rb_nav'
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'tpope/vim-endwise'
+NeoBundle 'tpope/vim-repeat'
+NeoBundle 'Valloric/YouCompleteMe'
+NeoBundle 'tmhedberg/matchit'
+NeoBundle 'vim-scripts/ruby-matchit'
+NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'KurtPreston/vim-autoformat-rails'
+NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'groenewege/vim-less'
+NeoBundle 'mxw/vim-jsx'
+NeoBundle 'sjl/vitality.vim'
+let g:ycm_server_log_level = 'debug'
+let g:syntastic_javascript_checkers = ['eslint']
+au BufNewFile,BufRead *.jsx let b:jsx_ext_found = 1
+au BufNewFile,BufRead *.jsx set filetype=javascript.jsx
+
+NeoBundle 'scrooloose/nerdcommenter'
+NeoBundle 'scrooloose/nerdtree'
+cnoremap fdir<cr> NERDTreeFind<cr>
+cnoremap dir<cr> NERDTreeToggle<cr>
+
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'airblade/vim-gitgutter'
+NeoBundle 'tpope/vim-unimpaired'
+NeoBundle 'tpope/vim-bundler'
+"NeoBundle 'benmills/vimux'
+"NeoBundle 'skalnik/vim-vroom'
+NeoBundle 'thoughtbot/vim-rspec'
+
+set wildignore+=node_modules,bower_components
+
+function! RspecCommand()
+  if !exists("g:target")
+    let g:target = 'right'
+  endif
+    return '''!tmux send-keys -t ' . g:target . ' C-c " clear; cd ' . getcwd() . '; be rspec -f d {spec}" C-m'''
+endfunction
+
+function! SetTargetPane(target) 
+  let g:target = a:target
+endfunction
+
+com! -nargs=1 T call SetTargetPane(<f-args>) | source ~/.nvimrc
+
+"cnoremap rl<cr> source ~/.nvimrc<cr>
+let g:rspec_command = 'silent execute ' . RspecCommand() . ' | redraw!'
+
+"let g:vroom_spec_command = 'rescue rspec -f d'
+
+NeoBundle 'christoomey/vim-tmux-navigator'
+NeoBundle 'terryma/vim-multiple-cursors'
+"cmap spec<cr> VroomRunTestFile<cr>
+"cmap lspec<cr> VroomRunLastTest<cr>
+"cmap run<cr> VroomRunNearestTest<cr>
+" vim-rpec mapping
+cmap spec<cr> call RunCurrentSpecFile()<CR>
+cmap run<cr> call RunNearestSpec()<CR>
+cmap lspec<cr> call RunLastSpec()<CR>
+cmap specs<cr> call RunAllSpecs()<CR>
+let g:vroom_map_keys = 0
+"cmap specs<cr> w<cr>;call RunAllSpecs()<CR> 
+let g:vroom_write_all = 1
+let g:vroom_use_vimux = 1
+
+nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+
+"Html tags
+imap <c-w> <esc>bywi<<esc>ea></<esc>pa><esc>bhhi
+
+NeoBundle 'junegunn/fzf'
 " List of buffers
 function! BufList()
   redir => ls
@@ -74,27 +113,84 @@ function! BufList()
 endfunction
 
 function! BufOpen(e)
-  execute 'buffer '. matchstr(a:e, '^[ 0-9]*')
+  execute 'buffer'. matchstr(a:e, '^[ 0-9]*')
 endfunction
 
-map <Leader><Enter> :call fzf#run({'source': reverse(BufList()),'sink': function('BufOpen'), 'options': '--black', 'tmux_width': 20})<CR>
+nnoremap <silent> <Leader><Enter> :call fzf#run({
+\   'source':      reverse(BufList()),
+\   'sink':        function('BufOpen'),
+\   'options': '--extended --nth=3..,',
+\   'tmux_height': '50%'
+\ })<CR>
 
-" Required:
-filetype plugin indent on
+command! -nargs=1 AgFZF call fzf#run({
+            \'source': Arghandler(<f-args>),
+            \'sink' : function('AgHandler'),
+            \'options' : '-m',
+            \ 'tmux_height': '50%'
+            \})
 
-" If there are uninstalled bundles found on startup,
-" this will conveniently prompt you to install them.
-"neoBundleCheck
-"End NeoBundle Scripts-------------------------
-"NeoBundle 'Shougo/vimproc.vim', {
-"\ 'build' : {
-"\     'windows' : 'tools\\update-dll-mingw',
-"\     'cygwin' : 'make -f make_cygwin.mak',
-"\     'mac' : 'make -f make_mac.mak',
-"\     'linux' : 'make',
-"\     'unix' : 'gmake',
-"\    },
-"\ }
+function! AgHandler(l)
+    let keys = split(a:l,':')
+    execute 'tabe +' . keys[-2] . ' ' . escape(keys[-1], ' ')
+endfunction 
+
+function! Arghandler(l)
+    return "ag -i " . a:l . " | sed 's@\\(.[^:]*\\):\\(.[^:]*\\):\\(.*\\)@\\3:\\2:\\1@' "
+endfunction
+
+command! FZFLines call fzf#run({
+  \ 'source':  BuffersLines(),
+  \ 'sink':    function('LineHandler'),
+  \ 'options': '--extended --nth=3..,',
+  \ 'tmux_height': '70%'
+\})
+
+
+function! LineHandler(l)
+  let keys = split(a:l, ':\t')
+  exec 'buf ' . keys[0]
+  exec keys[1]
+  normal! ^zz
+endfunction
+
+function! BuffersLines()
+  let res = []
+  for b in filter(range(1, bufnr('$')), 'buflisted(v:val)')
+    call extend(res, map(getbufline(b,0,"$"), 'b . ":\t" . (v:key + 1) . ":\t" . v:val '))
+  endfor
+  return res
+endfunction
+
+function! TagCommand()
+  return substitute('awk _!/^!/ { print \$1 }_ ', '_', "'", 'g')
+              \ . join(tagfiles(), ' ')
+endfunction
+
+command! FZFTag call fzf#run({
+\   'source'     : TagCommand(),
+\   'sink'       : 'tag',
+\   'tmux_height': '70%'
+\   })
+
+command! FZFMru call fzf#run({
+            \'source': v:oldfiles,
+            \'sink' : 'e ',
+            \'options' : '-m',
+            \'tmux_height': '70%'
+            \})
+
+"nnoremap <Leader>l :call fzf#run({'source': reverse(BufList()),'sink': function('BufOpen'), 'options': '--black', 'tmux_height': 20})<CR>
+"nnoremap <Leader>d :FZF<cr>
+nnoremap <leader>l :CtrlPBuffer<cr>
+nnoremap <leader>d :FZF<cr>
+"nnoremap <Leader>d :call fzf#run({'sink': 'e', 'tmux_height': 30})<CR>
+nnoremap <Leader>a :AgFZF<space>
+nnoremap <Leader>s :FZFLines<cr>
+nnoremap <Leader>t :FZFTag<cr>
+cnoremap mr<cr> :FZFMru<cr>
+
+NeoBundle 'itchyny/lightline.vim'
 let g:lightline = {
       \'colorscheme': 'wombat',
       \'active': {
@@ -118,220 +214,131 @@ let g:lightline = {
       \ },
       \ }
 
+"NeoBundle 'vim-scripts/YankRing.vim'
+NeoBundle 'Shougo/vimproc.vim', {
+      \ 'build' : {
+      \     'windows' : 'tools\\update-dll-mingw',
+      \     'cygwin' : 'make -f make_cygwin.mak',
+      \     'mac' : 'make -f make_mac.mak',
+      \     'linux' : 'make',
+      \     'unix' : 'gmake',
+      \    },
+      \ }
+NeoBundle 'Valloric/YouCompleteMe', {
+      \ 'build' : {
+      \     'mac' : './install.sh',
+      \     'unix' : './install.sh --clang-completer --system-libclang --omnisharp-completer',
+      \     'windows' : './install.sh --clang-completer --system-libclang --omnisharp-completer',
+      \     'cygwin' : './install.sh --clang-completer --system-libclang --omnisharp-completer'
+      \    }
+      \ }
+NeoBundle 'scrooloose/syntastic' 
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
 
-augroup AutoSyntastic
-  autocmd!
-  autocmd BufWritePost *.c,*.cpp call s:syntastic()
-augroup END
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_wq = 0
 
-function! s:syntastic()
-  SyntasticCheck
-  call lightline#update()
-endfunction
+nmap <Down> ]e
+nmap <Up> [e
 
-let g:tmuxline_separators = {
-    \ 'left' : '',
-    \ 'left_alt': '>',
-    \ 'right' : '',
-    \ 'right_alt' : '<',
-    \ 'space' : ' '}
+" Required filetype plugin indent on " If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck
 
-let g:tmuxline_preset = {
-      \'a'    : '#S',
-      \'c'    : ['#(whoami)', '#(uptime | cud -d " " -f 1,2,3)'],
-      \'win'  : ['#I', '#W'],
-      \'cwin' : ['#I', '#W', '#F'],
-      \'y'    : ['%R', '%a', '%Y']}
-syntax enable
-filetype plugin indent on
-
-"Smart % functionality
-runtime macros/matchit.vim
-
-
-execute pathogen#infect()
-let loaded_matchparen = 1
-let mapleader = " "
-" change the default EasyMotion shading to something more readable with
-" Solarized
-hi link EasyMotionTarget ErrorMsg
-hi link EasyMotionShade  Comment
-
-
-"only use zeus if it exists
-if !empty(glob(getcwd() . "/.zeus.sock"))
-  let g:rspec_command = 'clear && zeus rspec {spec}'
-else
-  let g:rspec_command = 'clear && bundle exec rspec --color {spec}'
-endif
-
-"only use vimux if in tmux session
-if !empty($TMUX)
-  let g:rspec_command = "VimuxRunCommand('". g:rspec_command . "')"
-else
-  let g:rspec_command = "!". g:rspec_command
-endif
-
-set number
-set tabstop=2
+"settings
+syntax on
+color desert
+set tabstop=4
 set shiftwidth=2
 set expandtab
-set autoindent
 set smartindent
-set hlsearch
 set incsearch
 set gdefault
 set noshowmatch
 set encoding=utf-8
 set noswapfile
 set cursorline
-set t_Co=256
+hi CursorLine cterm=NONE ctermbg=234 guibg=Grey90
+"highlight SignColumn ctermbg=234 guibg=red set t_Co=256
 set backspace=indent,eol,start
 set laststatus=2
 set noshowmode
 set nocompatible
+set number
 set rnu
+
+"Infinite undos
+set undofile
+set undodir=~/tmp
 
 set ignorecase
 set smartcase
-hi TabLineFill ctermfg=LightGreen ctermbg=DarkGreen
-hi TabLine ctermfg=Blue ctermbg=Yellow
-hi TabLineSel ctermfg=Red ctermbg=Yellow
+"
+"insert mode key mappings
+inoremap jj <esc>
+inoremap JJ <esc>:w<cr>
 
-"rails vim
-map <leader>a ;A<cr>
-map <leader>c ;Rcontroller<cr>
-map <leader>m ;Rmodel<cr>
-map <leader>v ;Rview<cr>
+" Cursor to yellow on insert mode
+" Blue on command/other mode
+" Note the use of hex codes (ie 3971ED)
+"if exists('$TMUX')
+    "let &t_SI = "\<Esc>Ptmux;\<Esc>\033]Pl71ED39\033\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+    "let &t_EI = "\<Esc>Ptmux;\<Esc>\033]Pl828690\033\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+    "autocmd VimLeave * silent !echo -ne "\033Ptmux;\033\033]Pl71ED39\033\033]50;CursorShape=0\x7\033\\"
+"else
+    "let &t_EI = "\033]Pl71ED39\033\\"
+    "let &t_SI = "\033]Pl828690\033\\"
+    "silent !echo -ne "\033]Pl71ED39\033\\"
+    "autocmd VimLeave * silent !echo -ne "\033]Pl71ED39\033\\"
+"endif 
 
-"remove mappings
-let g:gitgutter_map_keys = 0
+if &term =~ '^xterm'
+  " solid underscore
+  let &t_SI .= "\<Esc>[4 q"
+  " solid block
+  let &t_EI .= "\<Esc>[2 q"
+  " 1 or 0 -> blinking block
+  " 3 -> blinking underscore
+  " Recent versions of xterm (282 or above) also support
+  " 5 -> blinking vertical bar
+  " 6 -> solid vertical bar
+endif
 
-"add a binding.pry
-map <leader>bp Obinding.pryjj
-"remove binding.pry
-map <leader>br /binding.pry<cr>dd
 
-"map <leader>ls ;buffers<CR>;buffer<Space>
-map f <Plug>(easymotion-fl)
-map F <Plug>(easymotion-Fl)
-map t <Plug>(easymotion-tl)
-map T <Plug>(easymotion-Tl)
-map <leader>f <Plug>(easymotion-bd-w)
+set guicursor=n-v-c:block-cursor
+set guicursor+=i:ver100-icursor
+set guicursor+=n-v-c:blinkon0
+set guicursor+=i:blinkwait10
 
-map <leader>n ;noh<cr>
-map <leader>t ;tabnew<cr>
-map <leader>\ <c-w>v<c-w>l
-map <leader>- ;split<cr><c-w>j
-imap jj <esc>
+"command mode mappings
+cnoremap rl<cr> source ~/.nvimrc<cr>
+nnoremap j gj
+nnoremap k gk
+nnoremap <leader>\ <c-w>v<c-w>l
+nnoremap <leader>- :split<cr><c-w>j
+nnoremap <leader>c :tabnew<cr>
+nnoremap <leader>p :tabprevious<CR>
+nnoremap <leader>n :tabnext<CR>
 imap <c-h> <left>
 imap <c-l> <right>
 imap <c-j> <down>
 imap <c-k> <up>
 
-map <leader>h ^
-map <leader>l $
-
-map <S-h> ;tabprevious<cr>
-map <S-l> ;tabnext<cr>
-"Copy to clipboard
-vmap <c-c> "*y
-vmap <c-p> "*p
-"Intuitive navigation for overlapping lines
-map j gj
-map k gk
-
-map f <Plug>(easymotion-fl)
-map f <Plug>(easymotion-fl)
-map F <Plug>(easymotion-Fl)
-map t <Plug>(easymotion-tl)
-map T <Plug>(easymotion-Tl)
-map <leader>w <Plug>(easymotion-bd-w)
-map F <Plug>(easymotion-Fl)
-map t <Plug>(easymotion-tl)
-map T <Plug>(easymotion-Tl)
-map <leader>w <Plug>(easymotion-bd-w)
-
-"make Y behave like D and C
-map Y y$
-
-nnoremap ; :
-
-cmap reload<cr> :source ~/.vimrc<cr>
-
-let g:unite_source_grep_command = 'ag'
-let g:unite_source_grep_default_opts = '--nocolor --nogroup --column'
-"let g:unite_source_rec_async_command= 'ag --nocolor --nogroup --hidden -g'
-let g:unite_enable_start_insert = 1
-"let g:unite_split_rule = "botright"
-let g:unite_force_overwrite_statusline = 0
-let g:unite_winheight = 40
-
-"call unite#custom_source('file_rec/git,file_rec/async,file_mru,file,buffer,grep',
-      "\ 'ignore_pattern', join([
-      "\ '\.git/',
-      "\ ], '\|'))
-
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
-
-nnoremap <leader>d :<C-u>Unite  -buffer-name=files  buffer file_rec/async:!<cr>
-nnoremap <leader>us :Unite -buffer-name=search grep<CR>.<CR>
-nnoremap <leader>ut :Unite -buffer-name=tags outline<CR>
-nnoremap <leader>um :Unite -buffer-name=method_search grep<CR>.<CR>def (self.)?
-nnoremap / :Unite -buffer-name=file_search line<CR>
-
-autocmd FileType unite call s:unite_settings()
-
-function! s:unite_settings()
-  let b:SuperTabDisabled=1
-  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-  nmap <buffer> <C-j>   <Plug>(unite_select_next_line)
-
-  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-  nmap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-
-  imap <silent><buffer><expr> <C--> unite#do_action('split')
-  nmap <silent><buffer><expr> <C--> unite#do_action('split')
-
-  imap <silent><buffer><expr> <C-\> unite#do_action('vsplit')
-  nmap <silent><buffer><expr> <C-\> unite#do_action('vsplit')
-
-  imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
-  nmap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
-
-  nmap <C-z> <Plug>(unite_toggle_transpose_window)
-  imap <C-z> <Plug>(unite_toggle_transpose_window)
-
-  imap <buffer> <C-x> <Plug>(unite_exit)
-  nmap <buffer> <C-x> <Plug>(unite_exit)
-endfunction
-
-let g:VimuxOrientation = 'h'
-let VimuxUseNearest = 0
-map <leader>vp :VimuxPromptCommand<CR>
-map <leader>vq :VimuxCloseRunner<CR>
-
-"Don't leave visual when modifying indentation
+" visualmode mappings
 vnoremap < <gv
 vnoremap > >gv 
+nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
+nnoremap H ^
+nnoremap L $
+nnoremap Y y$ 
+"for yankring compatibility
+function! YRRunAfterMaps()
+    nnoremap Y   :<C-U>YRYankCount 'y$'<CR>
+endfunction
 
-"Rspec plugin remapping
-cmap spec<cr> w<cr>;call RunCurrentSpecFile()<cr>
-cmap lspec<cr> w<cr>;call RunLastSpec()<cr>
-cmap run<cr> w<cr>;call RunNearestSpec()<cr>
-cmap specs<cr> w<cr>;call RunAllSpecs()<CR> 
-
-"Nerdtree
-cmap dir<CR> NERDTree<CR> 
-
-cmap * <c-r><c-w>
-
-let g:ctrlp_match_window = 'bottom'
-
-let g:UltiSnipsExpandTrigger = '<c-e>'
-let g:UltiSnipsJumpForwardTrigger = '<c-n>'
-let g:UltiSnipsJumpBackwardTrigger = '<c-b>'
-
-"loads zshrc
-set shell=bash\ --login
+autocmd FileType ruby iabbrev <buffer> bp binding.pry
+nmap <leader>bp Obinding.pryJJ
