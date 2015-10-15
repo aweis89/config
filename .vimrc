@@ -11,6 +11,9 @@ if has('vim_starting')
   set runtimepath+=~/.nvim/bundle/neobundle.vim/
 endif
 
+if has('nvim')
+  nmap <BS> <C-W>h
+endif
 "Required
 call neobundle#begin(expand('~/.nvim/bundle/'))
 
@@ -35,7 +38,6 @@ NeoBundle 'danchoi/rb_nav'
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'tpope/vim-repeat'
-NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'tmhedberg/matchit'
 NeoBundle 'vim-scripts/ruby-matchit'
 NeoBundle 'kien/ctrlp.vim'
@@ -44,6 +46,7 @@ NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'groenewege/vim-less'
 NeoBundle 'mxw/vim-jsx'
 NeoBundle 'sjl/vitality.vim'
+NeoBundle 'tmux-plugins/vim-tmux-focus-events'
 let g:ycm_server_log_level = 'debug'
 let g:syntastic_javascript_checkers = ['eslint']
 au BufNewFile,BufRead *.jsx let b:jsx_ext_found = 1

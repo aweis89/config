@@ -22,7 +22,9 @@ export URL=https://lenderweb.staging.lendingtree.com/offers/AutoOfferPost.aspx
 #Tmux
 #z
 . ~/z/z.sh
+alias st='ssh lkst030'
 #alias tmux="tmux -2"
+alias qa='ssh lkqa030'
 alias tmux='TERM=screen-256color-bce tmux'
 alias tmuxs="vim ~/.tmux.conf"
 alias zshs="vim ~/.zshrc"
@@ -84,6 +86,9 @@ post () {
   curl -i -H "Content-Type: application/${2:=json}" -d @- -X POST $1
 }
 
+get () {
+  curl -i -H "Content-Type: application/${2:=json}" -X GET $1
+}
 #FZF
 
 # Copy the original fzf function to __fzf
@@ -438,3 +443,6 @@ export JDK_HOME=$(/usr/libexec/java_home)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+# Pipe output of previous command
+alias _='fc -e - |'

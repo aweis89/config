@@ -25,6 +25,11 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " Refer to |:NeoBundle-examples|.
 " Note You don't set neobundle setting in .gvimrc!
 
+"Ruby settings
+let ruby_spellcheck_strings = 1
+
+NeoBundle 'flazz/vim-colorschemes'
+NeoBundle 'jszakmeister/vim-togglecursor'
 NeoBundle 'fatih/vim-go'
 NeoBundle 'git://github.com/jsx/jsx.vim.git'
 NeoBundle 'hlissner/vim-forrestgump'
@@ -80,10 +85,10 @@ endfunction
 "cnoremap rl<cr> source ~/.nvimrc<cr>
 let g:rspec_command = 'silent execute ' . RspecCommand() . ' | redraw!'
 
-"let g:vroom_spec_command = 'rescue rspec -f d'
+let g:vroom_spec_command = 'rescue rspec -f d'
 
 NeoBundle 'christoomey/vim-tmux-navigator'
-NeoBundle 'terryma/vim-multiple-cursors'
+"NeoBundle 'terryma/vim-multiple-cursors'
 "cmap spec<cr> VroomRunTestFile<cr>
 "cmap lspec<cr> VroomRunLastTest<cr>
 "cmap run<cr> VroomRunNearestTest<cr>
@@ -182,7 +187,10 @@ command! FZFMru call fzf#run({
 "nnoremap <Leader>l :call fzf#run({'source': reverse(BufList()),'sink': function('BufOpen'), 'options': '--black', 'tmux_height': 20})<CR>
 "nnoremap <Leader>d :FZF<cr>
 nnoremap <leader>l :CtrlPBuffer<cr>
-nnoremap <leader>d :FZF<cr>
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:50,results:50'
+
+"nnoremap <leader>d :FZF<cr>
+nnoremap <leader>d :CtrlP<cr>
 "nnoremap <Leader>d :call fzf#run({'sink': 'e', 'tmux_height': 30})<CR>
 nnoremap <Leader>a :AgFZF<space>
 nnoremap <Leader>s :FZFLines<cr>
@@ -259,7 +267,7 @@ set smartindent
 set incsearch
 set gdefault
 set noshowmatch
-set encoding=utf-8
+"set encoding=utf-8
 set noswapfile
 set cursorline
 hi CursorLine cterm=NONE ctermbg=234 guibg=Grey90
@@ -327,6 +335,24 @@ imap <c-h> <left>
 imap <c-l> <right>
 imap <c-j> <down>
 imap <c-k> <up>
+
+"terminal specific mappings
+tnoremap jj <C-\><C-n>
+
+if has('nvim')
+  nmap <BS> <C-h>
+  tmap <BS> <C-h>
+endif
+"split navigation
+tnoremap <C-h> <C-\><C-n><C-w>h
+tnoremap <C-j> <C-\><C-n><C-w>j
+tnoremap <C-k> <C-\><C-n><C-w>k
+tnoremap <C-l> <C-\><C-n><C-w>l
+
+"noremap <C-h> <C-w>h
+"noremap <C-j> <C-w>j
+"noremap <C-k> <C-w>k
+"noremap <C-l> <C-w>l
 
 " visualmode mappings
 vnoremap < <gv
