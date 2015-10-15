@@ -34,8 +34,8 @@ NeoBundle 'fatih/vim-go'
 NeoBundle 'git://github.com/jsx/jsx.vim.git'
 NeoBundle 'hlissner/vim-forrestgump'
 NeoBundle 'soramugi/auto-ctags.vim'
-NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'danchoi/rb_nav'
+NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'tpope/vim-repeat'
@@ -270,7 +270,7 @@ set noshowmatch
 "set encoding=utf-8
 set noswapfile
 set cursorline
-hi CursorLine cterm=NONE ctermbg=234 guibg=Grey90
+"hi CursorLine cterm=NONE ctermbg=234 guibg=Grey90
 "highlight SignColumn ctermbg=234 guibg=red set t_Co=256
 set backspace=indent,eol,start
 set laststatus=2
@@ -317,10 +317,10 @@ if &term =~ '^xterm'
 endif
 
 
-set guicursor=n-v-c:block-cursor
-set guicursor+=i:ver100-icursor
-set guicursor+=n-v-c:blinkon0
-set guicursor+=i:blinkwait10
+"set guicursor=n-v-c:block-cursor
+"set guicursor+=i:ver100-icursor
+"set guicursor+=n-v-c:blinkon0
+"set guicursor+=i:blinkwait10
 
 "command mode mappings
 cnoremap rl<cr> source ~/.nvimrc<cr>
@@ -369,3 +369,4 @@ endfunction
 autocmd FileType ruby iabbrev <buffer> bp binding.pry
 nmap <leader>bp Obinding.pryJJ
 call neobundle#end()
+colors monokai
