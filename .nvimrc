@@ -28,6 +28,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 "Ruby settings
 let ruby_spellcheck_strings = 1
 
+NeoBundle 'mattn/emmet-vim'
 NeoBundle 'flazz/vim-colorschemes'
 NeoBundle 'jszakmeister/vim-togglecursor'
 NeoBundle 'fatih/vim-go'
