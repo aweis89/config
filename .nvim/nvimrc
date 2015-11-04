@@ -2,7 +2,7 @@
 let mapleader = " "
 if !1 | finish | endif
 
-source ~/.nvim/extentions
+source ~/.nvim/extentions.vim
 
 "adds jbuilder syntax highlighting
 au BufNewFile,BufRead *.json.jbuilder set ft=ruby
