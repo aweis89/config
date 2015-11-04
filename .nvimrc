@@ -277,7 +277,7 @@ autocmd BufRead,BufEnter */doc/* wincmd L
 " insert binding.pry in above line
 autocmd Filetype ruby nmap <leader>bp Obinding.pryJJ
 call neobundle#end()
-colors monokai
+"colors monokai
 syntax enable
 au BufRead,BufNewFile *.ex,*.exs set filetype=elixir
 au FileType elixir setl sw=2 sts=2 et iskeyword+=!,?
