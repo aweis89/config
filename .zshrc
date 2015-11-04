@@ -1,21 +1,15 @@
-#lendkey stuff
 #ulimit -n 2560
 source $HOME/configs/lkenv.sh
 
-#export GH_CLIENT_DIR=/Users/aweisberg/Sites/gems/gh-client
-#export NADA_CLIENT_DIR=/Users/aweisberg/Sites/gems/nada-client
-#export NADA_DIR=/Users/aweisberg/Sites/apps/nada
-#export DEPRECATION_WARNING_OUTPUT=log
-#export SAKURA_DIR=/Users/aweisberg/Sites/gems/sakura
-#export PULLSON_CLIENT_DIR=/Users/aweisberg/Sites/gems/pullson-client
-#export FOM_CLIENT_DIR=/Users/aweisberg/Sites/gems/fom-client
-#export COMMON_CLIENT_DIR=/Users/aweisberg/Sites/gems/common-client
-#export PRICER_CLIENT_DIR=/Users/aweisberg/Sites/gems/pricer-client
-#go path
+#Go setup
 export GOPATH=$HOME/go
 export GOBIN=$HOME/go/bin
 export PATH=$PATH:$GOPATH/bin
-export URL=https://lenderweb.staging.lendingtree.com/offers/AutoOfferPost.aspx
+#Elixir setup
+export PATH="$PATH:/path/to/elixir/bin"
+export GIT_TEMPLATE_DIR=$HOME/.git-templates
+export NVIM_TUI_ENABLE_TRUE_COLOR=1
+
 #//use the following if you want to generate documentation for your package using godoc
 #export GOROOT=`go env GOROOT`
 #export PATH=$PATH:$GOROOT/bin
@@ -24,12 +18,15 @@ export URL=https://lenderweb.staging.lendingtree.com/offers/AutoOfferPost.aspx
 . ~/z/z.sh
 alias st='ssh lkst030'
 #alias tmux="tmux -2"
+
+alias sp='~/Downloads/shpotify-master/spotify'
 alias qa='ssh lkqa030'
-alias tmux='TERM=screen-256color-bce tmux'
+#alias tmux='TERM=screen-256color-bce tmux'
 alias tmuxs="vim ~/.tmux.conf"
 alias zshs="vim ~/.zshrc"
 alias vims="vim ~/.vimrc"
 alias nvims="vim ~/.nvimrc"
+alias v='nvim'
 alias n='tmux new-session -s'
 alias s='tmux switch -t'
 alias a='tmux attach -d -t'
@@ -66,11 +63,6 @@ alias wservers='wemux new-session -n:servers '\''teamocil servers'\'''
 #alias z='zeus'
 #alias vi="vim"
 alias vim="nvim"
-alias cddocs="cd /Users/aweisberg/Documents"
-alias cdmap="cd /Users/aweisberg/programs/mapper"
-
-alias cdnode="/Users/aweisberg/Documents/node_apps"
-alias copyconfig="less ~/.vimrc > /Users/aweisberg/Documents/config/.vimrc && less ~/.tmux.conf > /Users/aweisberg/Documents/config/.tmux.conf && less ~/.zshrc > /Users/aweisberg/Documents/config/.zshrc"
 
 alias memcache="/usr/local/bin/memcached"
 alias xml-post="curl -i -H \"Content-Type: text/xml\" -d @- -X POST"
@@ -81,6 +73,12 @@ alias rfind='find . -name "*.rb" | xargs grep -n'
 #Default editor
 export EDITOR=vim
 export ZDOTDIR=$HOME
+
+job() {
+  $1 &> /dev/null &
+  echo "executing \`$1\` in background ..."
+}
+alias background="job"
 
 post () {
   curl -i -H "Content-Type: application/${2:=json}" -d @- -X POST $1

@@ -28,12 +28,22 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 "Ruby settings
 let ruby_spellcheck_strings = 1
 
+NeoBundle 'sirver/ultisnips'
+" Trigger configuration. Do not use <tab> if you use
+" https://github.com/Valloric/YouCompleteMe.
+ let g:UltiSnipsExpandTrigger="<c-e>"
+ let g:UltiSnipsJumpForwardTrigger="<c-b>"
+ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+"
+" " If you want :UltiSnipsEdit to split your window.
+ let g:UltiSnipsEditSplit="vertical"
+
+NeoBundle 'elixir-lang/vim-elixir'
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'flazz/vim-colorschemes'
 NeoBundle 'jszakmeister/vim-togglecursor'
 NeoBundle 'fatih/vim-go'
 NeoBundle 'git://github.com/jsx/jsx.vim.git'
-NeoBundle 'hlissner/vim-forrestgump'
 NeoBundle 'soramugi/auto-ctags.vim'
 NeoBundle 'danchoi/rb_nav'
 NeoBundle 'vim-ruby/vim-ruby'
@@ -43,30 +53,45 @@ NeoBundle 'tpope/vim-repeat'
 NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'tmhedberg/matchit'
 NeoBundle 'vim-scripts/ruby-matchit'
+NeoBundle 'ivalkeen/vim-ctrlp-tjump'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'KurtPreston/vim-autoformat-rails'
 NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'groenewege/vim-less'
 NeoBundle 'mxw/vim-jsx'
 NeoBundle 'sjl/vitality.vim'
+NeoBundle 'benekastah/neomake'
 let g:ycm_server_log_level = 'debug'
 let g:syntastic_javascript_checkers = ['eslint']
 au BufNewFile,BufRead *.jsx let b:jsx_ext_found = 1
 au BufNewFile,BufRead *.jsx set filetype=javascript.jsx
 
+" Switch between the last two files
+nnoremap <leader><leader> <c-^>
+
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'scrooloose/nerdtree'
 cnoremap fdir<cr> NERDTreeFind<cr>
 cnoremap dir<cr> NERDTreeToggle<cr>
-
+let g:syntastic_ruby_mri_exec = '/Users/aweisberg/.rvm/rubies/ruby-2.2.2/bin/ruby'
+let g:syntastic_aggregate_errors = 1
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'tpope/vim-bundler'
-"NeoBundle 'benmills/vimux'
-"NeoBundle 'skalnik/vim-vroom'
 NeoBundle 'thoughtbot/vim-rspec'
+
+" Rvm integration
+set shell=/usr/local/bin/zsh
+
+" Syntastic settings
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+let g:syntastic_aggregate_errors = 1
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 
 set wildignore+=node_modules,bower_components
 
@@ -86,117 +111,38 @@ endfunction
 "cnoremap rl<cr> source ~/.nvimrc<cr>
 let g:rspec_command = 'silent execute ' . RspecCommand() . ' | redraw!'
 
-let g:vroom_spec_command = 'rescue rspec -f d'
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+
+cnoremap P<space> CtrlP 
+nnoremap <leader>r :CtrlPMRU<CR>
+nnoremap <leader>l :CtrlPBuffer<cr>
+nnoremap <leader>d :CtrlP<cr>
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:50,results:50'
+
+
+" bind K to grep word under cursor
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR><CR>
 
 NeoBundle 'christoomey/vim-tmux-navigator'
-"NeoBundle 'terryma/vim-multiple-cursors'
-"cmap spec<cr> VroomRunTestFile<cr>
-"cmap lspec<cr> VroomRunLastTest<cr>
-"cmap run<cr> VroomRunNearestTest<cr>
+
 " vim-rpec mapping
 cmap spec<cr> call RunCurrentSpecFile()<CR>
 cmap run<cr> call RunNearestSpec()<CR>
 cmap lspec<cr> call RunLastSpec()<CR>
 cmap specs<cr> call RunAllSpecs()<CR>
-let g:vroom_map_keys = 0
-"cmap specs<cr> w<cr>;call RunAllSpecs()<CR> 
-let g:vroom_write_all = 1
-let g:vroom_use_vimux = 1
 
 nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 
-"Html tags
-imap <c-w> <esc>bywi<<esc>ea></<esc>pa><esc>bhhi
-
-NeoBundle 'junegunn/fzf'
-" List of buffers
-function! BufList()
-  redir => ls
-  silent ls
-  redir END
-  return split(ls, '\n')
-endfunction
-
-function! BufOpen(e)
-  execute 'buffer'. matchstr(a:e, '^[ 0-9]*')
-endfunction
-
-nnoremap <silent> <Leader><Enter> :call fzf#run({
-\   'source':      reverse(BufList()),
-\   'sink':        function('BufOpen'),
-\   'options': '--extended --nth=3..,',
-\   'tmux_height': '50%'
-\ })<CR>
-
-command! -nargs=1 AgFZF call fzf#run({
-            \'source': Arghandler(<f-args>),
-            \'sink' : function('AgHandler'),
-            \'options' : '-m',
-            \ 'tmux_height': '50%'
-            \})
-
-function! AgHandler(l)
-    let keys = split(a:l,':')
-    execute 'tabe +' . keys[-2] . ' ' . escape(keys[-1], ' ')
-endfunction 
-
-function! Arghandler(l)
-    return "ag -i " . a:l . " | sed 's@\\(.[^:]*\\):\\(.[^:]*\\):\\(.*\\)@\\3:\\2:\\1@' "
-endfunction
-
-command! FZFLines call fzf#run({
-  \ 'source':  BuffersLines(),
-  \ 'sink':    function('LineHandler'),
-  \ 'options': '--extended --nth=3..,',
-  \ 'tmux_height': '70%'
-\})
-
-
-function! LineHandler(l)
-  let keys = split(a:l, ':\t')
-  exec 'buf ' . keys[0]
-  exec keys[1]
-  normal! ^zz
-endfunction
-
-function! BuffersLines()
-  let res = []
-  for b in filter(range(1, bufnr('$')), 'buflisted(v:val)')
-    call extend(res, map(getbufline(b,0,"$"), 'b . ":\t" . (v:key + 1) . ":\t" . v:val '))
-  endfor
-  return res
-endfunction
-
-function! TagCommand()
-  return substitute('awk _!/^!/ { print \$1 }_ ', '_', "'", 'g')
-              \ . join(tagfiles(), ' ')
-endfunction
-
-command! FZFTag call fzf#run({
-\   'source'     : TagCommand(),
-\   'sink'       : 'tag',
-\   'tmux_height': '70%'
-\   })
-
-command! FZFMru call fzf#run({
-            \'source': v:oldfiles,
-            \'sink' : 'e ',
-            \'options' : '-m',
-            \'tmux_height': '70%'
-            \})
-
-"nnoremap <Leader>l :call fzf#run({'source': reverse(BufList()),'sink': function('BufOpen'), 'options': '--black', 'tmux_height': 20})<CR>
-"nnoremap <Leader>d :FZF<cr>
-nnoremap <leader>l :CtrlPBuffer<cr>
-let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:50,results:50'
-
-"nnoremap <leader>d :FZF<cr>
-nnoremap <leader>d :CtrlP<cr>
-"nnoremap <Leader>d :call fzf#run({'sink': 'e', 'tmux_height': 30})<CR>
-nnoremap <Leader>a :AgFZF<space>
-nnoremap <Leader>s :FZFLines<cr>
-nnoremap <Leader>t :FZFTag<cr>
-cnoremap mr<cr> :FZFMru<cr>
 
 NeoBundle 'itchyny/lightline.vim'
 let g:lightline = {
@@ -222,16 +168,6 @@ let g:lightline = {
       \ },
       \ }
 
-"NeoBundle 'vim-scripts/YankRing.vim'
-NeoBundle 'Shougo/vimproc.vim', {
-      \ 'build' : {
-      \     'windows' : 'tools\\update-dll-mingw',
-      \     'cygwin' : 'make -f make_cygwin.mak',
-      \     'mac' : 'make -f make_mac.mak',
-      \     'linux' : 'make',
-      \     'unix' : 'gmake',
-      \    },
-      \ }
 NeoBundle 'Valloric/YouCompleteMe', {
       \ 'build' : {
       \     'mac' : './install.sh',
@@ -240,16 +176,22 @@ NeoBundle 'Valloric/YouCompleteMe', {
       \     'cygwin' : './install.sh --clang-completer --system-libclang --omnisharp-completer'
       \    }
       \ }
+
 NeoBundle 'scrooloose/syntastic' 
+let g:syntastic_mode_map = {
+      \ "mode": "active",
+      \ "active_filetypes": ["ruby", "javascript"],
+      \ "passive_filetypes": ["puppet"] }
+
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
 
-"let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_check_on_open = 1
-"let g:syntastic_auto_loc_list = 1
-"let g:syntastic_check_on_wq = 0
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_wq = 0
 
+" swap lines
 nmap <Down> ]e
 nmap <Up> [e
 
@@ -259,8 +201,9 @@ filetype plugin indent on
 NeoBundleCheck
 
 "settings
-syntax on
+set wildcharm=<Tab>
 color desert
+set modifiable
 set tabstop=4
 set shiftwidth=2
 set expandtab
@@ -268,11 +211,8 @@ set smartindent
 set incsearch
 set gdefault
 set noshowmatch
-"set encoding=utf-8
 set noswapfile
 set cursorline
-"hi CursorLine cterm=NONE ctermbg=234 guibg=Grey90
-"highlight SignColumn ctermbg=234 guibg=red set t_Co=256
 set backspace=indent,eol,start
 set laststatus=2
 set noshowmode
@@ -286,88 +226,58 @@ set undodir=~/tmp
 
 set ignorecase
 set smartcase
-"
-"insert mode key mappings
+
 inoremap jj <esc>
-inoremap JJ <esc>:w<cr>
 
-" Cursor to yellow on insert mode
-" Blue on command/other mode
-" Note the use of hex codes (ie 3971ED)
-"if exists('$TMUX')
-    "let &t_SI = "\<Esc>Ptmux;\<Esc>\033]Pl71ED39\033\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-    "let &t_EI = "\<Esc>Ptmux;\<Esc>\033]Pl828690\033\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-    "autocmd VimLeave * silent !echo -ne "\033Ptmux;\033\033]Pl71ED39\033\033]50;CursorShape=0\x7\033\\"
-"else
-    "let &t_EI = "\033]Pl71ED39\033\\"
-    "let &t_SI = "\033]Pl828690\033\\"
-    "silent !echo -ne "\033]Pl71ED39\033\\"
-    "autocmd VimLeave * silent !echo -ne "\033]Pl71ED39\033\\"
-"endif 
-
-if &term =~ '^xterm'
-  " solid underscore
-  let &t_SI .= "\<Esc>[4 q"
-  " solid block
-  let &t_EI .= "\<Esc>[2 q"
-  " 1 or 0 -> blinking block
-  " 3 -> blinking underscore
-  " Recent versions of xterm (282 or above) also support
-  " 5 -> blinking vertical bar
-  " 6 -> solid vertical bar
-endif
-
-
-"set guicursor=n-v-c:block-cursor
-"set guicursor+=i:ver100-icursor
-"set guicursor+=n-v-c:blinkon0
-"set guicursor+=i:blinkwait10
-
-"command mode mappings
 cnoremap rl<cr> source ~/.nvimrc<cr>
+
+" for long wrapped lines make j/k behave intuitively
 nnoremap j gj
 nnoremap k gk
+
+" window splits
 nnoremap <leader>\ <c-w>v<c-w>l
 nnoremap <leader>- :split<cr><c-w>j
 nnoremap <leader>c :tabnew<cr>
 nnoremap <leader>p :tabprevious<CR>
 nnoremap <leader>n :tabnext<CR>
+
+" insert mode navigation
 imap <c-h> <left>
 imap <c-l> <right>
 imap <c-j> <down>
 imap <c-k> <up>
 
-"terminal specific mappings
-tnoremap jj <C-\><C-n>
-
+" fixes C-H neovim issue
 if has('nvim')
   nmap <BS> <C-h>
   tmap <BS> <C-h>
 endif
-"split navigation
-tnoremap <C-h> <C-\><C-n><C-w>h
-tnoremap <C-j> <C-\><C-n><C-w>j
-tnoremap <C-k> <C-\><C-n><C-w>k
-tnoremap <C-l> <C-\><C-n><C-w>l
-
-"noremap <C-h> <C-w>h
-"noremap <C-j> <C-w>j
-"noremap <C-k> <C-w>k
-"noremap <C-l> <C-w>l
 
 " visualmode mappings
 vnoremap < <gv
 vnoremap > >gv 
+
+" wrap word with single/double quotes
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
+nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
+
+" move begining/end of line
 nnoremap H ^
 nnoremap L $
-nnoremap Y y$ 
-"for yankring compatibility
-function! YRRunAfterMaps()
-    nnoremap Y   :<C-U>YRYankCount 'y$'<CR>
-endfunction
 
-autocmd FileType ruby iabbrev <buffer> bp binding.pry
-nmap <leader>bp Obinding.pryJJ
+" make Y behave like D P
+nnoremap Y y$ 
+
+autocmd FileType ruby compiler ruby
+
+" Open help at vertical split
+autocmd BufRead,BufEnter */doc/* wincmd L
+
+" insert binding.pry in above line
+autocmd Filetype ruby nmap <leader>bp Obinding.pryJJ
 call neobundle#end()
 colors monokai
+syntax enable
+au BufRead,BufNewFile *.ex,*.exs set filetype=elixir
+au FileType elixir setl sw=2 sts=2 et iskeyword+=!,?
