@@ -1,50 +1,36 @@
 #ulimit -n 2560
-source $HOME/configs/lkenv.sh
+export ZDOTDIR=$HOME
 
 #Go setup
 export GOPATH=$HOME/go
 export GOBIN=$HOME/go/bin
 export PATH=$PATH:$GOPATH/bin
+
 #Elixir setup
 export PATH="$PATH:/path/to/elixir/bin"
 export GIT_TEMPLATE_DIR=$HOME/.git-templates
-export NVIM_TUI_ENABLE_TRUE_COLOR=1
 
-#//use the following if you want to generate documentation for your package using godoc
-#export GOROOT=`go env GOROOT`
-#export PATH=$PATH:$GOROOT/bin
-#Tmux
-#z
+# z
 . ~/z/z.sh
-alias st='ssh lkst030'
-#alias tmux="tmux -2"
 
+# Spotify TODO move to plugin directory
 alias sp='~/Downloads/shpotify-master/spotify'
+
+# SSH shortcuts
 alias qa='ssh lkqa030'
-#alias tmux='TERM=screen-256color-bce tmux'
-alias tmuxs="vim ~/.tmux.conf"
-alias zshs="vim ~/.zshrc"
-alias vims="vim ~/.vimrc"
-alias nvims="vim ~/.nvim/nvimrc"
-alias v='nvim'
-alias n='tmux new-session -s'
-alias s='tmux switch -t'
-alias a='tmux attach -d -t'
-alias k='tmux kill-session -t'
-alias t='tmux'
-alias wemux='TERM=screen-256color-bce wemux'
-alias we='wemux'
-alias wn="we new-session -s"
-alias wa='we attach -d -t'
-alias wk='we kill-session -t'
-alias g='git'
-alias git='hub'
-alias gce='git add --all && git commit -v'
-alias stmate='rm -f ~/tmp/tmate.sock && tmate -S ~/tmp/tmate.sock && tmate show-messages'
+alias st='ssh lkst030'
+
+# CD aliases
 alias apps='/Users/aweisberg/Sites/apps'
 alias gems='/Users/aweisberg/Sites/gems'
 alias cdapp='/Users/aweisberg/Sites/apps'
 alias cdgem='/Users/aweisberg/Sites/gems'
+
+# Git
+alias g='git'
+alias git='hub'
+alias gce='git add --all && git commit -v'
+
 #Bundler
 alias be="bundle exec"
 alias bl="bundle list"
@@ -55,14 +41,25 @@ alias bi="bundle install"
 alias bs="bundle show"
 alias specs="bundle exec rspec -f d"
 
-alias servers='tmux new-session -n:servers '\''teamocil servers'\'''
-alias kill-servers='/Users/aweisberg/scripts/kill_servers.sh'
-alias rs="kill-servers && tmux kill-session -t servers && servers"
-alias wservers='wemux new-session -n:servers '\''teamocil servers'\'''
+# Tmux 
+alias n='tmux new-session -s'
+alias s='tmux switch -t'
+alias a='tmux attach -d -t'
+alias k='tmux kill-session -t'
+alias t='tmux'
+alias wemux='TERM=screen-256color-bce wemux'
 
-#alias z='zeus'
-#alias vi="vim"
+# Neovim editor
 alias vim="nvim"
+alias v='nvim'
+export NVIM_TUI_ENABLE_TRUE_COLOR=1
+export EDITOR=vim
+
+# Settings files
+alias tmuxs="vim ~/.tmux.conf"
+alias zshs="vim ~/.zshrc"
+alias vims="vim ~/.vimrc"
+alias nvims="vim ~/.nvim/nvimrc"
 
 alias memcache="/usr/local/bin/memcached"
 alias xml-post="curl -i -H \"Content-Type: text/xml\" -d @- -X POST"
@@ -71,14 +68,6 @@ alias xml-post="curl -i -H \"Content-Type: text/xml\" -d @- -X POST"
 
 alias rfind='find . -name "*.rb" | xargs grep -n'
 #Default editor
-export EDITOR=vim
-export ZDOTDIR=$HOME
-
-job() {
-  $1 &> /dev/null &
-  echo "executing \`$1\` in background ..."
-}
-alias background="job"
 
 post () {
   curl -i -H "Content-Type: application/${2:=json}" -d @- -X POST $1
@@ -94,11 +83,11 @@ get () {
 
 # Use git ls-tree when possible
 #fzf() {
-  #if [ -n "$(git rev-parse HEAD 2> /dev/null)" ]; then
-    #FZF_DEFAULT_COMMAND="git ls-tree -r --name-only HEAD" command fzf "$@"
-  #else
-    #command fzf "$@"
-  #fi
+#if [ -n "$(git rev-parse HEAD 2> /dev/null)" ]; then
+#FZF_DEFAULT_COMMAND="git ls-tree -r --name-only HEAD" command fzf "$@"
+#else
+#command fzf "$@"
+#fi
 #}
 
 tojsx () {
@@ -167,11 +156,11 @@ fgc() {
 ftags() {
   local line
   [ -e tags ] &&
-  line=$(
-    awk 'BEGIN { FS="\t" } !/^!/ {print toupper($4)"\t"$1"\t"$2"\t"$3}' tags |
-    cut -c1-80 | fzf --nth=1,2
+    line=$(
+  awk 'BEGIN { FS="\t" } !/^!/ {print toupper($4)"\t"$1"\t"$2"\t"$3}' tags |
+  cut -c1-80 | fzf --nth=1,2
   ) && $EDITOR $(cut -f3 <<< "$line") -c "set nocst" \
-                                      -c "silent tag $(cut -f2 <<< "$line")"
+    -c "silent tag $(cut -f2 <<< "$line")"
 }
 
 export FUZZY_SEARCH_PATHS="~/Projects:~/XCode:~/Sites/apps:~/Sites/gems"
@@ -199,16 +188,16 @@ fzf_tmux_helper() {
 fzf_tmux_dir() {
   fzf_tmux_helper \
     'find * -path "*/\.*" -prune -o -type d -print 2> /dev/null |
-     fzf --multi |
-     sed "s/ /\\\\ /g" |
-     paste -sd" " -' Space
+  fzf --multi |
+  sed "s/ /\\\\ /g" |
+  paste -sd" " -' Space
 }
 
 # Bind CTRL-X-CTRL-D to fzf_tmux_dir
 #bindkey '<ctrl-d>' "$(fzf_tmux_dir)\e\C-e"
 
 function tag () {
- ctags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths) 
+ctags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths) 
 }
 
 function apps_run () {
@@ -243,13 +232,13 @@ done
 }
 
 function gems_run () {
+cd ~/Sites/gems
+for gem  in ~/Sites/gems/*
+do 
+  cd $gem 
+  eval "$1" || "cannot execute: ${1} for ${gem}"
   cd ~/Sites/gems
-  for gem  in ~/Sites/gems/*
-  do 
-    cd $gem 
-    eval "$1" || "cannot execute: ${1} for ${gem}"
-    cd ~/Sites/gems
-  done
+done
 }
 
 function all_run () {
@@ -258,44 +247,16 @@ gems_run $1
 }
 
 function gem_vars () {
-  cd ~/Sites/gems
-  for gem in ~/Sites/gems/*
-  do 
-    cd $gem 
-    gem=$(basename $gem)
-    eval "export ${gem:u}_DIR=~/Sites/gems/${gem}"
-  done
+cd ~/Sites/gems
+for gem in ~/Sites/gems/*
+do 
+  cd $gem 
+  gem=$(basename $gem)
+  eval "export ${gem:u}_DIR=~/Sites/gems/${gem}"
+done
 }
 
-function dep() {
-  default_branch=`current_branch`
-  default_app=${PWD##*/}
-  ssh -t deploy1.dev.teladoc.com "cd /opt/release && DEPLOYMENT_TARGET=${2:-$default_app} DEPLOYMENT_BRANCH=${3:-$default_branch} cap ${1} deploy; exit; bash"
-}
 
-function r() {
-  ssh -t $1.dev.teladoc.com "cd /telapp/tas/current/ && sudo -u teldev bash && /opt/ruby/bin/bundle exec rails c production"
-}
-
-function rprod() {
-  ssh -t prod1.us1.teladoc.com "cd /telapp/tas/current/ && sudo -u telprod bash"
-}
-
-function tbu() {
-  bundle update rte && bundle update teladoc_constants_gem
-}
-
-function cbu() {
-  bundle update teladoc_constants_gem && bundle update teladoc_framework
-}
-
-function bde(){
-  cdtas && bundle install && tbu
-  cdadmin && bundle install && cbu
-  cdprovider && bundle install && cbu
-  cdmember && bundle install && cbu
-  cdcallcenter && bundle install && cbu
-}
 function pry() {
 if [ -e .zeus.sock ]; then
   zeus console
@@ -326,7 +287,7 @@ do
   else
     command ${bun_command} ${@}
   fi
-  }
+}
 EOM
 
 eval "$func"
@@ -334,79 +295,78 @@ eval "$func"
 done
 
 # Path to your oh-my-zsh installation.
- export ZSH=$HOME/.oh-my-zsh
+#export ZSH=$HOME/.oh-my-zsh
 
- # Set name of the theme to load.
- # Look in ~/.oh-my-zsh/themes/
- # time that oh-my-zsh is loaded.
- # philips
- ZSH_THEME="robbyrussell"
+# Set name of the theme to load.
+# Look in ~/.oh-my-zsh/themes/
+# time that oh-my-zsh is loaded.
+# philips
+#ZSH_THEME="robbyrussell"
 
- # Example aliases
- # alias zshconfig="mate ~/.zshrc"
- # alias ohmyzsh="mate ~/.oh-my-zsh"
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
 
- # Uncomment the following line to use case-sensitive completion.
- # CASE_SENSITIVE="true"
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
 
- # Uncomment the following line to disable bi-weekly auto-update checks.
- # DISABLE_AUTO_UPDATE="true"
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
 
- # Uncomment the following line to change how often to auto-update (in days).
- # export UPDATE_ZSH_DAYS=13
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
 
- # Uncomment the following line to disable colors in ls.
- # DISABLE_LS_COLORS="true"
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
 
- # Uncomment the following line to disable auto-setting terminal title.
- # DISABLE_AUTO_TITLE="true"
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
 
- # Uncomment the following line to disable command auto-correction.
- # DISABLE_CORRECTION="true"
+# Uncomment the following line to disable command auto-correction.
+# DISABLE_CORRECTION="true"
 
- # Uncomment the following line to display red dots whilst waiting for completion.
-  #COMPLETION_WAITING_DOTS="true"
+# Uncomment the following line to display red dots whilst waiting for completion.
+#COMPLETION_WAITING_DOTS="true"
 
- # Uncomment the following line if you want to disable marking untracked files
- # under VCS as dirty. This makes repository status check for large repositories
- # much, much faster.
- # DISABLE_UNTRACKED_FILES_DIRTY="true"
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
 
- # Uncomment the following line if you want to change the command execution time
- # stamp shown in the history command output.
- # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
- # HIST_STAMPS="mm/dd/yyyy"
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# HIST_STAMPS="mm/dd/yyyy"
 
- # Would you like to use another custom folder than $ZSH/custom?
- # ZSH_CUSTOM=/path/to/new-custom-folder
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
 
- # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
- # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
- # Example format: plugins=(rails git textmate ruby lighthouse)
- plugins=(ruby brew git zsh-syntax-highlighting web-search)
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+#plugins=(ruby brew git zsh-syntax-highlighting web-search)
+#source $ZSH/oh-my-zsh.sh
 
- source $ZSH/oh-my-zsh.sh
+# User configuration
 
- # User configuration
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+# export MANPATH="/usr/local/man:$MANPATH"
 
- export PATH=$HOME/bin:/usr/local/bin:$PATH
- # export MANPATH="/usr/local/man:$MANPATH"
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
 
- # You may need to manually set your language environment
- # export LANG=en_US.UTF-8
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
 
- # Preferred editor for local and remote sessions
- # if [[ -n $SSH_CONNECTION ]]; then
- #   export EDITOR='vim'
- # else
- #   export EDITOR='mvim'
- # fi
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
 
- # Compilation flags
- # export ARCHFLAGS="-arch x86_64"
-
- # ssh
- # export SSH_KEY_PATH="~/.ssh/dsa_id"
+# ssh
+# export SSH_KEY_PATH="~/.ssh/dsa_id"
 export PATH=$PATH:~/bin
 export PATH=$PATH:~/scripts
 export PATH=/usr/local/bin:$PATH
@@ -417,22 +377,22 @@ export PATH=/usr/local/bin:$PATH
 #compctl -g '~/.teamocil/*(:t:r)' teamocil
 
 # vim keybindings
- bindkey -v
- bindkey '^P' up-history
- bindkey '^N' down-history
- bindkey '^?' backward-delete-char
- bindkey '^h' backward-delete-char
- bindkey '^w' backward-kill-word
- bindkey '^r' history-incremental-search-backward
- bindkey -M viins 'jj' vi-cmd-mode
- bindkey -M viins 'kk' clear-screen
- # Move to where the arguments belong.
- up-case-prev-word() {
-   zle vi-backward-word
-   zle up-case-word
- }
- zle -N up-case-prev-word
- bindkey "^u" up-case-prev-word
+bindkey -v
+bindkey '^P' up-history
+bindkey '^N' down-history
+bindkey '^?' backward-delete-char
+bindkey '^h' backward-delete-char
+bindkey '^w' backward-kill-word
+bindkey '^r' history-incremental-search-backward
+bindkey -M viins 'jj' vi-cmd-mode
+bindkey -M viins 'kk' clear-screen
+# Move to where the arguments belong.
+up-case-prev-word() {
+  zle vi-backward-word
+  zle up-case-word
+}
+zle -N up-case-prev-word
+bindkey "^u" up-case-prev-word
 #bash -e ~/Sites/configs/env/.bash_fynanz
 #source ~/.powconfig
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
@@ -444,3 +404,21 @@ export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 # Pipe output of previous command
 alias _='fc -e - |'
+
+# Fzf commands
+source $HOME/plugins/fzf.zsh
+
+source $HOME/configs/lkenv.sh
+source $HOME/.zprezto/init.zsh
+source $HOME/antigen.zsh
+
+# Git helpers
+source $HOME/plugins/git.zsh
+
+# Plugins
+antigen bundle git git-prompt
+#antigen-theme robbyrussell
+
+# Syntax highlighting
+source $HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+

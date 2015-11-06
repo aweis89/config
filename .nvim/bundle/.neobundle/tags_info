@@ -2,6 +2,7 @@ YouCompleteMe
 auto-ctags.vim
 ctrlp.vim
 emmet-vim
+fonts
 lightline.vim
 matchit
 neobundle.vim
@@ -18,6 +19,7 @@ vim-colorschemes
 vim-ctrlp-tjump
 vim-elixir
 vim-endwise
+vim-fish
 vim-fugitive
 vim-gitgutter
 vim-go

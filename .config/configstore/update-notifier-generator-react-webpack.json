@@ -1,0 +1,10 @@
+{
+	"optOut": false,
+	"lastUpdateCheck": 1445270184787,
+	"update": {
+		"latest": "2.2.5",
+		"current": "1.2.12",
+		"type": "major",
+		"name": "generator-react-webpack"
+	}
+}

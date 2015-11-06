@@ -1,0 +1,10 @@
+{
+	"optOut": false,
+	"lastUpdateCheck": 1445270184762,
+	"update": {
+		"latest": "0.4.1",
+		"current": "0.1.12",
+		"type": "minor",
+		"name": "generator-meanjs"
+	}
+}
