@@ -10,3 +10,4 @@
 !.config
 !.nvim/
 !.config/
+.nvim/bundle/YouCompleteMe/
