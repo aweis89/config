@@ -1,0 +1,126 @@
+"Note Skip initialization for vim-tiny or vim-small.
+let mapleader = " "
+if !1 | finish | endif
+
+source ~/.nvim/extentions.vim
+
+"adds jbuilder syntax highlighting
+au BufNewFile,BufRead *.json.jbuilder set ft=ruby
+
+" Switch between the last two files
+nnoremap <leader><leader> <c-^>
+
+" Rvm integration
+set shell=/usr/local/bin/zsh
+
+set wildignore+=node_modules,bower_components
+
+"com! -nargs=1 T call SetTargetPane(<f-args>) | source ~/.nvimrc
+
+" Reload rc file
+cnoremap rl<cr> source ~/.nvim/nvimrc<cr>
+
+" bind K to grep word under cursor
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR><CR>
+
+nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+
+" swap lines
+nmap <Down> ]e
+nmap <Up> [e
+
+"settings
+set wildcharm=<Tab>
+color desert
+set modifiable
+set tabstop=4
+set shiftwidth=2
+set expandtab
+set smartindent
+set incsearch
+set gdefault
+set noshowmatch
+set noswapfile
+set cursorline
+set backspace=indent,eol,start
+set laststatus=2
+set noshowmode
+set nocompatible
+set number
+set rnu
+
+"Infinite undos
+set undofile
+set undodir=~/tmp
+
+set ignorecase
+set smartcase
+
+inoremap jj <esc>
+
+" for long wrapped lines make j/k behave intuitively
+nnoremap j gj
+nnoremap k gk
+
+" window splits
+nnoremap <leader>\ <c-w>v<c-w>l
+nnoremap <leader>- :split<cr><c-w>j
+nnoremap <leader>c :tabnew<cr>
+nnoremap <leader>p :tabprevious<CR>
+nnoremap <leader>n :tabnext<CR>
+
+" insert mode navigation
+imap <c-h> <left>
+imap <c-l> <right>
+imap <c-j> <down>
+imap <c-k> <up>
+
+" fixes C-H neovim issue
+if has('nvim')
+  nmap <BS> <C-h>
+  tmap <BS> <C-h>
+endif
+
+" Zoom / Restore window.
+function! s:ZoomToggle() abort
+    if exists('t:zoomed') && t:zoomed
+        execute t:zoom_winrestcmd
+        let t:zoomed = 0
+    else
+        let t:zoom_winrestcmd = winrestcmd()
+        resize
+        vertical resize
+        let t:zoomed = 1
+    endif
+endfunction
+command! ZoomToggle call s:ZoomToggle()
+nnoremap <silent> <C-i> :ZoomToggle<CR>
+
+" visualmode mappings
+vnoremap < <gv
+vnoremap > >gv 
+
+" wrap word with single/double quotes
+nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
+nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
+
+" move begining/end of line
+nnoremap H ^
+nnoremap L $
+
+" make Y behave like D P
+nnoremap Y y$ 
+
+autocmd FileType ruby compiler ruby
+
+" Open help at vertical split
+autocmd BufRead,BufEnter */doc/* wincmd L
+
+" insert binding.pry in above line
+autocmd Filetype ruby nmap <leader>bp Obinding.pryJJ
+syntax enable
+
+" Enable file detection for elixir (plugin bug)
+au BufRead,BufNewFile *.ex,*.exs set filetype=elixir
+au FileType elixir setl sw=2 sts=2 et iskeyword+=!,?
+"au FileType fish set filetype=fish
