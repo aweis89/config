@@ -131,3 +131,8 @@ au BufRead,BufNewFile *.fish set filetype=fish
 au BufRead,BufNewFile *.json.jbuilder set ft=ruby
 au FileType elixir setl sw=2 sts=2 et iskeyword+=!,?
 
+au FileType qf call AdjustWindowHeight(3, 100)
+function! AdjustWindowHeight(minheight, maxheight)
+  exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
+endfunction
+
