@@ -5,9 +5,6 @@ if !1 | finish | endif
 
 source ~/.nvim/extentions.vim
 
-"adds jbuilder syntax highlighting
-au BufNewFile,BufRead *.json.jbuilder set ft=ruby
-
 " Switch between the last two files
 nnoremap <leader><leader> <c-^>
 
@@ -128,7 +125,9 @@ autocmd BufRead,BufEnter */doc/* wincmd L
 autocmd Filetype ruby nmap <leader>bp Obinding.pryjj
 syntax enable
 
-" Enable file detection for elixir (plugin bug)
+" File detection
 au BufRead,BufNewFile *.ex,*.exs set filetype=elixir
 au BufRead,BufNewFile *.fish set filetype=fish
+au BufRead,BufNewFile *.json.jbuilder set ft=ruby
 au FileType elixir setl sw=2 sts=2 et iskeyword+=!,?
+
