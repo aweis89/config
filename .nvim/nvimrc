@@ -1,5 +1,6 @@
 "Note Skip initialization for vim-tiny or vim-small.
 let mapleader = " "
+inoremap jj <esc>
 if !1 | finish | endif
 
 source ~/.nvim/extentions.vim
@@ -57,8 +58,6 @@ set undodir=~/tmp
 
 set ignorecase
 set smartcase
-
-inoremap jj <esc>
 
 " for long wrapped lines make j/k behave intuitively
 nnoremap j gj
@@ -131,6 +130,6 @@ syntax enable
 
 " Enable file detection for elixir (plugin bug)
 au BufRead,BufNewFile *.ex,*.exs set filetype=elixir
-au BufRead,BufNewFile *.ex,*.exs set filetype=elixir
+au BufRead,BufNewFile *.fish set filetype=fish
 au FileType elixir setl sw=2 sts=2 et iskeyword+=!,?
 "au FileType fish set filetype=fish
