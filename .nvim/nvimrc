@@ -13,7 +13,7 @@ nnoremap <leader><leader> <c-^>
 " Rvm integration
 set shell=/usr/local/bin/zsh
 
-set wildignore+=node_modules,bower_components
+set wildignore+=*/tmp/*,*/log/*,*.zip,*.so,*.swp,node_modules,bower_components
 
 "com! -nargs=1 T call SetTargetPane(<f-args>) | source ~/.nvimrc
 
@@ -21,9 +21,9 @@ set wildignore+=node_modules,bower_components
 cnoremap rl<cr> source ~/.nvim/nvimrc<cr>
 
 " bind K to grep word under cursor
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR><CR>
+nnoremap <leader>f :grep! "\b<C-R><C-W>\b"<CR>:cw<CR><CR>
 
-nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+nnoremap <silent>F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 
 " swap lines
 nmap <Down> ]e
@@ -48,6 +48,8 @@ set noshowmode
 set nocompatible
 set number
 set rnu
+" Remove '|' for splits 
+set fillchars+=vert:\ 
 
 "Infinite undos
 set undofile
@@ -93,6 +95,7 @@ function! s:ZoomToggle() abort
         let t:zoomed = 1
     endif
 endfunction
+
 command! ZoomToggle call s:ZoomToggle()
 nnoremap <silent> <C-i> :ZoomToggle<CR>
 
@@ -111,16 +114,23 @@ nnoremap L $
 " make Y behave like D P
 nnoremap Y y$ 
 
+" copy/paste
+nnoremap <C-c> "*y
+nnoremap <C-p> "*p
+vnoremap <C-c> "*y
+vnoremap <C-p> "*p
+
 autocmd FileType ruby compiler ruby
 
 " Open help at vertical split
 autocmd BufRead,BufEnter */doc/* wincmd L
 
 " insert binding.pry in above line
-autocmd Filetype ruby nmap <leader>bp Obinding.pryJJ
+autocmd Filetype ruby nmap <leader>bp Obinding.pryjj
 syntax enable
 
 " Enable file detection for elixir (plugin bug)
+au BufRead,BufNewFile *.ex,*.exs set filetype=elixir
 au BufRead,BufNewFile *.ex,*.exs set filetype=elixir
 au FileType elixir setl sw=2 sts=2 et iskeyword+=!,?
 "au FileType fish set filetype=fish
