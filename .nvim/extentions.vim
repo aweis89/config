@@ -44,6 +44,13 @@ NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'tpope/vim-bundler'
 NeoBundle 'christoomey/vim-tmux-navigator'
 
+NeoBundle 'junegunn/fzf', { 'dir': '~/.fzf', 'build': './install --all' }
+NeoBundle 'junegunn/fzf.vim'
+map <leader>s :Lines<CR>
+map <leader>S :BLines<CR>
+command -nargs=+ -complete=file -bar Agg silent! grep! <args>|cwindow|redraw!
+nnoremap \ :Agg<SPACE>
+
 NeoBundle 'haya14busa/incsearch.vim'
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
@@ -167,8 +174,6 @@ let g:lightline = {
       \ },
       \ }
 
-NeoBundle 'junegunn/fzf', { 'dir': '~/.fzf', 'build': './install --all' }
-NeoBundle 'junegunn/fzf.vim'
 NeoBundle 'Valloric/YouCompleteMe', {
       \ 'build' : {
       \     'mac' : './install.sh',
