@@ -1,4 +1,5 @@
 let mapleader = " "
+
 inoremap jj <Esc>
 nnoremap L $
 nnoremap H ^
@@ -54,6 +55,8 @@ set undofile
 set undodir=~/tmp
 set ignorecase
 set smartcase
+" disable mouse
+set mouse=c
 
 " Remove '|' for splits 
 set fillchars+=vert:\ 
@@ -77,6 +80,8 @@ nnoremap <silent> <C-i> :ZoomToggle<CR>
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'mxw/vim-jsx'
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
+Plug 'frankier/neovim-colors-solarized-truecolor-only'
+Plug 'morhetz/gruvbox'
 Plug 'isRuslan/vim-es6'
 Plug 'neomake/neomake'
 Plug 'ekalinin/Dockerfile.vim'
@@ -91,6 +96,21 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'SirVer/ultisnips'
+" Currently, es6 version of snippets is available in es6 branch only
+Plug 'letientai299/vim-react-snippets', { 'branch': 'es6' }
+let g:UltiSnipsExpandTrigger = "<nop>"
+let g:ulti_expand_or_jump_res = 0
+function ExpandSnippetOrCarriageReturn()
+    let snippet = UltiSnips#ExpandSnippetOrJump()
+    if g:ulti_expand_or_jump_res > 0
+        return snippet
+    else
+        return "\<CR>"
+    endif
+endfunction
+inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
 
 nmap <Leader>hs <Plug>GitGutterStageHunk
 nmap <Leader>hu <Plug>GitGutterUndoHunk
@@ -99,8 +119,14 @@ nmap <Leader>hp <Plug>GitGutterPreviewHunk
 " Initialize plugin system
 call plug#end()
 
+" True color
+set termguicolors
+set background=dark
+colorscheme gruvbox
+
 autocmd! BufWritePost * Neomake
 let g:ctrlp_map = '<leader>d'
+map <leader>l :CtrlPBuffer<CR>
 map <C-n> :NERDTreeToggle<CR>
 
 let g:syntastic_javascript_checkers = ['jsxhint']

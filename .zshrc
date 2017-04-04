@@ -110,7 +110,8 @@ ssh() {
     command ssh "$@"
   else
     orig_name=$(tmux display-message -p '#W')
-    tmux rename-window "$@"
+    new_name="${@: -1}"
+    tmux rename-window "$new_name"
     command ssh "$@"
     tmux rename-window $orig_name
   fi
